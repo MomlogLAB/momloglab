@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맘로그랩 | 프라이빗 AI 진단 · 내 아이 맞춤 전집 큐레이션</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF8F3;
+    --bg2: #F4EFE6;
+    --ink: #1C1410;
+    --ink2: #5A4A3A;
+    --ink3: #9A8070;
+    --accent: #C8692A;
+    --accent2: #E8A96A;
+    --gold: #B8965A;
+    --border: #DDD0C0;
+    --card: #FFFFFF;
+    --success: #2D6A4F;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── INTRO SCREEN ── */
+  .intro {
+    min-height: 100vh;
+    background: var(--ink);
+    color: #fff;
+    padding: 40px 32px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .intro-grain {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+  .intro-content { position: relative; z-index: 2; max-width: 720px; }
+  .intro-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px; font-weight: 700;
+    color: #fff; letter-spacing: 0.03em;
+    margin-bottom: 8px;
+  }
+  .intro-logo span { color: var(--accent2); }
+  .intro-badge {
+    display: inline-block;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 5px 14px; border-radius: 20px;
+    letter-spacing: 0.1em; margin-bottom: 24px;
+  }
+  .intro-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700; line-height: 1.3;
+    margin-bottom: 20px; color: #fff;
+  }
+  .intro-title em { color: var(--accent2); font-style: normal; }
+  .intro-desc {
+    font-size: 16px; color: rgba(255,255,255,0.6);
+    line-height: 1.9; margin-bottom: 40px;
+    max-width: 520px; margin-left: auto; margin-right: auto;
+  }
+  .intro-quote {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px; color: rgba(255,255,255,0.8);
+    font-style: italic; margin-bottom: 32px;
+    padding: 20px 32px;
+    border-left: 3px solid var(--accent);
+    text-align: left; line-height: 1.7;
+  }
+  .age-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .age-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 32px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+  .age-card:hover {
+    border-color: var(--accent);
+    background: rgba(200,105,42,0.08);
+    transform: translateY(-2px);
+  }
+  .age-card-label {
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent2); font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .age-card-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 22px; font-weight: 700;
+    color: #fff; margin-bottom: 6px;
+  }
+  .age-card-sub {
+    font-size: 14px; color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+  .age-card-arrow {
+    margin-top: 16px; color: var(--accent2);
+    font-size: 14px; font-weight: 500;
+  }
+  .intro-meta {
+    display: flex; justify-content: center; gap: 32px;
+    margin-top: 48px; flex-wrap: wrap;
+    font-size: 13px; color: rgba(255,255,255,0.4);
+  }
+  .intro-meta span::before {
+    content: '✓'; color: var(--accent2);
+    margin-right: 6px; font-weight: 700;
+  }
+  .intro-confirm-link {
+    margin-top: 32px;
+    font-size: 13px; color: rgba(255,255,255,0.4);
+  }
+  .intro-confirm-link a {
+    color: var(--accent2); text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* ── SURVEY CONTAINER ── */
+  .survey {
+    min-height: 100vh;
+    display: none;
+    background: var(--bg);
+    padding: 0;
+  }
+  .survey.active { display: block; }
+
+  .survey-header {
+    background: var(--ink);
+    padding: 20px 32px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .progress-wrap {
+    max-width: 720px; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .progress-back {
+    background: none; border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.7);
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 13px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .progress-back:hover { border-color: #fff; color: #fff; }
+  .progress-info { flex: 1; color: #fff; }
+  .progress-label {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em; margin-bottom: 4px;
+  }
+  .progress-current {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 15px; font-weight: 500;
+  }
+  .progress-bar-wrap {
+    background: rgba(255,255,255,0.1);
+    height: 4px; border-radius: 2px; overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-bar {
+    background: var(--accent);
+    height: 100%; width: 0;
+    transition: width 0.3s ease;
+  }
+
+  .survey-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 32px 120px;
+  }
+
+  .question {
+    display: none;
+    animation: slideIn 0.35s ease;
+  }
+  .question.active { display: block; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-stage {
+    display: inline-block;
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent); font-weight: 700;
+    margin-bottom: 12px;
+    padding: 5px 12px; border-radius: 20px;
+    background: rgba(200,105,42,0.1);
+  }
+  .q-number {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 14px; color: var(--ink3);
+    letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .q-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(20px, 3.5vw, 26px);
+    font-weight: 700; color: var(--ink);
+    line-height: 1.5; margin-bottom: 8px;
+  }
+  .q-desc {
+    font-size: 14px; color: var(--ink2);
+    line-height: 1.7; margin-bottom: 32px;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; }
+  .option {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 16px;
+    font-size: 15px; color: var(--ink);
+    line-height: 1.5;
+    text-align: left;
+  }
+  .option:hover {
+    border-color: var(--accent);
+    background: rgba(200,105,42,0.03);
+  }
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(200,105,42,0.06);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .option-marker {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .option.selected .option-marker {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .option.selected .option-marker::after {
+    content: ''; width: 8px; height: 8px;
+    border-radius: 50%; background: #fff;
+  }
+
+  /* ── STAGE INTRO BLOCK ── */
+  .stage-intro {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 28px 28px;
+    margin-bottom: 32px;
+  }
+  .stage-intro-label {
+    font-size: 11px; letter-spacing: 0.15em;
+    color: var(--accent2); font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .stage-intro-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px; font-weight: 700;
+    color: #fff; margin-bottom: 10px;
+  }
+  .stage-intro-desc {
+    font-size: 14px; color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+  }
+
+  /* ── INFO FORM ── */
+  .info-form { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+  .info-field { display: flex; flex-direction: column; gap: 6px; }
+  .info-label {
+    font-size: 13px; font-weight: 500;
+    color: var(--ink2);
+  }
+  .info-label span.req { color: var(--accent); margin-left: 2px; }
+  .info-hint {
+    font-size: 12px; color: var(--ink3);
+    margin-top: 2px; line-height: 1.5;
+  }
+  .info-input {
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--card);
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .info-input:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .info-privacy {
+    background: var(--bg2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+  .info-privacy label { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+  .info-privacy input[type=checkbox] { margin-top: 4px; accent-color: var(--accent); flex-shrink: 0; }
+
+  .phone-notice {
+    background: rgba(200,105,42,0.08);
+    border-left: 3px solid var(--accent);
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.7;
+    margin-top: 4px;
+  }
+  .phone-notice strong { color: var(--accent); }
+
+  /* ── PLAN SELECTION ── */
+  .plans-wrap {
+    display: flex; flex-direction: column; gap: 14px;
+    margin-top: 8px;
+  }
+  .plan-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .plan-item:hover { border-color: var(--accent); }
+  .plan-item.selected {
+    border-color: var(--accent);
+    background: rgba(200,105,42,0.04);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+  .plan-item.featured {
+    border-color: var(--accent);
+    background: rgba(200,105,42,0.06);
+  }
+  .plan-item-badge {
+    position: absolute; top: -10px; right: 20px;
+    background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+  .plan-item-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 16px; margin-bottom: 12px;
+  }
+  .plan-item-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--ink);
+  }
+  .plan-item-sub {
+    font-size: 12px; color: var(--ink3);
+    margin-top: 2px;
+  }
+  .plan-item-price {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--accent);
+    line-height: 1; white-space: nowrap;
+  }
+  .plan-item-price span { font-size: 13px; color: var(--ink2); font-weight: 400; margin-left: 2px; }
+  .plan-item-orig {
+    font-size: 12px; color: var(--ink3);
+    text-decoration: line-through;
+    margin-top: 4px; text-align: right;
+  }
+  .plan-item-features {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 10px;
+  }
+  .plan-chip {
+    font-size: 11px;
+    padding: 3px 10px;
+    background: var(--bg2);
+    color: var(--ink2);
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .plan-item.featured .plan-chip,
+  .plan-item.selected .plan-chip {
+    background: rgba(200,105,42,0.15);
+    color: var(--accent);
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-btns {
+    display: flex; gap: 12px; justify-content: space-between;
+    margin-top: 40px;
+  }
+  .btn {
+    padding: 16px 28px;
+    border-radius: 8px;
+    font-size: 15px; font-weight: 700;
+    border: none; cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn-prev {
+    background: transparent;
+    color: var(--ink2);
+    border: 1px solid var(--border);
+  }
+  .btn-prev:hover { border-color: var(--ink2); color: var(--ink); }
+  .btn-next {
+    background: var(--accent);
+    color: #fff; flex: 1;
+    max-width: 280px; margin-left: auto;
+  }
+  .btn-next:hover { background: #B05820; }
+  .btn-next:disabled {
+    background: var(--border);
+    cursor: not-allowed;
+    color: var(--ink3);
+  }
+
+  .final-submit {
+    background: var(--ink);
+    color: #fff;
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+  .final-submit strong { color: var(--accent2); }
+
+  /* ── LOADING ── */
+  .loading-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(28, 20, 16, 0.95);
+    display: none;
+    align-items: center; justify-content: center;
+    flex-direction: column;
+    color: #fff;
+  }
+  .loading-overlay.active { display: flex; }
+  .spinner {
+    width: 48px; height: 48px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+  }
+  .loading-sub {
+    font-size: 13px; color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+  }
+
+  /* ── CONFIRM PAGE (주문번호 입력) ── */
+  .confirm-page {
+    min-height: 100vh;
+    display: none;
+    background: var(--bg);
+    padding: 60px 32px;
+  }
+  .confirm-page.active { display: block; }
+  .confirm-wrap {
+    max-width: 560px; margin: 0 auto;
+    text-align: center;
+  }
+  .confirm-logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 40px;
+  }
+  .confirm-logo span { color: var(--accent); }
+  .confirm-icon {
+    width: 64px; height: 64px;
+    background: var(--success); color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; margin: 0 auto 24px;
+  }
+  .confirm-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .confirm-desc {
+    font-size: 15px; color: var(--ink2);
+    line-height: 1.8; margin-bottom: 32px;
+  }
+  .confirm-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 28px;
+    text-align: left;
+  }
+  .confirm-steps {
+    background: var(--bg2);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--ink2);
+    line-height: 1.9;
+  }
+  .confirm-steps strong { color: var(--ink); }
+  .confirm-steps ol { padding-left: 20px; }
+  .confirm-success {
+    display: none;
+    background: rgba(45,106,79,0.08);
+    border-left: 3px solid var(--success);
+    padding: 20px 22px;
+    border-radius: 8px;
+    margin-top: 24px;
+  }
+  .confirm-success.show { display: block; }
+  .confirm-success-title {
+    font-weight: 700; color: var(--success);
+    font-size: 15px; margin-bottom: 8px;
+  }
+  .confirm-success-desc {
+    font-size: 13px; color: var(--ink2);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .intro { padding: 32px 20px; }
+    .survey-header { padding: 16px 20px; }
+    .survey-body { padding: 32px 20px 80px; }
+    .info-row { grid-template-columns: 1fr; }
+    .plan-item-top { flex-direction: column; align-items: flex-start; }
+    .plan-item-price { font-size: 20px; }
+    .btn-next { max-width: none; }
+    .nav-btns { flex-direction: column-reverse; }
+    .btn-prev, .btn-next { width: 100%; max-width: none; }
+    .confirm-page { padding: 40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ INTRO SCREEN ══════════════════════ -->
+<section class="intro" id="introScreen">
+  <div class="intro-grain"></div>
+  <div class="intro-content">
+    <div class="intro-logo">맘로그<span>랩</span></div>
+    <div class="intro-badge">프라이빗 AI 진단</div>
+    <h1 class="intro-title">
+      내 아이를 위한<br>
+      <em>1:1 맞춤 전집 큐레이션</em>
+    </h1>
+    <div class="intro-quote">
+      "남들이 다 산다는 50만 원 전집, 우리 아이도 잘 볼까요?"<br>
+      실패하면 거실의 짐이 되지만, 성공하면 아이 평생의 자산이 됩니다.
+    </div>
+    <p class="intro-desc">
+      1% 육아 기질 분석 AI가 엄마의 고민을 확신으로 바꿔드립니다.<br>
+      아이 연령에 맞는 설문을 선택해주세요.
+    </p>
+    <div class="age-selector">
+      <div class="age-card" onclick="startSurvey('baby')">
+        <div class="age-card-label">BABY TRACK</div>
+        <div class="age-card-title">0~36개월</div>
+        <div class="age-card-sub">이제 막 책에 눈뜨는 아기부터<br>어린이집 사회생활 시작까지</div>
+        <div class="age-card-arrow">설문 시작 →</div>
+      </div>
+      <div class="age-card" onclick="startSurvey('kid')">
+        <div class="age-card-label">KID TRACK</div>
+        <div class="age-card-title">5~7세</div>
+        <div class="age-card-sub">초등 입학 전 독서 골든타임<br>문해력 · 자기주도 독서 준비기</div>
+        <div class="age-card-arrow">설문 시작 →</div>
+      </div>
+    </div>
+    <div class="intro-meta">
+      <span>약 3분 소요</span>
+      <span>12문항 심층 분석</span>
+      <span>AI 맞춤 리포트 즉시 발송</span>
+    </div>
+    <div class="intro-confirm-link">
+      이미 결제하셨나요? <a onclick="showConfirmPage()">주문번호 입력하기 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ SURVEY SCREEN ══════════════════════ -->
+<section class="survey" id="surveyScreen">
+  <div class="survey-header">
+    <div class="progress-wrap">
+      <button class="progress-back" onclick="goBackToIntro()">← 처음으로</button>
+      <div class="progress-info">
+        <div class="progress-label" id="progressLabel">1단계 · 아이의 성장 기록</div>
+        <div class="progress-current" id="progressCurrent">1 / 14</div>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="survey-body" id="surveyBody"></div>
+</section>
+
+<!-- ══════════════════════ CONFIRM PAGE (주문번호 입력) ══════════════════════ -->
+<section class="confirm-page" id="confirmPage">
+  <div class="confirm-wrap">
+    <div class="confirm-logo">맘로그<span>랩</span></div>
+    <div class="confirm-icon">✓</div>
+    <div class="confirm-title">결제를 완료하셨나요?</div>
+    <div class="confirm-desc">
+      스마트스토어에서 받으신 <strong>주문번호</strong>를 아래에 입력해주세요.<br>
+      즉시 AI 분석이 시작되어 약 3분 이내에 리포트를 보내드립니다.
+    </div>
+    <div class="confirm-box">
+      <div class="confirm-steps">
+        <strong>📋 주문번호 확인 방법</strong>
+        <ol>
+          <li>네이버페이 결제 완료 화면에서 확인</li>
+          <li>또는 네이버페이 앱 → 주문내역</li>
+          <li>또는 결제 확인 이메일/문자 확인</li>
+        </ol>
+      </div>
+      <div class="info-form">
+        <div class="info-field">
+          <label class="info-label">주문번호<span class="req">*</span></label>
+          <input type="text" class="info-input" id="cf_orderNo" placeholder="2026XXXXXXXXXX" oninput="validateConfirm()">
+          <div class="info-hint">네이버페이 주문번호 (보통 숫자 10~15자리)</div>
+        </div>
+        <div class="info-field">
+          <label class="info-label">결제 시 사용하신 이메일 또는 전화번호<span class="req">*</span></label>
+          <input type="text" class="info-input" id="cf_contact" placeholder="이메일 또는 010-0000-0000" oninput="validateConfirm()">
+          <div class="info-hint">설문 작성 시 입력한 정보와 일치해야 합니다</div>
+        </div>
+        <div class="nav-btns">
+          <button class="btn btn-prev" onclick="hideConfirmPage()">← 처음으로</button>
+          <button class="btn btn-next" id="confirmBtn" disabled onclick="submitConfirm()">결제 확인 요청 →</button>
+        </div>
+      </div>
+      <div class="confirm-success" id="confirmSuccess">
+        <div class="confirm-success-title">✓ 결제 확인 요청 접수 완료</div>
+        <div class="confirm-success-desc">
+          시스템이 결제 내역을 확인하고 있습니다. 약 3분 이내에 입력하신 이메일로 AI 리포트가 발송됩니다.<br><br>
+          만약 10분 이상 메일이 오지 않으면 <strong>help@momloglab.ai.kr</strong>로 문의해주세요.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ LOADING ══════════════════════ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">설문 결과를 안전하게 저장 중입니다</div>
+  <div class="loading-sub">잠시 후 결제 페이지로 이동합니다...</div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   ⚙️ 설정 — 사장님이 수정해야 하는 부분
+   ══════════════════════════════════════════════════════════ */
+const CONFIG = {
+  // Make.com Webhook URL (2개 필요)
+  WEBHOOK_SURVEY:  'https://hook.us2.make.com/vz5pbktu74nt9rkn2s2jofrhyvylsg5p',   // 설문 접수용
+  WEBHOOK_CONFIRM: 'https://hook.us2.make.com/vz5pbktu74nt9rkn2s2jofrhyvylsg5p',  // 주문번호 확인용
+
+  // 스마트스토어 상품 URL
+  SMARTSTORE: {
+    earlybird_1: 'https://smartstore.naver.com/momloglab',
+    earlybird_2: 'https://smartstore.naver.com/momloglab',
+    standard:    'https://smartstore.naver.com/momloglab',
+  }
+};
+
+/* ══════════════════════════════════════════════════════════
+   📋 설문 데이터
+   ══════════════════════════════════════════════════════════ */
+const SURVEYS = {
+  baby: {
+    label: '0~36개월',
+    stages: [
+      { num: 1, title: '아이의 성장을 기록합니다',
+        desc: '가장 먼저, 아이의 발달 단계를 확인합니다. 아이의 월령과 집중력에 따라 추천되는 전집의 글밥과 깊이가 달라지기 때문입니다.' },
+      { num: 2, title: '아이의 숨겨진 감각을 관찰합니다',
+        desc: '기질은 바뀌지 않지만, 환경은 바꿔줄 수 있습니다. 아이가 유독 반응하는 감각 신호를 통해 실패 없는 적중 도서를 찾아냅니다.' },
+      { num: 3, title: '엄마의 진심을 담습니다',
+        desc: '엄마의 육아 철학과 고민은 무엇인가요? 중복 투자 없는 가성비 전략부터 완벽한 새 책 플렉스까지, 엄마의 상황에 딱 맞춘 솔루션을 준비합니다.' }
+    ],
+    questions: [
+      { stage: 1, id: 'Q1', title: '우리 아이, 지금 몇 개월인가요?',
+        desc: '딱 요 맘 때 뽕 뽑는 책으로 골라드릴게요!',
+        options: [
+          '17개월 이하 (이제 막 책에 눈뜨는 구강기 아기)',
+          '18~23개월 (자기주장 뿜뿜! 신체/언어 폭발 준비기)',
+          '24~29개월 (말문 빵 터지는 "미운 세 살")',
+          '30~36개월 (어린이집/유치원 사회생활 시작!)'
+        ] },
+      { stage: 1, id: 'Q2', title: '솔직히 우리 아이, 책 펴면 얼마나 집중하나요?',
+        desc: '글밥 조절을 위해 꼭 필요한 질문이에요!',
+        options: [
+          '1분 컷... 휘리릭 넘기고 바로 덮고 도망가요',
+          '글씨나 읽어주는 건 안 듣고 그림만 후다닥 보고 넘겨요',
+          '그래도 한 권 정도는 엄마 무릎에서 끝까지 잘 봐요',
+          '"또 읽어줘!" 한 자리에서 여러 권 연달아 읽어달라고 해요'
+        ] },
+      { stage: 2, id: 'Q3', title: '새로운 소리나 낯선 촉감에 어떻게 반응하나요?',
+        desc: '모래, 밀가루, 시끄러운 장난감 등을 마주했을 때',
+        options: [
+          '호기심을 갖고 바로 만져보고 탐색한다',
+          '멀리서 지켜보다가 안전하다고 판단되면 접근한다',
+          '소리나 촉감에 예민하여 거부감을 보이기도 한다'
+        ] },
+      { stage: 2, id: 'Q4', title: '아이가 유독 책에 찰싹 붙어서 열광하는 포인트는?',
+        options: [
+          '🎵 엉덩이 들썩 들썩! 신나는 노래나 챈트',
+          '👀 시선 고정! 쨍 한 색감이나 완전 리얼한 실사 사진',
+          '👐 꼼지락꼼지락! 구멍 파고 팝업 들춰보는 조작북',
+          '🗣️ 귀 쫑긋! 엄마가 들려주는 흥미진진한 스토리'
+        ] },
+      { stage: 2, id: 'Q5', title: '우리 아이가 유독 손에서 안 놓는 "책의 형태"는?',
+        desc: '실패 확률을 훅 낮춰주는 핵심 질문!',
+        options: [
+          '콕 찍으면 소리 나는 "세이펜 호환책"',
+          '잡아당기고 펼치느라 바쁜 신기한 "팝업/조작북"',
+          '큼직큼직하고 그림이 시원시원한 "일반 종이책(양장본)"',
+          '물고 빨고 던져도 끄떡없는 두꺼운 "보드북"'
+        ] },
+      { stage: 3, id: 'Q6', title: '요즘 육아하면서 제일 속 터지거나 신경 쓰이는 부분은요?',
+        options: [
+          '치카치카, 밥 먹기! "기본 생활 습관" 잡기 전쟁',
+          '드러눕고 떼쓰기! 내면의 "감정 조절" 코칭',
+          '쫑알쫑알 말 좀 예쁘게 했으면! "어휘력/표현력" 키우기',
+          '동물, 공룡, 우주! 폭발하는 "호기심과 지식" 채워주기'
+        ] },
+      { stage: 3, id: 'Q7', title: '내일 당장 가장 도움을 주고 싶은 발달 영역은?',
+        options: [
+          '폭발적인 언어 발달과 어휘량 확장',
+          '감정 조절 및 사회성/인성 함양',
+          '수·과학적 논리력과 창의적 사고',
+          '올바른 생활 습관(배변, 식사 등) 형성'
+        ] },
+      { stage: 3, id: 'Q8', title: '지금 우리 집 책장 메인 자리를 차지하는 전집은?',
+        desc: '돈 낭비 안 하게 겹치는 건 피해서 추천할게요!',
+        options: [
+          '추피, 베베 코알라 같은 "생활 동화"',
+          '도레미곰, 라라랜드 같은 "창작 동화"',
+          '놀라운 자연, 자연이랑 같은 "자연 관찰"',
+          '아직 비싼 국민 전집은 한 번도 안 들였어요!'
+        ] },
+      { stage: 3, id: 'Q9', title: '이번에 비싼 전집을 새로 들이려는 엄마의 "진짜" 속마음은?',
+        options: [
+          '엉덩이 붙이고 "책이랑 친해지는 습관" 좀 만들어주려고',
+          '말이 훅훅 늘었으면 해서 "언어 발달" 자극용으로',
+          '이제 슬슬 "지식(자연, 수학)"도 머리에 넣어줘야 할 것 같아서',
+          '아이가 너무 심심해해서 흥미 유발 장난감 느낌으로'
+        ] },
+      { stage: 3, id: 'Q10', title: '세이펜, 빔, 패드 같은 "스마트 기기" 활용에 대한 엄마의 철학은?',
+        options: [
+          '완전 환영! 엄마 목도 아끼고 육아 퇴근도 돕는 효자템이죠',
+          '있으면 잘 쓰겠지만, 꼭 필수는 아니라고 생각해요',
+          '아직은 아날로그! 무조건 엄마 목소리와 종이 책만 고집할래요'
+        ] },
+      { stage: 3, id: 'Q11', title: '결제 버튼 누르기 전, 엄마를 가장 망설이게 하는 건?',
+        options: [
+          '수십만 원 줬는데 애가 쳐다도 안 보면 어쩌지? (돈 낭비 걱정)',
+          '몇 달 반짝 보고 금방 유치해지면 어쩌지? (짧은 수명 걱정)',
+          '아... 이거 오면 거실 어디다 두지? (책장 수납 스트레스)',
+          '나중에 당근에 팔 때 똥 값 되면 속 쓰린데... (중고 방어율)'
+        ] },
+      { stage: 3, id: 'Q12', title: '내 아이 인생 전집, 엄마는 어떻게 들이고 싶으신가요?',
+        options: [
+          '첫 책이니까! 공식 몰에서 가장 깨끗한 "새 책"으로 플렉스!',
+          '책은 소모품! 당근 마켓 키워드 알림 해놓고 "중고"로 가성비',
+          '샀다 안 보면 돈 아까우니... 한 달 "대여"로 아이 간부터 볼래요',
+          '목돈 쓰기 부담스러워요. 알아서 배송 오는 "구독"을 해볼래요'
+        ] }
+    ]
+  },
+  kid: {
+    label: '5~7세',
+    stages: [
+      { num: 1, title: '아이의 성장을 기록합니다',
+        desc: '초등 입학 전 독서 골든타임, 진짜 문해력의 뿌리를 찾는 시간입니다.' },
+      { num: 2, title: '아이의 숨겨진 감각과 몰입 패턴',
+        desc: '기질별 최적의 킬러 콘텐츠와 독서 형태를 파악합니다.' },
+      { num: 3, title: '엄마의 진심과 처방',
+        desc: '초등 준비, 문해력, 자기주도 독서. 지금 가장 필요한 처방을 내립니다.' },
+      { num: 4, title: '현실적인 고민과 쇼핑 성향',
+        desc: '공간, 활용도, 가격. 현실적인 고민을 모두 반영한 맞춤 솔루션을 준비합니다.' }
+    ],
+    questions: [
+      { stage: 1, id: 'Q1', title: '우리 아이, 지금 몇 살(몇 개월)인가요?',
+        options: [
+          '5세 (48~59개월) - 호기심 폭발! "왜?"라는 질문이 쏟아지는 시기',
+          '6세 (60~71개월) - 엉덩이 힘 기르기! 본격적인 독서 몰입 준비기',
+          '7세 (72개월 이상) - 예비 초등! 어휘력과 문해력이 곧 실력이 되는 시기'
+        ] },
+      { stage: 1, id: 'Q2', title: '요즘 아이의 독서 집중력, 어느 정도인가요?',
+        options: [
+          '그림만 대충 훑고 3분 만에 "다 봤다!" 하고 끝내요',
+          '자기가 좋아하는 한두 분야(공룡, 공주) 책만 반복해서 봐요',
+          '글밥이 꽤 있는 책도 엄마가 읽어주면 끝까지 집중해서 들어요',
+          '스스로 글자를 읽기 시작하며 혼자서도 15분 이상 몰입해요'
+        ] },
+      { stage: 2, id: 'Q3', title: '새로운 지식을 접할 때 아이의 반응은?',
+        options: [
+          '탐구형: "이건 왜 그래?" 원리와 이유를 끝까지 파헤쳐야 직성이 풀린다',
+          '관찰형: 바로 질문하기보다 가만히 지켜보며 스스로 이해할 시간을 갖는다',
+          '직관형: 복잡한 설명보다 눈에 보이는 화려한 그림이나 영상에 먼저 반응한다'
+        ] },
+      { stage: 2, id: 'Q4', title: '아이가 책을 볼 때 유독 눈이 반짝이는 "킬러 콘텐츠"는?',
+        options: [
+          '지식 정보: 우주, 인체, 동물 등 신비한 사실을 알려주는 백과류',
+          '스토리텔링: 친구 관계, 모험, 상상력이 가득한 흥미진진한 이야기',
+          '논리/수학: 규칙을 찾고 문제를 해결하는 퀴즈나 추리 형식',
+          '감성/예술: 마음을 울리는 따뜻한 그림체와 아름다운 문장들'
+        ] },
+      { stage: 2, id: 'Q5', title: '아이가 가장 편안해하는 독서 형태는?',
+        options: [
+          '글자가 적고 그림이 압도적으로 큰 "그림책" 위주',
+          '사진이 실감 나고 정보가 빽빽한 "지식 전집/도감"',
+          '재미있는 캐릭터와 말풍선이 있는 "학습 만화" 스타일',
+          '스스로 직접 풀고 스티커를 붙이는 "워크북/활동지" 포함 구성'
+        ] },
+      { stage: 3, id: 'Q6', title: '요즘 5~7세 육아하며 엄마를 가장 불안하게 하는 것은?',
+        options: [
+          '"내년에 학교 가는데..." 한글 떼기와 기초 문해력 부족',
+          '"친구랑은 잘 지낼까?" 고집 세고 감정 조절이 서툰 사회성',
+          '"유튜브만 보려 해서..." 스마트 기기에 중독될까 봐 걱정',
+          '"이거 다 알아야 할 텐데..." 수학, 과학 등 기초 지식의 공백'
+        ] },
+      { stage: 3, id: 'Q7', title: '내일 당장 꼭 키워주고 싶은 "이 능력"은?',
+        options: [
+          '어휘력과 이해력 (초등 교과 과정을 따라갈 수 있는 힘)',
+          '공감 능력과 예절 (단체 생활에서 사랑받는 아이로 성장)',
+          '사고력과 문제 해결력 (어려운 문제도 포기하지 않는 끈기)',
+          '자기주도 독서 습관 (시키지 않아도 스스로 책을 집어 드는 태도)'
+        ] },
+      { stage: 3, id: 'Q8', title: '현재 거실 책장을 가장 크게 차지하는 전집은?',
+        desc: '중복 제거용, 겹치지 않게 추천드릴게요',
+        options: [
+          '창작/인성: 안녕 마음아, 그레이트북스 도레미곰/라라랜드 등',
+          '자연/지식: 놀라운 자연, 아람 지식그림책, 과학공룡 등',
+          '언어/수학: 내 친구 과학공룡/수학공룡, 한글 전집 등',
+          '기타: 물려받은 전집이나 단행본 위주로 있어요'
+        ] },
+      { stage: 3, id: 'Q9', title: '이번 전집 구매로 얻고 싶은 "최종 결과물"은?',
+        options: [
+          '초등 입학 전, 교과서에 나오는 배경지식 완벽 마스터',
+          '어휘력을 폭발시켜서 말 예쁘게 하고 이해력 좋은 아이 만들기',
+          '스스로 책 읽는 재미를 붙여서 "공부 정서" 좋게 만들기',
+          '아이가 좋아하는 분야의 깊이를 더해주는 "덕질" 지원'
+        ] },
+      { stage: 4, id: 'Q10', title: '교육용 패드(웅진, 밀크T) 세이펜 활용에 대한 생각은?',
+        options: [
+          '적극 활용! 멀티미디어 자극이 학습 효과를 높인다고 생각해요',
+          '보조 도구일 뿐! 결국은 종이책을 넘기는 손맛이 중요해요',
+          '절대 반대! 영상 자극은 최소화하고 텍스트에만 집중하게 하고 싶어요'
+        ] },
+      { stage: 4, id: 'Q11', title: '결제 직전에 엄마를 망설이게 하는 현실적인 고민은?',
+        options: [
+          '활용도: "학교 가면 안 본다는데, 지금 사기엔 너무 늦었나?"',
+          '공간: "책이 너무 두꺼워서 거실 책장에 더 들어갈 자리가 없는데..."',
+          '가격: "초등 대비 학원비도 많이 드는데, 전집까지 수십만 원 쓰려니..."',
+          '수준: "우리 애한테 너무 어렵거나 너무 쉬워서 실패하면 어쩌지?"'
+        ] },
+      { stage: 4, id: 'Q12', title: '이번 전집, 어떤 방식으로 들이고 싶으신가요?',
+        options: [
+          '무조건 새 책! AS 확실하고 깨끗한 공식 판매처 구매',
+          '가성비 중고! 당근마켓이나 중고서점에서 상태 좋은 책 발굴',
+          '대여/구독! 애가 볼지 안 볼지 모르니 한 달씩 빌려보기',
+          '단행본 큐레이션! 전집은 부담스러우니 좋은 책만 몇 권 골라받기'
+        ] }
+    ]
+  }
+};
+
+/* ══════════════════════════════════════════════════════════
+   📦 상태
+   ══════════════════════════════════════════════════════════ */
+const state = {
+  track: null,
+  currentStep: 0,
+  answers: {},
+  info: {},
+  plan: null
+};
+
+/* ══════════════════════════════════════════════════════════
+   🛠 전화번호 정규화 (핵심 매칭 키)
+   ══════════════════════════════════════════════════════════ */
+function normalizePhone(raw) {
+  // 모든 비숫자 제거 → "01012345678" 형태로 통일
+  return (raw || '').replace(/\D/g, '');
+}
+
+/* ══════════════════════════════════════════════════════════
+   🎬 화면 전환
+   ══════════════════════════════════════════════════════════ */
+function startSurvey(track) {
+  state.track = track;
+  state.currentStep = 0;
+  state.answers = {};
+  state.info = {};
+  state.plan = null;
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('confirmPage').classList.remove('active');
+  document.getElementById('surveyScreen').classList.add('active');
+  window.scrollTo(0, 0);
+  renderStep();
+}
+
+function goBackToIntro() {
+  if (!confirm('처음 화면으로 돌아가시겠습니까? 지금까지의 답변은 사라집니다.')) return;
+  document.getElementById('introScreen').style.display = 'flex';
+  document.getElementById('surveyScreen').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+function showConfirmPage() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('confirmPage').classList.add('active');
+  document.getElementById('confirmSuccess').classList.remove('show');
+  document.getElementById('cf_orderNo').value = '';
+  document.getElementById('cf_contact').value = '';
+  document.getElementById('confirmBtn').disabled = true;
+  window.scrollTo(0, 0);
+}
+
+function hideConfirmPage() {
+  document.getElementById('confirmPage').classList.remove('active');
+  document.getElementById('introScreen').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   🖼 단계 렌더링
+   ══════════════════════════════════════════════════════════ */
+function renderStep() {
+  const survey = SURVEYS[state.track];
+  const totalSteps = 14;
+  const step = state.currentStep;
+
+  document.getElementById('progressBar').style.width = ((step + 1) / totalSteps * 100) + '%';
+  document.getElementById('progressCurrent').textContent = `${step + 1} / ${totalSteps}`;
+
+  const body = document.getElementById('surveyBody');
+
+  // 12문항
+  if (step < 12) {
+    const q = survey.questions[step];
+    const stageInfo = survey.stages.find(s => s.num === q.stage);
+    document.getElementById('progressLabel').textContent = `${stageInfo.num}단계 · ${stageInfo.title}`;
+
+    const prevQ = step > 0 ? survey.questions[step - 1] : null;
+    const isStageFirst = !prevQ || prevQ.stage !== q.stage;
+
+    body.innerHTML = `
+      <div class="question active">
+        ${isStageFirst ? `
+          <div class="stage-intro">
+            <div class="stage-intro-label">STAGE ${stageInfo.num} / ${survey.stages.length}</div>
+            <div class="stage-intro-title">${stageInfo.title}</div>
+            <div class="stage-intro-desc">${stageInfo.desc}</div>
+          </div>
+        ` : ''}
+        <div class="q-stage">${stageInfo.num}단계</div>
+        <div class="q-number">Q${step + 1}</div>
+        <div class="q-title">${q.title}</div>
+        ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
+        <div class="options">
+          ${q.options.map((opt, i) => `
+            <div class="option ${state.answers[q.id] === opt ? 'selected' : ''}" onclick="selectOption('${q.id}', this, ${i})">
+              <div class="option-marker"></div>
+              <div>${opt}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="nav-btns">
+          ${step > 0 ? '<button class="btn btn-prev" onclick="prevStep()">← 이전</button>' : '<div></div>'}
+          <button class="btn btn-next" id="nextBtn" ${!state.answers[q.id] ? 'disabled' : ''} onclick="nextStep()">다음 →</button>
+        </div>
+      </div>
+    `;
+  }
+  // 개인정보
+  else if (step === 12) {
+    document.getElementById('progressLabel').textContent = '리포트 받으실 정보를 입력해주세요';
+    body.innerHTML = `
+      <div class="question active">
+        <div class="stage-intro">
+          <div class="stage-intro-label">ALMOST DONE</div>
+          <div class="stage-intro-title">리포트를 받으실 정보를 입력해주세요</div>
+          <div class="stage-intro-desc">분석 완료 즉시 입력하신 이메일로 리포트가 발송됩니다.</div>
+        </div>
+
+        <div class="phone-notice">
+          ⚠️ <strong>중요:</strong> 스마트스토어 결제 시 사용하실 <strong>전화번호</strong>와 반드시 동일하게 입력해주세요. 결제 확인 자동 매칭의 기준이 됩니다.
+        </div>
+
+        <div class="info-form">
+          <div class="info-field">
+            <label class="info-label">어머님 성함<span class="req">*</span></label>
+            <input type="text" class="info-input" id="f_name" value="${state.info.name || ''}" placeholder="홍길동" oninput="updateInfo()">
+          </div>
+          <div class="info-field">
+            <label class="info-label">이메일 (리포트 수신 주소)<span class="req">*</span></label>
+            <input type="email" class="info-input" id="f_email" value="${state.info.email || ''}" placeholder="example@email.com" oninput="updateInfo()">
+          </div>
+          <div class="info-field">
+            <label class="info-label">휴대폰 번호 (결제 시 동일 번호)<span class="req">*</span></label>
+            <input type="tel" class="info-input" id="f_phone" value="${state.info.phone || ''}" placeholder="010-0000-0000" oninput="updateInfo()">
+            <div class="info-hint">스마트스토어 결제 시 사용하실 번호와 동일해야 합니다</div>
+          </div>
+          <div class="info-row">
+            <div class="info-field">
+              <label class="info-label">아이 이름 (태명 가능)<span class="req">*</span></label>
+              <input type="text" class="info-input" id="f_childName" value="${state.info.childName || ''}" placeholder="민준" oninput="updateInfo()">
+            </div>
+            <div class="info-field">
+              <label class="info-label">아이 성별<span class="req">*</span></label>
+              <select class="info-input" id="f_childGender" onchange="updateInfo()">
+                <option value="">선택</option>
+                <option value="남아" ${state.info.childGender === '남아' ? 'selected' : ''}>남아</option>
+                <option value="여아" ${state.info.childGender === '여아' ? 'selected' : ''}>여아</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-privacy">
+            <label>
+              <input type="checkbox" id="f_consent" ${state.info.consent ? 'checked' : ''} onchange="updateInfo()">
+              <span>개인정보 수집·이용에 동의합니다. 수집된 정보는 <strong>리포트 발송 및 분석 목적</strong>으로만 사용되며, 관련 법령에 따라 안전하게 관리됩니다.</span>
+            </label>
+          </div>
+        </div>
+        <div class="nav-btns">
+          <button class="btn btn-prev" onclick="prevStep()">← 이전</button>
+          <button class="btn btn-next" id="nextBtn" disabled onclick="nextStep()">다음 →</button>
+        </div>
+      </div>
+    `;
+    validateInfo();
+  }
+  // 플랜 선택
+  else if (step === 13) {
+    document.getElementById('progressLabel').textContent = '마지막 단계 · 리포트 플랜 선택';
+    body.innerHTML = `
+      <div class="question active">
+        <div class="stage-intro">
+          <div class="stage-intro-label">FINAL STEP</div>
+          <div class="stage-intro-title">받으실 리포트 플랜을 선택해주세요</div>
+          <div class="stage-intro-desc">아래 버튼을 누르시면 네이버 스마트스토어로 이동하여 결제가 진행됩니다.</div>
+        </div>
+        <div class="plans-wrap">
+          <div class="plan-item featured ${state.plan === 'earlybird_1' ? 'selected' : ''}" onclick="selectPlan('earlybird_1')">
+            <div class="plan-item-badge">⚡ 초 얼리버드 · 100명 한정</div>
+            <div class="plan-item-top">
+              <div>
+                <div class="plan-item-title">라이트 리포트</div>
+                <div class="plan-item-sub">성향 아웃라인 + 전집 TOP3</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="plan-item-price">4,900<span>원</span></div>
+                <div class="plan-item-orig">정가 19,900원</div>
+              </div>
+            </div>
+            <div class="plan-item-features">
+              <span class="plan-chip">성향 아웃라인</span>
+              <span class="plan-chip">전집 TOP3</span>
+              <span class="plan-chip">기질 요약</span>
+            </div>
+          </div>
+
+          <div class="plan-item ${state.plan === 'earlybird_2' ? 'selected' : ''}" onclick="selectPlan('earlybird_2')">
+            <div class="plan-item-top">
+              <div>
+                <div class="plan-item-title">라이트 리포트 (2차)</div>
+                <div class="plan-item-sub">초 얼리버드 마감 후 오픈</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="plan-item-price">9,900<span>원</span></div>
+                <div class="plan-item-orig">정가 19,900원</div>
+              </div>
+            </div>
+            <div class="plan-item-features">
+              <span class="plan-chip">성향 아웃라인</span>
+              <span class="plan-chip">전집 TOP3</span>
+              <span class="plan-chip">기질 요약</span>
+            </div>
+          </div>
+
+          <div class="plan-item ${state.plan === 'standard' ? 'selected' : ''}" onclick="selectPlan('standard')">
+            <div class="plan-item-top">
+              <div>
+                <div class="plan-item-title">프리미엄 리포트</div>
+                <div class="plan-item-sub">완전 분석 + 6개월 로드맵</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="plan-item-price">19,900<span>원</span></div>
+              </div>
+            </div>
+            <div class="plan-item-features">
+              <span class="plan-chip">완전 분석</span>
+              <span class="plan-chip">딥다이브 큐레이션</span>
+              <span class="plan-chip">비교 차트</span>
+              <span class="plan-chip">시크릿 정보</span>
+              <span class="plan-chip">시너지 아이템</span>
+              <span class="plan-chip">독후 활동 가이드</span>
+              <span class="plan-chip">6개월 로드맵</span>
+              <span class="plan-chip">선행학습 가이드</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="final-submit">
+          <strong>결제 완료 후 안내</strong><br>
+          결제가 끝나시면 스마트스토어에서 <strong>주문번호</strong>를 받으실 수 있습니다.<br>
+          약 3분 이내에 전화번호로 자동 매칭되어 리포트가 발송됩니다. 매칭에 실패할 경우 홈 화면의 <strong>"이미 결제하셨나요?"</strong> 링크를 통해 주문번호를 직접 입력하실 수 있습니다.
+        </div>
+
+        <div class="nav-btns">
+          <button class="btn btn-prev" onclick="prevStep()">← 이전</button>
+          <button class="btn btn-next" id="nextBtn" ${!state.plan ? 'disabled' : ''} onclick="submitAndPay()">결제 페이지로 이동 →</button>
+        </div>
+      </div>
+    `;
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════════════════════════
+   🎯 이벤트 핸들러
+   ══════════════════════════════════════════════════════════ */
+function selectOption(qid, el, idx) {
+  const q = SURVEYS[state.track].questions.find(x => x.id === qid);
+  state.answers[qid] = q.options[idx];
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function selectPlan(planId) {
+  state.plan = planId;
+  document.querySelectorAll('.plan-item').forEach(p => p.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function updateInfo() {
+  state.info.name = document.getElementById('f_name').value.trim();
+  state.info.email = document.getElementById('f_email').value.trim();
+  state.info.phone = document.getElementById('f_phone').value.trim();
+  state.info.childName = document.getElementById('f_childName').value.trim();
+  state.info.childGender = document.getElementById('f_childGender').value;
+  state.info.consent = document.getElementById('f_consent').checked;
+  validateInfo();
+}
+
+function validateInfo() {
+  const i = state.info;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(i.email || '');
+  const phoneOk = normalizePhone(i.phone).length >= 10;
+  const ok = i.name && emailOk && phoneOk && i.childName && i.childGender && i.consent;
+  document.getElementById('nextBtn').disabled = !ok;
+}
+
+function validateConfirm() {
+  const orderNo = document.getElementById('cf_orderNo').value.trim();
+  const contact = document.getElementById('cf_contact').value.trim();
+  const ok = orderNo.length >= 8 && contact.length >= 5;
+  document.getElementById('confirmBtn').disabled = !ok;
+}
+
+function prevStep() {
+  if (state.currentStep > 0) {
+    state.currentStep--;
+    renderStep();
+  }
+}
+
+function nextStep() {
+  if (state.currentStep < 13) {
+    state.currentStep++;
+    renderStep();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   📤 설문 제출 + 결제 이동
+   ══════════════════════════════════════════════════════════ */
+async function submitAndPay() {
+  document.getElementById('loadingOverlay').classList.add('active');
+
+  const submissionId = 'ML_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+  const normalizedPhone = normalizePhone(state.info.phone);
+
+  const payload = {
+    submission_id: submissionId,
+    track: state.track,
+    track_label: SURVEYS[state.track].label,
+    submitted_at: new Date().toISOString(),
+    price_tier: state.plan,
+
+    // 개인정보
+    user_name: state.info.name,
+    user_email: state.info.email,
+    user_phone: state.info.phone,                  // 원본 (010-1234-5678)
+    user_phone_normalized: normalizedPhone,        // 정규화 (01012345678) ← 매칭 키
+    child_name: state.info.childName,
+    child_gender: state.info.childGender,
+
+    // 12개 답변
+    Q1: state.answers.Q1, Q2: state.answers.Q2, Q3: state.answers.Q3,
+    Q4: state.answers.Q4, Q5: state.answers.Q5, Q6: state.answers.Q6,
+    Q7: state.answers.Q7, Q8: state.answers.Q8, Q9: state.answers.Q9,
+    Q10: state.answers.Q10, Q11: state.answers.Q11, Q12: state.answers.Q12,
+
+    payment_status: 'pending',
+    order_no: '',                                   // 방식3: 주문번호 (초기 빈값)
+    smartstore_url: CONFIG.SMARTSTORE[state.plan]
+  };
+
+  try {
+    await fetch(CONFIG.WEBHOOK_SURVEY, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.error('Webhook error:', e);
+  }
+
+  const redirectUrl = CONFIG.SMARTSTORE[state.plan] + '?sid=' + submissionId;
+  setTimeout(() => { window.location.href = redirectUrl; }, 1500);
+}
+
+/* ══════════════════════════════════════════════════════════
+   📤 주문번호 확인 제출 (방식 3)
+   ══════════════════════════════════════════════════════════ */
+async function submitConfirm() {
+  const orderNo = document.getElementById('cf_orderNo').value.trim();
+  const contact = document.getElementById('cf_contact').value.trim();
+
+  // 전화번호인지 이메일인지 판별
+  const isEmail = contact.includes('@');
+  const contactType = isEmail ? 'email' : 'phone';
+  const contactValue = isEmail ? contact : normalizePhone(contact);
+
+  const payload = {
+    event_type: 'order_confirm',
+    order_no: orderNo,
+    contact_type: contactType,
+    contact_value: contactValue,
+    submitted_at: new Date().toISOString()
+  };
+
+  document.getElementById('confirmBtn').disabled = true;
+  document.getElementById('confirmBtn').textContent = '확인 중...';
+
+  try {
+    await fetch(CONFIG.WEBHOOK_CONFIRM, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    console.error('Confirm webhook error:', e);
+  }
+
+  document.getElementById('confirmSuccess').classList.add('show');
+  document.getElementById('confirmBtn').textContent = '결제 확인 요청 →';
+}
+</script>
+
+</body>
+</html>
