@@ -5,25 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>맘로그랩 | 프라이빗 AI 진단 · 내 아이 맞춤 전집 큐레이션</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #FBF8F3;
-    --bg2: #F4EFE6;
-    --ink: #1C1410;
-    --ink2: #5A4A3A;
-    --ink3: #9A8070;
-    --accent: #C8692A;
-    --accent2: #E8A96A;
-    --gold: #B8965A;
-    --border: #DDD0C0;
+    --bg: #fdf8f2;
+    --bg2: #f5ede0;
+    --ink: #1a2744;
+    --ink2: #2c4a8c;
+    --ink3: #6b7fa3;
+    --accent: #2c4a8c;
+    --accent2: #f0c060;
+    --gold: #f0c060;
+    --border: #dce3f0;
     --card: #FFFFFF;
     --success: #2D6A4F;
+    --navy: #1a2744;
+    --blue: #2c4a8c;
+    --cream: #fdf8f2;
+    --beige: #f5ede0;
+    --gold-point: #f0c060;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR', 'Gowun Dodum', sans-serif;
     background: var(--bg);
     color: var(--ink);
     line-height: 1.7;
@@ -33,7 +40,7 @@
   /* ── INTRO SCREEN ── */
   .intro {
     min-height: 100vh;
-    background: var(--ink);
+    background: linear-gradient(160deg, #1a2744 0%, #2c4a8c 100%);
     color: #fff;
     padding: 40px 32px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -47,24 +54,26 @@
   }
   .intro-content { position: relative; z-index: 2; max-width: 720px; }
   .intro-logo {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 20px; font-weight: 700;
-    color: #fff; letter-spacing: 0.03em;
+    font-family: 'Noto Serif KR', 'DM Serif Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: #fff; letter-spacing: 0.06em;
     margin-bottom: 8px;
   }
   .intro-logo span { color: var(--accent2); }
   .intro-badge {
     display: inline-block;
-    background: var(--accent); color: #fff;
+    background: var(--gold-point); color: var(--navy);
     font-size: 11px; font-weight: 700;
-    padding: 5px 14px; border-radius: 20px;
-    letter-spacing: 0.1em; margin-bottom: 24px;
+    font-family: "DM Serif Display", "Noto Sans KR", sans-serif;
+    padding: 5px 16px; border-radius: 20px;
+    letter-spacing: 0.12em; margin-bottom: 24px;
   }
   .intro-title {
-    font-family: 'Noto Serif KR', serif;
-    font-size: clamp(28px, 5vw, 44px);
-    font-weight: 700; line-height: 1.3;
+    font-family: 'Noto Serif KR', 'DM Serif Display', serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 700; line-height: 1.35;
     margin-bottom: 20px; color: #fff;
+    letter-spacing: -0.01em;
   }
   .intro-title em { color: var(--accent2); font-style: normal; }
   .intro-desc {
@@ -74,11 +83,12 @@
   }
   .intro-quote {
     font-family: 'Noto Serif KR', serif;
-    font-size: 18px; color: rgba(255,255,255,0.8);
-    font-style: italic; margin-bottom: 32px;
-    padding: 20px 32px;
-    border-left: 3px solid var(--accent);
-    text-align: left; line-height: 1.7;
+    font-size: 17px; color: rgba(255,255,255,0.85);
+    font-style: normal; font-weight: 300; margin-bottom: 32px;
+    padding: 20px 28px;
+    border-left: 3px solid var(--gold-point);
+    text-align: left; line-height: 1.9;
+    letter-spacing: 0.01em;
   }
   .age-selector {
     display: grid;
@@ -96,26 +106,27 @@
     text-align: left;
   }
   .age-card:hover {
-    border-color: var(--accent);
-    background: rgba(200,105,42,0.08);
+    border-color: var(--gold-point);
+    background: rgba(44,74,140,0.08);
     transform: translateY(-2px);
   }
   .age-card-label {
     font-size: 11px; letter-spacing: 0.15em;
-    color: var(--accent2); font-weight: 700;
+    color: var(--gold-point); font-weight: 700;
     margin-bottom: 12px;
   }
   .age-card-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: 22px; font-weight: 700;
+    font-size: 21px; font-weight: 600;
     color: #fff; margin-bottom: 6px;
+    letter-spacing: -0.01em;
   }
   .age-card-sub {
     font-size: 14px; color: rgba(255,255,255,0.5);
     line-height: 1.6;
   }
   .age-card-arrow {
-    margin-top: 16px; color: var(--accent2);
+    margin-top: 16px; color: var(--gold-point);
     font-size: 14px; font-weight: 500;
   }
   .intro-meta {
@@ -124,7 +135,7 @@
     font-size: 13px; color: rgba(255,255,255,0.4);
   }
   .intro-meta span::before {
-    content: '✓'; color: var(--accent2);
+    content: '✓'; color: var(--gold-point);
     margin-right: 6px; font-weight: 700;
   }
   .intro-confirm-link {
@@ -132,7 +143,7 @@
     font-size: 13px; color: rgba(255,255,255,0.4);
   }
   .intro-confirm-link a {
-    color: var(--accent2); text-decoration: underline;
+    color: var(--gold-point); text-decoration: underline;
     cursor: pointer;
   }
 
@@ -146,7 +157,7 @@
   .survey.active { display: block; }
 
   .survey-header {
-    background: var(--ink);
+    background: var(--navy);
     padding: 20px 32px;
     position: sticky; top: 0; z-index: 10;
   }
@@ -168,8 +179,9 @@
     letter-spacing: 0.08em; margin-bottom: 4px;
   }
   .progress-current {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 15px; font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 0.02em;
   }
   .progress-bar-wrap {
     background: rgba(255,255,255,0.1);
@@ -177,7 +189,7 @@
     margin-top: 8px;
   }
   .progress-bar {
-    background: var(--accent);
+    background: var(--gold-point);
     height: 100%; width: 0;
     transition: width 0.3s ease;
   }
@@ -202,10 +214,10 @@
   .q-stage {
     display: inline-block;
     font-size: 11px; letter-spacing: 0.15em;
-    color: var(--accent); font-weight: 700;
+    color: var(--blue); font-weight: 700;
     margin-bottom: 12px;
     padding: 5px 12px; border-radius: 20px;
-    background: rgba(200,105,42,0.1);
+    background: rgba(44,74,140,0.08);
   }
   .q-number {
     font-family: 'Noto Serif KR', serif;
@@ -214,9 +226,10 @@
   }
   .q-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: clamp(20px, 3.5vw, 26px);
-    font-weight: 700; color: var(--ink);
-    line-height: 1.5; margin-bottom: 8px;
+    font-size: clamp(19px, 3.5vw, 25px);
+    font-weight: 600; color: var(--ink);
+    line-height: 1.6; margin-bottom: 8px;
+    letter-spacing: -0.01em;
   }
   .q-desc {
     font-size: 14px; color: var(--ink2);
@@ -233,17 +246,19 @@
     transition: all 0.15s;
     display: flex; align-items: center; gap: 16px;
     font-size: 15px; color: var(--ink);
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: left;
+    font-weight: 400;
+    letter-spacing: 0.005em;
   }
   .option:hover {
-    border-color: var(--accent);
-    background: rgba(200,105,42,0.03);
+    border-color: var(--blue);
+    background: rgba(44,74,140,0.03);
   }
   .option.selected {
-    border-color: var(--accent);
-    background: rgba(200,105,42,0.06);
-    box-shadow: 0 0 0 1px var(--accent);
+    border-color: var(--blue);
+    background: rgba(44,74,140,0.05);
+    box-shadow: 0 0 0 1px var(--blue);
   }
   .option-marker {
     flex-shrink: 0;
@@ -254,8 +269,8 @@
     transition: all 0.15s;
   }
   .option.selected .option-marker {
-    border-color: var(--accent);
-    background: var(--accent);
+    border-color: var(--blue);
+    background: var(--blue);
   }
   .option.selected .option-marker::after {
     content: ''; width: 8px; height: 8px;
@@ -264,7 +279,7 @@
 
   /* ── STAGE INTRO BLOCK ── */
   .stage-intro {
-    background: var(--ink);
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
     color: #fff;
     border-radius: 12px;
     padding: 28px 28px;
@@ -272,13 +287,14 @@
   }
   .stage-intro-label {
     font-size: 11px; letter-spacing: 0.15em;
-    color: var(--accent2); font-weight: 700;
+    color: var(--gold-point); font-weight: 700;
     margin-bottom: 8px;
   }
   .stage-intro-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: 20px; font-weight: 700;
+    font-size: 19px; font-weight: 600;
     color: #fff; margin-bottom: 10px;
+    letter-spacing: -0.01em;
   }
   .stage-intro-desc {
     font-size: 14px; color: rgba(255,255,255,0.65);
@@ -292,7 +308,7 @@
     font-size: 13px; font-weight: 500;
     color: var(--ink2);
   }
-  .info-label span.req { color: var(--accent); margin-left: 2px; }
+  .info-label span.req { color: var(--blue); margin-left: 2px; }
   .info-hint {
     font-size: 12px; color: var(--ink3);
     margin-top: 2px; line-height: 1.5;
@@ -308,8 +324,8 @@
     transition: border-color 0.15s;
   }
   .info-input:focus {
-    outline: none; border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
+    outline: none; border-color: var(--blue);
+    box-shadow: 0 0 0 1px var(--blue);
   }
   .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .info-privacy {
@@ -322,11 +338,11 @@
     margin-top: 4px;
   }
   .info-privacy label { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
-  .info-privacy input[type=checkbox] { margin-top: 4px; accent-color: var(--accent); flex-shrink: 0; }
+  .info-privacy input[type=checkbox] { margin-top: 4px; accent-color: var(--blue); flex-shrink: 0; }
 
   .phone-notice {
-    background: rgba(200,105,42,0.08);
-    border-left: 3px solid var(--accent);
+    background: rgba(44,74,140,0.06);
+    border-left: 3px solid var(--blue);
     padding: 14px 16px;
     border-radius: 6px;
     font-size: 13px;
@@ -334,7 +350,7 @@
     line-height: 1.7;
     margin-top: 4px;
   }
-  .phone-notice strong { color: var(--accent); }
+  .phone-notice strong { color: var(--blue); }
 
   /* ── PLAN SELECTION ── */
   .plans-wrap {
@@ -350,19 +366,19 @@
     transition: all 0.15s;
     position: relative;
   }
-  .plan-item:hover { border-color: var(--accent); }
+  .plan-item:hover { border-color: var(--blue); }
   .plan-item.selected {
-    border-color: var(--accent);
-    background: rgba(200,105,42,0.04);
-    box-shadow: 0 0 0 1px var(--accent);
+    border-color: var(--blue);
+    background: rgba(44,74,140,0.04);
+    box-shadow: 0 0 0 1px var(--blue);
   }
   .plan-item.featured {
-    border-color: var(--accent);
-    background: rgba(200,105,42,0.06);
+    border-color: var(--gold-point);
+    background: rgba(240,192,96,0.06);
   }
   .plan-item-badge {
     position: absolute; top: -10px; right: 20px;
-    background: var(--accent); color: #fff;
+    background: var(--gold-point); color: var(--navy);
     font-size: 11px; font-weight: 700;
     padding: 4px 12px; border-radius: 20px;
     letter-spacing: 0.05em;
@@ -373,18 +389,20 @@
   }
   .plan-item-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: 17px; font-weight: 700;
+    font-size: 17px; font-weight: 600;
     color: var(--ink);
+    letter-spacing: -0.01em;
   }
   .plan-item-sub {
     font-size: 12px; color: var(--ink3);
     margin-top: 2px;
   }
   .plan-item-price {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 24px; font-weight: 700;
-    color: var(--accent);
+    font-family: 'DM Serif Display', 'Noto Serif KR', serif;
+    font-size: 26px; font-weight: 700;
+    color: var(--blue);
     line-height: 1; white-space: nowrap;
+    letter-spacing: -0.02em;
   }
   .plan-item-price span { font-size: 13px; color: var(--ink2); font-weight: 400; margin-left: 2px; }
   .plan-item-orig {
@@ -406,8 +424,8 @@
   }
   .plan-item.featured .plan-chip,
   .plan-item.selected .plan-chip {
-    background: rgba(200,105,42,0.15);
-    color: var(--accent);
+    background: rgba(44,74,140,0.12);
+    color: var(--blue);
   }
 
   /* ── NAV BUTTONS ── */
@@ -430,11 +448,11 @@
   }
   .btn-prev:hover { border-color: var(--ink2); color: var(--ink); }
   .btn-next {
-    background: var(--accent);
+    background: var(--blue);
     color: #fff; flex: 1;
     max-width: 280px; margin-left: auto;
   }
-  .btn-next:hover { background: #B05820; }
+  .btn-next:hover { background: #1a2744; }
   .btn-next:disabled {
     background: var(--border);
     cursor: not-allowed;
@@ -442,7 +460,7 @@
   }
 
   .final-submit {
-    background: var(--ink);
+    background: var(--navy);
     color: #fff;
     padding: 20px 24px;
     border-radius: 12px;
@@ -451,12 +469,12 @@
     color: rgba(255,255,255,0.6);
     line-height: 1.7;
   }
-  .final-submit strong { color: var(--accent2); }
+  .final-submit strong { color: var(--gold-point); }
 
   /* ── LOADING ── */
   .loading-overlay {
     position: fixed; inset: 0; z-index: 100;
-    background: rgba(28, 20, 16, 0.95);
+    background: rgba(26, 39, 68, 0.96);
     display: none;
     align-items: center; justify-content: center;
     flex-direction: column;
@@ -466,7 +484,7 @@
   .spinner {
     width: 48px; height: 48px;
     border: 3px solid rgba(255,255,255,0.2);
-    border-top-color: var(--accent);
+    border-top-color: var(--gold-point);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 20px;
@@ -474,7 +492,9 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text {
     font-family: 'Noto Serif KR', serif;
-    font-size: 18px;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
   }
   .loading-sub {
     font-size: 13px; color: rgba(255,255,255,0.5);
@@ -499,7 +519,7 @@
     color: var(--ink);
     margin-bottom: 40px;
   }
-  .confirm-logo span { color: var(--accent); }
+  .confirm-logo span { color: var(--blue); }
   .confirm-icon {
     width: 64px; height: 64px;
     background: var(--success); color: #fff;
@@ -509,9 +529,10 @@
   }
   .confirm-title {
     font-family: 'Noto Serif KR', serif;
-    font-size: 26px; font-weight: 700;
+    font-size: 24px; font-weight: 600;
     color: var(--ink);
     margin-bottom: 12px;
+    letter-spacing: -0.02em;
   }
   .confirm-desc {
     font-size: 15px; color: var(--ink2);
@@ -596,8 +617,8 @@
       </div>
       <div class="age-card" onclick="startSurvey('kid')">
         <div class="age-card-label">KID TRACK</div>
-        <div class="age-card-title">5~7세</div>
-        <div class="age-card-sub">초등 입학 전 독서 골든타임<br>문해력 · 자기주도 독서 준비기</div>
+        <div class="age-card-title">37개월 이상 (4~7세)</div>
+        <div class="age-card-sub">만 3세 이후 독서 골든타임<br>문해력 · 자기주도 독서 준비기</div>
         <div class="age-card-arrow">설문 시작 →</div>
       </div>
     </div>
@@ -805,7 +826,7 @@ const SURVEYS = {
     ]
   },
   kid: {
-    label: '5~7세',
+    label: '37개월 이상 (4~7세)',
     stages: [
       { num: 1, title: '아이의 성장을 기록합니다',
         desc: '초등 입학 전 독서 골든타임, 진짜 문해력의 뿌리를 찾는 시간입니다.' },
@@ -850,7 +871,7 @@ const SURVEYS = {
           '재미있는 캐릭터와 말풍선이 있는 "학습 만화" 스타일',
           '스스로 직접 풀고 스티커를 붙이는 "워크북/활동지" 포함 구성'
         ] },
-      { stage: 3, id: 'Q6', title: '요즘 5~7세 육아하며 엄마를 가장 불안하게 하는 것은?',
+      { stage: 3, id: 'Q6', title: '요즘 4~7세 육아하며 엄마를 가장 불안하게 하는 것은?',
         options: [
           '"내년에 학교 가는데..." 한글 떼기와 기초 문해력 부족',
           '"친구랑은 잘 지낼까?" 고집 세고 감정 조절이 서툰 사회성',
@@ -1305,3 +1326,4 @@ async function submitConfirm() {
 
 </body>
 </html>
+
