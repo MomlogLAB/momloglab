@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momlog LAB — 맞춤 독서 처방전</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow:     #FFF6CC;
+  --yellow-mid: #FFE896;
+  --yellow-dark:#F5C800;
+  --orange:     #FF7A00;
+  --orange-lt:  #FFF0D9;
+  --navy:       #1A2744;
+  --gray-lt:    #F5F5F5;
+  --white:      #FFFFFF;
+  --ink:        #1A2744;
+  --ink2:       #4A5568;
+  --ink3:       #8A9AB0;
+  --border:     #E8DFA0;
+  --border-g:   #E8E8E8;
+  --ff:         'Noto Sans KR', sans-serif;
+  --ff-en:      'Montserrat', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--ff);background:#E8DFA0;color:var(--ink);-webkit-font-smoothing:antialiased;}
+.wrap{max-width:600px;margin:0 auto;background:var(--white);}
+
+/* ── 공통 ── */
+.pg-header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-bottom:1px solid var(--border-g);}
+.pg-num{font-family:var(--ff-en);font-size:10px;font-weight:500;color:var(--ink3);}
+.pg-brand{font-family:var(--ff-en);font-size:8px;font-weight:500;color:var(--orange);letter-spacing:.14em;}
+.pg-body{padding:20px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--ink);margin-bottom:4px;letter-spacing:-.02em;}
+.sec-sub{font-size:11px;font-weight:300;color:var(--ink3);margin-bottom:16px;}
+.divider{height:1px;background:var(--border-g);margin:14px 0;}
+
+/* ══ 01. 표지 ══ */
+.cover{background:var(--yellow);padding:28px 24px 24px;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.cover-logo-wrap{}
+.cover-logo{font-family:var(--ff-en);font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.2em;}
+.cover-label{font-family:var(--ff-en);font-size:8px;font-weight:400;color:var(--orange);letter-spacing:.18em;margin-top:2px;}
+.cover-illust{font-size:52px;line-height:1;}
+.cover-title{font-size:28px;font-weight:900;color:var(--ink);line-height:1.35;margin-bottom:8px;letter-spacing:-.03em;}
+.cover-title em{font-style:normal;color:var(--orange);}
+.cover-desc{font-size:12px;font-weight:300;color:var(--ink2);margin-bottom:24px;}
+.cover-info-card{background:var(--white);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;}
+.cover-info-row{display:flex;align-items:center;gap:10px;font-size:12px;}
+.ci-icon{font-size:13px;width:18px;}
+.ci-label{font-weight:300;color:var(--ink3);width:72px;flex-shrink:0;}
+.ci-value{font-weight:600;color:var(--ink);}
+.cover-footer{margin-top:16px;text-align:center;}
+.cover-footer-logo{font-family:var(--ff-en);font-size:10px;font-weight:600;color:var(--orange);letter-spacing:.2em;}
+
+/* ══ 02. 핵심 요약 ══ */
+.summary-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+.sum-card{background:var(--gray-lt);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
+.sum-card-left{display:flex;align-items:center;gap:10px;}
+.sum-icon{font-size:20px;}
+.sum-label{font-size:12px;font-weight:300;color:var(--ink2);line-height:1.5;}
+.sum-label strong{font-weight:700;color:var(--ink);display:block;}
+.sum-value{font-family:var(--ff-en);font-size:22px;font-weight:700;color:var(--orange);}
+.sum-unit{font-family:var(--ff);font-size:12px;font-weight:400;color:var(--orange);}
+.recommend-box{background:var(--yellow);border-radius:10px;padding:14px 16px;}
+.rec-tag{display:inline-flex;align-items:center;gap:5px;background:var(--orange);color:var(--white);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.rec-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.rec-desc{font-size:12px;font-weight:300;color:var(--ink2);line-height:1.7;}
+
+/* ══ 03. 기질 체크리스트 ══ */
+.check-table{width:100%;border-collapse:collapse;font-size:12px;}
+.check-table th{background:var(--gray-lt);padding:8px 12px;text-align:left;font-weight:600;color:var(--ink);border-bottom:1px solid var(--border-g);}
+.check-table th:last-child{text-align:center;width:60px;}
+.check-table td{padding:10px 12px;border-bottom:1px solid var(--border-g);font-weight:300;color:var(--ink2);line-height:1.5;}
+.check-table td:last-child{text-align:center;}
+.check-table tr:last-child td{border-bottom:none;}
+.chk-y{color:var(--orange);font-size:14px;}
+.chk-n{color:var(--border-g);font-size:14px;}
+.check-result{background:var(--yellow);border-radius:10px;padding:12px 14px;margin-top:12px;display:flex;align-items:center;gap:10px;}
+.chk-res-icon{font-size:18px;}
+.chk-res-txt{font-size:12px;font-weight:300;color:var(--ink2);line-height:1.6;}
+.chk-res-txt strong{font-weight:700;color:var(--ink);}
+
+/* ══ 04. 발달 영역 분석 ══ */
+.bar-section{margin-bottom:16px;}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.bar-label{font-size:11px;font-weight:500;color:var(--ink2);width:80px;flex-shrink:0;text-align:right;}
+.bar-wrap{flex:1;height:10px;background:var(--gray-lt);border-radius:5px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:5px;background:var(--orange);}
+.bar-fill.accent{background:var(--navy);}
+.bar-pct{font-family:var(--ff-en);font-size:11px;font-weight:600;color:var(--ink2);width:32px;text-align:right;}
+.type-chip{display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:var(--white);font-size:12px;font-weight:700;padding:7px 16px;border-radius:20px;margin-bottom:12px;}
+.type-desc{font-size:12px;font-weight:300;color:var(--ink2);line-height:1.75;background:var(--yellow);border-radius:10px;padding:12px 14px;}
+.theory-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.t-chip{background:var(--white);border:1px solid var(--border);color:var(--navy);font-size:10px;font-weight:500;padding:3px 10px;border-radius:20px;}
+
+/* ══ 05. Before/After 전략 ══ */
+.ba-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:12px;}
+.ba-table th{padding:8px 10px;font-weight:700;font-size:11px;}
+.ba-table th.before{background:#FFE8E8;color:#c0392b;border-radius:8px 0 0 0;}
+.ba-table th.after{background:var(--orange);color:var(--white);border-radius:0 8px 0 0;}
+.ba-table th.cat{background:var(--gray-lt);color:var(--ink);text-align:left;}
+.ba-table td{padding:9px 10px;border-bottom:1px solid var(--border-g);font-weight:300;color:var(--ink2);vertical-align:top;line-height:1.5;}
+.ba-table td.cat{font-weight:600;color:var(--ink);}
+.ba-table tr:last-child td{border-bottom:none;}
+.ba-key{background:var(--orange);color:var(--white);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}
+
+/* ══ 06. 전집 TOP3 ══ */
+.book-card{background:var(--white);border:1.5px solid var(--border-g);border-radius:14px;padding:16px;margin-bottom:12px;}
+.book-card.r1{border-color:var(--orange);}
+.book-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.book-rank{width:30px;height:30px;border-radius:8px;background:var(--orange);color:var(--white);font-family:var(--ff-en);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.book-rank.r2{background:var(--navy);}
+.book-rank.r3{background:var(--ink3);}
+.book-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.book-pub{font-size:10px;font-weight:300;color:var(--ink3);}
+.match-tag{background:var(--yellow);border:1px solid var(--border);color:var(--navy);font-family:var(--ff-en);font-size:9px;font-weight:700;padding:3px 9px;border-radius:10px;margin-left:auto;white-space:nowrap;flex-shrink:0;}
+.book-reason{font-size:11px;font-weight:300;color:var(--ink2);line-height:1.75;background:var(--gray-lt);border-radius:8px;padding:10px 12px;margin-bottom:10px;}
+.book-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+.book-tag{background:var(--yellow);border:1px solid var(--border);color:var(--ink2);font-size:10px;padding:3px 9px;border-radius:20px;}
+.buy-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.buy-label{font-size:10px;font-weight:600;color:var(--ink);}
+.buy-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:8px;}
+.buy-new{background:var(--orange);color:var(--white);}
+.buy-used{background:#FFF0D9;color:#b45309;border:1px solid #FED7AA;}
+.buy-rent{background:var(--yellow);color:var(--navy);border:1px solid var(--border);}
+.carrot-box{background:#FFF8F0;border:1px solid #FED7AA;border-radius:8px;padding:10px 12px;margin-top:8px;}
+.carrot-title{font-size:10px;font-weight:700;color:#b45309;margin-bottom:4px;}
+.carrot-txt{font-size:10px;font-weight:300;color:var(--ink2);line-height:1.65;}
+.carrot-txt strong{color:#b45309;font-weight:600;}
+
+/* ══ 07. 주차별 독서 스케줄 ══ */
+.week-box{background:var(--white);border:1px solid var(--border-g);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.week-row{display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border-g);}
+.week-row:last-child{border-bottom:none;}
+.week-num{width:48px;flex-shrink:0;background:var(--orange);color:var(--white);border-radius:8px;padding:5px 6px;font-family:var(--ff-en);font-size:10px;font-weight:600;text-align:center;line-height:1.5;align-self:flex-start;}
+.week-content{}
+.week-book{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.week-act{font-size:11px;font-weight:300;color:var(--ink2);line-height:1.6;}
+.week-eff{font-size:10px;font-weight:500;color:var(--orange);margin-top:4px;}
+
+/* ══ 08. 실행 플랜 ══ */
+.plan-row{display:flex;gap:12px;align-items:flex-start;position:relative;padding-bottom:18px;}
+.plan-row:not(:last-child)::after{content:'';position:absolute;left:17px;top:38px;width:1px;height:calc(100% - 20px);background:var(--border-g);}
+.plan-icon-wrap{width:36px;height:36px;border-radius:50%;background:var(--yellow);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;position:relative;z-index:1;}
+.plan-body{}
+.plan-period{font-family:var(--ff-en);font-size:10px;font-weight:600;color:var(--orange);letter-spacing:.08em;margin-bottom:3px;}
+.plan-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:5px;}
+.plan-items{display:flex;flex-direction:column;gap:3px;}
+.plan-item{font-size:11px;font-weight:300;color:var(--ink2);display:flex;align-items:flex-start;gap:5px;line-height:1.6;}
+.plan-dot{color:var(--orange);flex-shrink:0;margin-top:2px;}
+.today-box{background:var(--yellow);border-radius:10px;padding:14px 16px;margin-top:4px;}
+.today-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.today-item{font-size:11px;font-weight:300;color:var(--ink2);display:flex;align-items:flex-start;gap:6px;line-height:1.65;margin-bottom:4px;}
+.today-num{font-family:var(--ff-en);font-size:10px;font-weight:700;color:var(--orange);width:14px;flex-shrink:0;}
+
+/* ══ 09. 주의사항 ══ */
+.risk-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--gray-lt);border-radius:10px;margin-bottom:8px;}
+.risk-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.risk-title{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.risk-desc{font-size:11px;font-weight:300;color:var(--ink2);line-height:1.65;}
+.risk-tip{font-size:11px;font-weight:500;color:var(--orange);margin-top:4px;display:flex;align-items:center;gap:4px;}
+
+/* ══ 10. 맺음말 ══ */
+.closing{background:var(--navy);padding:28px 24px;}
+.closing-title{font-size:20px;font-weight:700;color:var(--white);line-height:1.45;margin-bottom:14px;letter-spacing:-.02em;}
+.closing-desc{font-size:12px;font-weight:300;color:rgba(255,255,255,.6);line-height:1.85;margin-bottom:20px;}
+.closing-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+.closing-stat{background:rgba(255,255,255,.06);border-radius:10px;padding:12px;text-align:center;}
+.cstat-icon{font-size:18px;margin-bottom:5px;}
+.cstat-label{font-size:10px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.5;}
+.closing-privacy{font-size:10px;font-weight:300;color:rgba(255,255,255,.35);line-height:1.75;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;margin-top:4px;}
+.closing-sign{font-family:var(--ff-en);font-size:10px;font-weight:500;color:rgba(255,255,255,.25);letter-spacing:.2em;margin-top:14px;}
+
+/* ══ 공유 카드 ══ */
+.share-section{padding:20px;background:var(--gray-lt);}
+.share-label{font-size:10px;font-weight:600;color:var(--ink3);letter-spacing:.1em;text-align:center;margin-bottom:10px;}
+.share-card{background:var(--navy);border-radius:20px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;}
+.share-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:rgba(255,122,0,.15);border-radius:50%;}
+.share-card::after{content:'';position:absolute;bottom:-20px;left:-20px;width:80px;height:80px;background:rgba(255,246,204,.08);border-radius:50%;}
+.share-card-logo{font-family:var(--ff-en);font-size:8px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:16px;}
+.share-card-emoji{font-size:40px;margin-bottom:12px;display:block;}
+.share-card-type{font-size:11px;font-weight:500;color:var(--orange);letter-spacing:.08em;margin-bottom:6px;}
+.share-card-name{font-size:22px;font-weight:900;color:var(--white);margin-bottom:4px;letter-spacing:-.02em;}
+.share-card-age{font-size:11px;font-weight:300;color:rgba(255,255,255,.5);margin-bottom:16px;}
+.share-card-divider{height:1px;background:rgba(255,255,255,.1);margin:0 0 16px;}
+.share-card-desc{font-size:12px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:16px;}
+.share-card-tags{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.share-card-tag{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-size:10px;font-weight:500;padding:4px 10px;border-radius:20px;}
+.share-card-cta{font-size:10px;font-weight:600;color:var(--orange);letter-spacing:.05em;}
+.share-hint{font-size:10px;font-weight:300;color:var(--ink3);text-align:center;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:4px;}
+/* ══ 재구매 CTA ══ */
+.renew-box{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:18px 16px;margin-bottom:20px;text-align:center;}
+.renew-emoji{font-size:28px;margin-bottom:8px;}
+.renew-title{font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px;line-height:1.4;}
+.renew-desc{font-size:11px;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:14px;}
+.renew-btn{display:inline-block;background:var(--orange);color:var(--white);font-family:var(--ff);font-size:13px;font-weight:700;padding:12px 24px;border-radius:50px;text-decoration:none;letter-spacing:-.01em;}
+.renew-notice{font-size:10px;font-weight:300;color:rgba(255,255,255,.3);margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ══ 01. 표지 ══ -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-logo-wrap">
+      <div class="cover-logo">MOMLOG LAB</div>
+      <div class="cover-label">PREMIUM REPORT</div>
+    </div>
+    <div class="cover-illust">👩‍👧</div>
+  </div>
+  <div class="cover-title">
+    {{child_name}}에게<br><em>딱 맞는 전집,</em><br>이미 정해져 있어요.
+  </div>
+  <div class="cover-desc">아이의 기질과 발달 단계를 분석한 맘로그랩 맞춤 독서 처방전</div>
+  <div class="cover-info-card">
+    <div class="cover-info-row">
+      <span class="ci-icon">👶</span>
+      <span class="ci-label">아이 월령</span>
+      <span class="ci-value">{{Q1}}</span>
+    </div>
+    <div class="cover-info-row">
+      <span class="ci-icon">🧠</span>
+      <span class="ci-label">기질 유형</span>
+      <span class="ci-value">{{기질유형명}}</span>
+    </div>
+    <div class="cover-info-row">
+      <span class="ci-icon">📅</span>
+      <span class="ci-label">리포트 생성일</span>
+      <span class="ci-value">{{날짜}}</span>
+    </div>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-footer-logo">MOMLOG LAB</div>
+  </div>
+</div>
+
+<!-- ══ 02. 기질 핵심 요약 ══ -->
+<div class="pg-header">
+  <div class="pg-num">02</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">기질 핵심 요약</div>
+  <div class="sec-sub">한눈에 보는 {{child_name}} 독서 성향 인사이트</div>
+
+  <div class="summary-cards">
+    <div class="sum-card">
+      <div class="sum-card-left">
+        <span class="sum-icon">📚</span>
+        <div class="sum-label">
+          <strong>가장 집중하는 책 유형</strong>
+          {{집중책유형}}
+        </div>
+      </div>
+      <div><span class="sum-value">{{집중도}}</span><span class="sum-unit">%</span></div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-card-left">
+        <span class="sum-icon">🎯</span>
+        <div class="sum-label">
+          <strong>기질 매칭 TOP3 전집</strong>
+          {{매칭전집요약}}
+        </div>
+      </div>
+      <div><span class="sum-value">3</span><span class="sum-unit">종</span></div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-card-left">
+        <span class="sum-icon">🥕</span>
+        <div class="sum-label">
+          <strong>현명한 구매로 절약 가능 금액</strong>
+          중고·대여 전략 적용 시
+        </div>
+      </div>
+      <div><span class="sum-value">{{절약금액}}</span><span class="sum-unit">원~</span></div>
+    </div>
+  </div>
+
+  <div class="recommend-box">
+    <div class="rec-tag">💡 핵심 처방</div>
+    <div class="rec-title">{{핵심처방제목}}</div>
+    <div class="rec-desc">{{핵심처방내용}}</div>
+  </div>
+</div>
+
+<!-- ══ 03. 기질 체크리스트 ══ -->
+<div class="pg-header">
+  <div class="pg-num">03</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">{{child_name}}의 독서 기질 진단</div>
+  <div class="sec-sub">설문 응답 기반 성향 체크</div>
+
+  <table class="check-table">
+    <thead>
+      <tr>
+        <th>성향 항목</th>
+        <th>해당 여부</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>{{체크1항목}}</td><td><span class="{{체크1클래스}}">{{체크1아이콘}}</span></td></tr>
+      <tr><td>{{체크2항목}}</td><td><span class="{{체크2클래스}}">{{체크2아이콘}}</span></td></tr>
+      <tr><td>{{체크3항목}}</td><td><span class="{{체크3클래스}}">{{체크3아이콘}}</span></td></tr>
+      <tr><td>{{체크4항목}}</td><td><span class="{{체크4클래스}}">{{체크4아이콘}}</span></td></tr>
+      <tr><td>{{체크5항목}}</td><td><span class="{{체크5클래스}}">{{체크5아이콘}}</span></td></tr>
+      <tr><td>{{체크6항목}}</td><td><span class="{{체크6클래스}}">{{체크6아이콘}}</span></td></tr>
+      <tr><td>{{체크7항목}}</td><td><span class="{{체크7클래스}}">{{체크7아이콘}}</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="check-result">
+    <span class="chk-res-icon">✅</span>
+    <div class="chk-res-txt">
+      <strong>{{체크결과요약}}</strong><br>
+      {{체크결과설명}}
+    </div>
+  </div>
+</div>
+
+<!-- ══ 04. 발달 영역 분석 ══ -->
+<div class="pg-header">
+  <div class="pg-num">04</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">발달 영역 분석</div>
+  <div class="sec-sub">6가지 영역 기질 레이더 (피아제·가드너 이론 기반)</div>
+
+  <div style="margin-bottom:14px;">
+    <div class="type-chip">✦ {{기질유형명}}</div>
+  </div>
+
+  <div class="bar-section">
+    <div class="bar-row">
+      <div class="bar-label">인지/언어</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:{{인지언어}}%"></div></div>
+      <div class="bar-pct">{{인지언어}}%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">정서/공감</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:{{정서공감}}%"></div></div>
+      <div class="bar-pct">{{정서공감}}%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">탐구/호기심</div>
+      <div class="bar-wrap"><div class="bar-fill accent" style="width:{{탐구호기심}}%"></div></div>
+      <div class="bar-pct">{{탐구호기심}}%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">사회성/질서</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:{{사회성질서}}%"></div></div>
+      <div class="bar-pct">{{사회성질서}}%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">신체/감각</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:{{신체감각}}%"></div></div>
+      <div class="bar-pct">{{신체감각}}%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">끈기/집중력</div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:{{끈기집중}}%"></div></div>
+      <div class="bar-pct">{{끈기집중}}%</div>
+    </div>
+  </div>
+
+  <div class="type-desc">
+    {{기질설명}}
+    <div class="theory-chips">
+      <span class="t-chip">피아제 인지 발달</span>
+      <span class="t-chip">가드너 다중지능</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ 공유 카드 (인스타·카톡 바이럴용) ══ -->
+<div class="share-section">
+  <div class="share-label">📸 스토리에 공유해보세요</div>
+  <div class="share-card">
+    <div class="share-card-logo">MOMLOG LAB</div>
+    <span class="share-card-emoji">{{공유카드이모지}}</span>
+    <div class="share-card-type">우리 아이 독서 기질 유형</div>
+    <div class="share-card-name">{{기질유형명}}</div>
+    <div class="share-card-age">{{child_name}} · {{Q1}}</div>
+    <div class="share-card-divider"></div>
+    <div class="share-card-desc">{{공유카드한줄설명}}</div>
+    <div class="share-card-tags">
+      <span class="share-card-tag">{{공유태그1}}</span>
+      <span class="share-card-tag">{{공유태그2}}</span>
+      <span class="share-card-tag">{{공유태그3}}</span>
+    </div>
+    <div class="share-card-cta">momloglab.com → 우리 아이도 분석해보기 ✦</div>
+  </div>
+  <div class="share-hint">📱 화면 캡처 후 인스타·카카오톡에 공유해보세요</div>
+</div>
+
+<!-- ══ 05. Before/After 전집 전략 ══ -->
+<div class="pg-header">
+  <div class="pg-num">05</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">맞춤 전집 전략</div>
+  <div class="sec-sub">무엇을 고르고, 어떻게 활용할까요?</div>
+
+  <table class="ba-table">
+    <thead>
+      <tr>
+        <th class="cat" style="width:20%">영역</th>
+        <th class="before" style="width:40%">❌ 이런 선택은 피하세요</th>
+        <th class="after" style="width:40%">✅ 이렇게 하세요</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cat">전집 선택</td>
+        <td>{{전략1전}}</td>
+        <td>{{전략1후}}</td>
+      </tr>
+      <tr>
+        <td class="cat">구매 시기</td>
+        <td>{{전략2전}}</td>
+        <td>{{전략2후}}</td>
+      </tr>
+      <tr>
+        <td class="cat">구매 방식</td>
+        <td>{{전략3전}}</td>
+        <td>{{전략3후}}</td>
+      </tr>
+      <tr>
+        <td class="cat">활용법</td>
+        <td>{{전략4전}}</td>
+        <td>{{전략4후}}</td>
+      </tr>
+      <tr>
+        <td class="cat">중복 투자</td>
+        <td>{{전략5전}}</td>
+        <td>{{전략5후}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="ba-key">
+    ✓ 핵심은 '{{전략핵심키워드}}'
+  </div>
+</div>
+
+<!-- ══ 06. 전집 TOP3 추천 ══ -->
+<div class="pg-header">
+  <div class="pg-num">06</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">맞춤 전집 TOP3 밀착 분석</div>
+  <div class="sec-sub">{{child_name}}의 기질과 1:1 매칭된 전집이에요</div>
+
+  <!-- 1순위 -->
+  <div class="book-card r1">
+    <div class="book-top">
+      <div class="book-rank">1</div>
+      <div>
+        <div class="book-name">{{전집1명}}</div>
+        <div class="book-pub">{{전집1출판사}}</div>
+      </div>
+      <div class="match-tag">일치율 {{전집1일치율}}%</div>
+    </div>
+    <div class="book-reason">{{전집1추천이유}}</div>
+    <div class="book-tags">
+      <span class="book-tag">{{전집1태그1}}</span>
+      <span class="book-tag">{{전집1태그2}}</span>
+      <span class="book-tag">{{전집1태그3}}</span>
+    </div>
+    <div class="buy-row">
+      <span class="buy-label">🛒 구매 방식</span>
+      <span class="buy-chip {{전집1구매클래스}}">{{전집1구매방식}}</span>
+    </div>
+    <div class="carrot-box">
+      <div class="carrot-title">🥕 당근마켓 꿀팁</div>
+      <div class="carrot-txt">
+        <strong>추천 검색어:</strong> {{전집1당근검색어}}<br>
+        <strong>적정 시세:</strong> {{전집1시세}}<br>
+        <strong>주의사항:</strong> {{전집1주의사항}}
+      </div>
+    </div>
+  </div>
+
+  <!-- 2순위 -->
+  <div class="book-card">
+    <div class="book-top">
+      <div class="book-rank r2">2</div>
+      <div>
+        <div class="book-name">{{전집2명}}</div>
+        <div class="book-pub">{{전집2출판사}}</div>
+      </div>
+      <div class="match-tag">일치율 {{전집2일치율}}%</div>
+    </div>
+    <div class="book-reason">{{전집2추천이유}}</div>
+    <div class="book-tags">
+      <span class="book-tag">{{전집2태그1}}</span>
+      <span class="book-tag">{{전집2태그2}}</span>
+    </div>
+    <div class="buy-row">
+      <span class="buy-label">🛒 구매 방식</span>
+      <span class="buy-chip {{전집2구매클래스}}">{{전집2구매방식}}</span>
+    </div>
+  </div>
+
+  <!-- 3순위 -->
+  <div class="book-card">
+    <div class="book-top">
+      <div class="book-rank r3">3</div>
+      <div>
+        <div class="book-name">{{전집3명}}</div>
+        <div class="book-pub">{{전집3출판사}}</div>
+      </div>
+      <div class="match-tag">일치율 {{전집3일치율}}%</div>
+    </div>
+    <div class="book-reason">{{전집3추천이유}}</div>
+    <div class="book-tags">
+      <span class="book-tag">{{전집3태그1}}</span>
+      <span class="book-tag">{{전집3태그2}}</span>
+    </div>
+    <div class="buy-row">
+      <span class="buy-label">🛒 구매 방식</span>
+      <span class="buy-chip {{전집3구매클래스}}">{{전집3구매방식}}</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 07. 주차별 독서 스케줄 ══ -->
+<div class="pg-header">
+  <div class="pg-num">07</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">주차별 독서 스케줄</div>
+  <div class="sec-sub">전집 사고 끝이 아닌 시작이에요 (4주 기준)</div>
+
+  <div class="week-box">
+    <div class="week-row">
+      <div class="week-num">1주차</div>
+      <div class="week-content">
+        <div class="week-book">{{1주차전집}}</div>
+        <div class="week-act">{{1주차활동}}</div>
+        <div class="week-eff">→ {{1주차효과}}</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-num">2주차</div>
+      <div class="week-content">
+        <div class="week-book">{{2주차전집}}</div>
+        <div class="week-act">{{2주차활동}}</div>
+        <div class="week-eff">→ {{2주차효과}}</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-num">3주차</div>
+      <div class="week-content">
+        <div class="week-book">{{3주차전집}}</div>
+        <div class="week-act">{{3주차활동}}</div>
+        <div class="week-eff">→ {{3주차효과}}</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="week-num">4주차</div>
+      <div class="week-content">
+        <div class="week-book">복습 + {{child_name}} 반응 체크</div>
+        <div class="week-act">{{4주차활동}}</div>
+        <div class="week-eff">→ {{4주차효과}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 08. 실행 플랜 ══ -->
+<div class="pg-header">
+  <div class="pg-num">08</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">6개월 실행 플랜</div>
+  <div class="sec-sub">언제, 무엇을, 어떻게 실행할까요?</div>
+
+  <div class="plan-row">
+    <div class="plan-icon-wrap">🌱</div>
+    <div class="plan-body">
+      <div class="plan-period">1개월</div>
+      <div class="plan-title">{{1개월제목}}</div>
+      <div class="plan-items">
+        <div class="plan-item"><span class="plan-dot">·</span>{{1개월내용1}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{1개월내용2}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{1개월내용3}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="plan-row">
+    <div class="plan-icon-wrap">📖</div>
+    <div class="plan-body">
+      <div class="plan-period">2~3개월</div>
+      <div class="plan-title">{{23개월제목}}</div>
+      <div class="plan-items">
+        <div class="plan-item"><span class="plan-dot">·</span>{{23개월내용1}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{23개월내용2}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{23개월내용3}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="plan-row">
+    <div class="plan-icon-wrap">🚀</div>
+    <div class="plan-body">
+      <div class="plan-period">4~6개월</div>
+      <div class="plan-title">{{46개월제목}}</div>
+      <div class="plan-items">
+        <div class="plan-item"><span class="plan-dot">·</span>{{46개월내용1}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{46개월내용2}}</div>
+        <div class="plan-item"><span class="plan-dot">·</span>{{46개월내용3}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="today-box">
+    <div class="today-title">📌 오늘 당장 할 것 3가지</div>
+    <div class="today-item"><span class="today-num">1.</span>{{오늘할일1}}</div>
+    <div class="today-item"><span class="today-num">2.</span>{{오늘할일2}}</div>
+    <div class="today-item"><span class="today-num">3.</span>{{오늘할일3}}</div>
+  </div>
+</div>
+
+<!-- ══ 09. 주의사항 & 리스크 ══ -->
+<div class="pg-header">
+  <div class="pg-num">09</div>
+  <div class="pg-brand">MOMLOG LAB PREMIUM REPORT</div>
+</div>
+<div class="pg-body">
+  <div class="sec-title">주의사항 & 리스크</div>
+  <div class="sec-sub">이렇게 하면 후회할 수 있어요!</div>
+
+  <div class="risk-item">
+    <span class="risk-icon">⚠️</span>
+    <div>
+      <div class="risk-title">{{리스크1제목}}</div>
+      <div class="risk-desc">{{리스크1내용}}</div>
+      <div class="risk-tip">→ {{리스크1팁}}</div>
+    </div>
+  </div>
+  <div class="risk-item">
+    <span class="risk-icon">⚠️</span>
+    <div>
+      <div class="risk-title">{{리스크2제목}}</div>
+      <div class="risk-desc">{{리스크2내용}}</div>
+      <div class="risk-tip">→ {{리스크2팁}}</div>
+    </div>
+  </div>
+  <div class="risk-item">
+    <span class="risk-icon">⚠️</span>
+    <div>
+      <div class="risk-title">{{리스크3제목}}</div>
+      <div class="risk-desc">{{리스크3내용}}</div>
+      <div class="risk-tip">→ {{리스크3팁}}</div>
+    </div>
+  </div>
+  <div class="risk-item">
+    <span class="risk-icon">⚠️</span>
+    <div>
+      <div class="risk-title">{{리스크4제목}}</div>
+      <div class="risk-desc">{{리스크4내용}}</div>
+      <div class="risk-tip">→ {{리스크4팁}}</div>
+    </div>
+  </div>
+
+  <div style="background:var(--yellow);border-radius:10px;padding:12px 14px;margin-top:4px;display:flex;align-items:flex-start;gap:8px;">
+    <span style="font-size:16px;">💡</span>
+    <div style="font-size:12px;font-weight:300;color:var(--ink2);line-height:1.7;">
+      <strong style="color:var(--ink);font-weight:700;">중요한 건 완벽함이 아닙니다.</strong><br>
+      {{리스크마무리}}
+    </div>
+  </div>
+</div>
+
+<!-- ══ 10. 맺음말 ══ -->
+<div class="closing">
+  <div class="closing-title">
+    지금 {{child_name}}의<br>더 나은 독서 미래를<br>만들어가세요.
+  </div>
+  <div class="closing-desc">{{맺음말내용}}</div>
+
+  <div class="closing-stats">
+    <div class="closing-stat">
+      <div class="cstat-icon">🎯</div>
+      <div class="cstat-label">기질 맞춤<br>전집 큐레이션</div>
+    </div>
+    <div class="closing-stat">
+      <div class="cstat-icon">📅</div>
+      <div class="cstat-label">6개월<br>성장 로드맵</div>
+    </div>
+    <div class="closing-stat">
+      <div class="cstat-icon">🥕</div>
+      <div class="cstat-label">현명한<br>구매 전략</div>
+    </div>
+    <div class="closing-stat">
+      <div class="cstat-icon">💛</div>
+      <div class="cstat-label">가족의 시간<br>행복 증가</div>
+    </div>
+  </div>
+
+
+  <!-- 재구매 CTA -->
+  <div class="renew-box">
+    <div class="renew-emoji">📬</div>
+    <div class="renew-title">{{child_name}}이(가) 6개월 후 얼마나 성장할지<br>벌써 궁금하지 않으신가요?</div>
+    <div class="renew-desc">아이는 매달 달라져요. 6개월 후 월령에 맞는<br>새로운 맞춤 리포트를 받아보세요.</div>
+    <a class="renew-btn" href="{{재신청링크}}">6개월 후 새 리포트 알림 신청 →</a>
+    <div class="renew-notice">알림만 신청해두고 필요할 때 구매하세요 (무료)</div>
+  </div>
+  <div class="closing-privacy">
+    맘로그랩은 사용자의 개인정보를 소중히 여깁니다.<br>
+    · 본 리포트는 설문 응답을 기반으로 AI가 생성한 맞춤 분석 결과입니다.<br>
+    · 입력하신 정보는 구글 보안 서버를 통해 안전하게 관리됩니다.<br>
+    · 리포트 전송 후 마케팅 목적으로 활용되지 않습니다.
+  </div>
+  <div class="closing-sign">MOMLOG LAB RESEARCH INSTITUTE ♥</div>
+</div>
+
+</div>
+</body>
+</html>
