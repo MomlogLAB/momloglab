@@ -1277,6 +1277,215 @@ function scrollToAge() {
 }
 
 /* ══════════════════════════════════════════
+   🧮 5대 아키타입 점수 계산 엔진
+   (12문항 답변 → 5개 점수 + 6개 레이더 점수)
+   ══════════════════════════════════════════ */
+const ARCHETYPES = {
+  analyst:     { name_kr: "논리적인 꼬마 탐험가",    emoji: "🔬", theory: "가드너 논리수학지능 / 피아제 구체적조작기 초기" },
+  storyteller: { name_kr: "따뜻한 마음의 스토리텔러", emoji: "🌸", theory: "가드너 대인관계·언어지능" },
+  explorer:    { name_kr: "호기심 폭발 모험가",      emoji: "🔍", theory: "가드너 자연친화지능·신체운동지능" },
+  expressor:   { name_kr: "표현하는 작은 예술가",    emoji: "🎨", theory: "가드너 음악·공간지능" },
+  guardian:    { name_kr: "신중한 관찰자",          emoji: "🛡️", theory: "보육이론 안정애착 / 피아제 동화·조절" }
+};
+
+const WEIGHTS_BABY = {
+  Q1: {
+    "👶 10~17개월 — 이제 막 책에 눈뜨는 구강기 아기":         { guardian: 8, expressor: 5 },
+    "🌱 18~23개월 — 자기주장 뿜뿜! 신체·언어 폭발 준비기":     { guardian: 5, explorer: 3, expressor: 3 },
+    "💬 24~29개월 — 말문이 빵 터지는 미운 세 살":             { explorer: 5, storyteller: 5 },
+    "🏫 30~36개월 — 어린이집·유치원 사회생활 시작!":          { storyteller: 8, analyst: 3 }
+  },
+  Q2: {
+    "⚡ 1분 컷 — 휘리릭 넘기고 바로 덮고 도망가요":            { explorer: 12, expressor: 5, guardian: -3 },
+    "👀 그림만 후다닥 — 읽어줘도 잘 안 듣고 넘겨요":          { expressor: 12, explorer: 5 },
+    '🙂 한 권은 끝까지 — 엄마 무릎에서 집중해서 잘 봐요':      { storyteller: 10, analyst: 8, guardian: 5 },
+    '📚 연속 독서 — "또 읽어줘!" 여러 권 연달아 요청해요':    { analyst: 12, storyteller: 8, guardian: 5 }
+  },
+  Q3: {
+    "🐾 바로 달려들어요 — 호기심이 넘쳐서 바로 만져보고 탐색해요":  { explorer: 18, expressor: 5 },
+    "🔭 지켜보다가 슬그머니 — 안전하다 싶으면 그때 접근해요":      { guardian: 15, analyst: 8, storyteller: 3 },
+    "🙅 싫어요! — 낯선 소리나 촉감에 거부 반응을 보여요":         { guardian: 18, storyteller: 5 }
+  },
+  Q4: {
+    "🎵 노래·챈트 — 엉덩이가 먼저 반응해요":                    { expressor: 18, storyteller: 5 },
+    "🎨 색감·실사 사진 — 시선이 딱 고정돼요":                   { explorer: 12, expressor: 8 },
+    "👐 조작·팝업 — 구멍 파고 들춰보느라 바빠요":               { explorer: 10, expressor: 10, guardian: 5 },
+    "📖 스토리텔링 — 엄마가 읽어줄 때 귀가 쫑긋해요":           { storyteller: 18, expressor: 5 }
+  },
+  Q5: {
+    "🔊 세이펜 호환책 — 콕 찍으면 소리가 나요":                  { expressor: 10, analyst: 8 },
+    "🎪 팝업·조작북 — 잡아당기고 펼치느라 바빠요":              { explorer: 12, expressor: 10 },
+    "📗 일반 종이책(양장본) — 큼직한 그림이 시원시원해요":        { storyteller: 10, analyst: 8 },
+    "🧱 보드북 — 물고 빨고 던져도 끄떡없어요":                  { guardian: 12, expressor: 5 }
+  },
+  Q6: {
+    "🍚 생활 습관 — 치카치카, 밥 먹기 전쟁이에요":              { guardian: 15 },
+    "😤 감정 조절 — 드러눕고 떼쓰는 게 너무 힘들어요":          { storyteller: 15 },
+    "💬 어휘·표현력 — 말을 좀 더 예쁘게 했으면 좋겠어요":        { storyteller: 10, analyst: 8 },
+    "🦕 호기심·지식 — 공룡, 동물, 우주에 대해 알고 싶어해요":     { explorer: 12, analyst: 10 }
+  },
+  Q7: {
+    "💬 언어 발달 — 어휘가 쑥쑥 늘었으면 해요":                  { storyteller: 12, expressor: 8 },
+    "🤝 사회성·인성 — 감정 조절과 인성을 키워주고 싶어요":        { storyteller: 15, guardian: 5 },
+    "🔬 논리·창의력 — 수·과학적 사고를 길러주고 싶어요":          { analyst: 12, expressor: 10 },
+    "🌿 생활 습관 — 배변·식사 등 기본 루틴을 잡고 싶어요":        { guardian: 15 }
+  },
+  Q8: {
+    "🏠 생활·감성 — 추피, 베베코알라, 망고라이언 등":             { expressor: 3 },
+    "🎶 음악·창작 — 도레미곰, 라라랜드, 베이비올 명화음악 등":     { expressor: 5 },
+    "🌿 자연·지식 — 놀라운 자연, 자연이랑, 생생 자연관찰 등":      { explorer: 3, analyst: 3 },
+    "✨ 아직 비싼 전집은 한 번도 안 들였어요!":                  {}
+  },
+  Q9: {
+    "📖 독서 습관 — 책이랑 친해지는 루틴을 만들어주고 싶어요":     { guardian: 12, storyteller: 5 },
+    "💬 언어 발달 — 말이 훅훅 늘었으면 해서요":                  { storyteller: 12, expressor: 8 },
+    "🔭 지식 자극 — 자연, 수학 등 기초 지식을 넣어주고 싶어요":   { analyst: 12, explorer: 10 },
+    "🎮 흥미 유발 — 아이가 심심해해서 놀이처럼 접근하고 싶어요":   { explorer: 12, expressor: 8 }
+  },
+  Q10: {
+    "📱 적극 환영 — 엄마 목도 아끼고 육아도 돕는 효자템이에요":   { expressor: 8, analyst: 5 },
+    "🙂 있으면 좋지만 — 필수는 아니라고 생각해요":               { expressor: 3, guardian: 3 },
+    "📚 아날로그파 — 엄마 목소리와 종이책만 고집할래요":          { storyteller: 8, guardian: 5 }
+  },
+  Q11: {
+    "💸 돈 낭비 — 수십만 원 줬는데 쳐다도 안 보면 어쩌죠?":       { guardian: 5 },
+    "⏳ 짧은 수명 — 몇 달 보고 금방 유치해지면 어쩌죠?":          { guardian: 8 },
+    "📦 수납 걱정 — 거실에 둘 공간이 있을지 모르겠어요":          { guardian: 5 },
+    "🥕 중고 방어율 — 나중에 당근에서 헐값 되면 속상할 것 같아요": { analyst: 5 }
+  },
+  Q12: {
+    "✨ 새 책 구매 — 공식 몰에서 깨끗한 새 책으로 들일래요":       { analyst: 5, storyteller: 3 },
+    "🥕 중고 구매 — 당근마켓 키워드 알림으로 가성비 챙길래요":     { guardian: 5, explorer: 3 },
+    "📦 대여 — 한 달 빌려서 아이 반응 먼저 볼래요":              { explorer: 8, expressor: 5 },
+    "🔄 구독 — 매달 알아서 배송 오는 구독형이 편할 것 같아요":     { guardian: 8, expressor: 5 }
+  }
+};
+
+const WEIGHTS_KID = {
+  Q1: {
+    '🌱 37~47개월 (4세) — 말문 터지고 "왜?"가 폭발하는 탐구 시작기':  { explorer: 8, storyteller: 3 },
+    "🔍 48~59개월 (5세) — 호기심 폭발! 지식 흡수력이 가장 뛰어난 시기": { explorer: 8, analyst: 5 },
+    "📖 60~71개월 (6세) — 본격 독서 몰입! 집중력이 길어지는 시기":     { analyst: 8, storyteller: 5 },
+    "🎒 72개월 이상 (7세) — 예비 초등! 어휘력과 문해력이 실력이 되는 시기": { analyst: 10, storyteller: 5 }
+  },
+  Q2: {
+    '⚡ 3분 컷 — 그림만 훑고 "다 봤다!" 해요':                    { explorer: 12, expressor: 5, guardian: -3 },
+    "🦕 편식 독서 — 좋아하는 분야 책만 반복해서 봐요":            { explorer: 10, expressor: 8 },
+    "🙂 엄마표 집중 — 읽어주면 끝까지 잘 들어요":                 { storyteller: 10, guardian: 8 },
+    "📚 자기주도 독서 — 혼자서도 15분 이상 몰입해요":             { analyst: 15, storyteller: 5 }
+  },
+  Q3: {
+    '🔬 탐구형 — "이건 왜 그래?" 원리를 끝까지 파헤쳐야 해요':     { explorer: 15, analyst: 10 },
+    "🔭 관찰형 — 가만히 지켜보다가 스스로 이해하는 타입이에요":   { guardian: 12, analyst: 8, storyteller: 5 },
+    "🎨 직관형 — 화려한 그림이나 영상에 먼저 반응해요":           { storyteller: 12, expressor: 10 }
+  },
+  Q4: {
+    "🔭 지식·백과 — 우주, 인체, 동물 등 신기한 사실에 빠져요":     { analyst: 18, explorer: 8 },
+    "📖 스토리텔링 — 친구 관계, 모험, 상상력 가득한 이야기를 좋아해요": { storyteller: 18, expressor: 5 },
+    "🧩 논리·수학 — 규칙 찾기, 퀴즈, 추리 형식에 눈이 반짝여요":   { analyst: 18 },
+    "🎨 감성·예술 — 따뜻한 그림체와 아름다운 문장에 마음이 움직여요": { expressor: 18, storyteller: 5 }
+  },
+  Q5: {
+    "🖼️ 그림책 — 그림이 크고 글자가 적은 책을 좋아해요":          { storyteller: 10, expressor: 8 },
+    "📷 지식 전집·도감 — 실감 나는 사진과 정보가 빽빽한 책이 좋아요": { analyst: 15, explorer: 8 },
+    "🤣 학습 만화 — 캐릭터와 말풍선이 있어야 집중해요":           { analyst: 10, explorer: 5 },
+    "✏️ 워크북·활동지 — 직접 풀고 스티커 붙이는 걸 좋아해요":     { analyst: 12, guardian: 5 }
+  },
+  Q6: {
+    "📝 문해력 — 학교 가기 전에 한글과 기초 독해를 잡아줘야 할 것 같아요": { storyteller: 12, analyst: 10 },
+    "🤝 사회성 — 고집이 세고 감정 조절이 서툴러서 걱정돼요":      { storyteller: 15, guardian: 5 },
+    "📱 미디어 중독 — 유튜브만 보려 해서 책과 멀어질까 봐요":      { guardian: 12, storyteller: 5 },
+    "🔢 기초 지식 — 수학, 과학 지식이 부족한 것 같아 불안해요":   { analyst: 15, explorer: 8 }
+  },
+  Q7: {
+    "💬 어휘·이해력 — 초등 교과를 무리 없이 따라가는 힘":         { storyteller: 10, analyst: 10 },
+    "🤗 공감·예절 — 단체 생활에서 사랑받는 아이로 키우고 싶어요":  { storyteller: 15, guardian: 5 },
+    "🧠 사고력·끈기 — 어려운 문제도 포기하지 않는 태도":          { analyst: 15, guardian: 5 },
+    "📚 자기주도 독서 — 시키지 않아도 책을 집어 드는 습관":        { analyst: 12, storyteller: 8 }
+  },
+  Q8: {
+    "💛 인성·감성 — 안녕 마음아, 이야기 꽃할망, 행복한 명작 등":   { storyteller: 3 },
+    "🔬 과학·자연 — 내 친구 과학공룡, 과학도깨비, 솔루토이 과학 등": { explorer: 3, analyst: 3 },
+    "🔢 수학·한글 — 내 친구 수학공룡, 꼬꼬마 수학자, 스마트 한글 크루 등": { analyst: 3 },
+    "📦 기타 — 물려받은 전집이나 단행본 위주로 있어요":            {}
+  },
+  Q9: {
+    "🎒 배경지식 — 초등 입학 전 교과 지식을 탄탄히 다져주고 싶어요": { analyst: 12, explorer: 8 },
+    "💬 어휘·이해력 — 말이 예쁘고 이해력 좋은 아이로 키우고 싶어요": { storyteller: 12, analyst: 5 },
+    "📖 독서 습관 — 스스로 책 읽는 재미와 공부 정서를 만들어주고 싶어요": { guardian: 12, storyteller: 5 },
+    "🦕 관심 분야 심화 — 좋아하는 분야를 더 깊이 파고들게 해주고 싶어요": { analyst: 10, explorer: 10 }
+  },
+  Q10: {
+    "📱 적극 활용 — 멀티미디어 자극이 학습 효과를 높인다고 생각해요": { analyst: 8, expressor: 5 },
+    "🙂 보조 도구 — 결국은 종이책을 넘기는 손맛이 중요해요":        { analyst: 3, guardian: 3 },
+    "📚 아날로그파 — 영상 자극은 최소화하고 텍스트에 집중하고 싶어요": { storyteller: 8, guardian: 8 }
+  },
+  Q11: {
+    "⏳ 활용 기간 — 학교 가면 안 본다는데, 지금 사기엔 늦었나요?":  { guardian: 8 },
+    "📦 수납 공간 — 거실 책장에 더 들어갈 자리가 없어요":          { guardian: 5 },
+    "💸 가격 부담 — 학원비도 드는데 전집까지 수십만 원이라니…":    { guardian: 3 },
+    "📊 수준 걱정 — 너무 어렵거나 쉬워서 실패할까 봐 두려워요":     { analyst: 5, storyteller: 3 }
+  },
+  Q12: {
+    "✨ 새 책 구매 — 깨끗한 공식 판매처에서 AS 확실하게 들일래요":  { analyst: 5, storyteller: 3 },
+    "🥕 중고 구매 — 당근마켓에서 상태 좋은 책을 가성비 있게 구할래요": { guardian: 5, explorer: 3 },
+    "📦 대여·구독 — 볼지 안 볼지 모르니 한 달씩 빌려볼래요":        { explorer: 8, expressor: 5 },
+    "📗 단행본 큐레이션 — 전집보다 좋은 책 몇 권만 골라받고 싶어요": { storyteller: 8, analyst: 5 }
+  }
+};
+
+function calculateArchetypeScores(answers, track) {
+  const weights = track === "baby" ? WEIGHTS_BABY : WEIGHTS_KID;
+  const scores = { analyst: 25, storyteller: 25, explorer: 25, expressor: 25, guardian: 25 };
+  for (let i = 1; i <= 12; i++) {
+    const qKey = "Q" + i;
+    const userAnswer = answers[qKey];
+    if (!userAnswer) continue;
+    const qWeights = weights[qKey];
+    if (!qWeights) continue;
+    const answerWeights = qWeights[userAnswer];
+    if (!answerWeights) continue;
+    for (const archetype in answerWeights) {
+      scores[archetype] += answerWeights[archetype];
+    }
+  }
+  for (const k in scores) scores[k] = Math.max(0, Math.min(100, scores[k]));
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const archetype_primary = sorted[0][0];
+  const archetype_secondary = (sorted[0][1] - sorted[1][1]) <= 15 ? sorted[1][0] : "";
+  const radar = calculateRadarScores(scores, answers, track);
+  return {
+    scores, radar, archetype_primary, archetype_secondary,
+    archetype_name_kr: ARCHETYPES[archetype_primary].name_kr,
+    archetype_emoji: ARCHETYPES[archetype_primary].emoji,
+    theory: ARCHETYPES[archetype_primary].theory
+  };
+}
+
+function calculateRadarScores(archetypeScores, answers, track) {
+  const radar = {
+    cognitive:   Math.round(archetypeScores.analyst * 0.7 + archetypeScores.storyteller * 0.3),
+    emotion:     Math.round(archetypeScores.storyteller * 0.8 + archetypeScores.guardian * 0.2),
+    curiosity:   Math.round(archetypeScores.explorer * 0.8 + archetypeScores.analyst * 0.2),
+    social:      Math.round(archetypeScores.storyteller * 0.4 + archetypeScores.guardian * 0.6),
+    physical:    Math.round(archetypeScores.explorer * 0.5 + archetypeScores.expressor * 0.5),
+    persistence: Math.round(archetypeScores.analyst * 0.5 + archetypeScores.guardian * 0.5)
+  };
+  if (track === "baby") {
+    if (answers.Q2 && (answers.Q2.includes("연속 독서") || answers.Q2.includes("한 권은 끝까지"))) radar.persistence += 10;
+    if (answers.Q2 && answers.Q2.includes("1분 컷")) radar.persistence -= 8;
+    if (answers.Q3 && answers.Q3.includes("바로 달려들어요")) radar.physical += 8;
+    if (answers.Q3 && answers.Q3.includes("싫어요")) radar.emotion += 5;
+  } else {
+    if (answers.Q2 && answers.Q2.includes("자기주도 독서")) radar.persistence += 12;
+    if (answers.Q2 && answers.Q2.includes("3분 컷")) radar.persistence -= 8;
+    if (answers.Q4 && answers.Q4.includes("감성·예술")) radar.emotion += 8;
+  }
+  for (const k in radar) radar[k] = Math.max(0, Math.min(100, radar[k]));
+  return radar;
+}
+
+/* ══════════════════════════════════════════
    📋 설문 데이터
    ══════════════════════════════════════════ */
 const SURVEYS = {
@@ -1602,6 +1811,11 @@ function nextStep() { if (state.currentStep < 13) { state.currentStep++; renderS
 async function submitAndPay() {
   document.getElementById('loadingOverlay').classList.add('active');
   const submissionId = 'ML_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+
+  // ★ 5대 아키타입 점수 자동 산출 (결정론적: 같은 답변 → 항상 같은 결과)
+  const archetypeResult = calculateArchetypeScores(state.answers, state.track);
+  console.log('Archetype Analysis:', archetypeResult);
+
   const payload = {
     submission_id: submissionId, track: state.track,
     track_label: SURVEYS[state.track].label,
@@ -1612,6 +1826,27 @@ async function submitAndPay() {
     Q1:state.answers.Q1,Q2:state.answers.Q2,Q3:state.answers.Q3,Q4:state.answers.Q4,
     Q5:state.answers.Q5,Q6:state.answers.Q6,Q7:state.answers.Q7,Q8:state.answers.Q8,
     Q9:state.answers.Q9,Q10:state.answers.Q10,Q11:state.answers.Q11,Q12:state.answers.Q12,
+
+    // ★ 새로 추가: 5대 아키타입 점수
+    score_analyst:     archetypeResult.scores.analyst,
+    score_storyteller: archetypeResult.scores.storyteller,
+    score_explorer:    archetypeResult.scores.explorer,
+    score_expressor:   archetypeResult.scores.expressor,
+    score_guardian:    archetypeResult.scores.guardian,
+    archetype_final:     archetypeResult.archetype_primary,
+    archetype_secondary: archetypeResult.archetype_secondary,
+    archetype_name_kr:   archetypeResult.archetype_name_kr,
+    archetype_emoji:     archetypeResult.archetype_emoji,
+    archetype_theory:    archetypeResult.theory,
+
+    // ★ 새로 추가: 6각 발달 레이더 점수
+    radar_cognitive:   archetypeResult.radar.cognitive,
+    radar_emotion:     archetypeResult.radar.emotion,
+    radar_curiosity:   archetypeResult.radar.curiosity,
+    radar_social:      archetypeResult.radar.social,
+    radar_physical:    archetypeResult.radar.physical,
+    radar_persistence: archetypeResult.radar.persistence,
+
     payment_status: 'pending', order_no: ''
   };
   try {
