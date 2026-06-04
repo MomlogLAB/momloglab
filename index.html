@@ -1372,6 +1372,15 @@ body {
 /* ══════════════════════════════════════════
    ⚙️ 설정
    ══════════════════════════════════════════ */
+// 한국시간(KST, UTC+9) ISO 문자열 생성. 예: 2026-06-04T14:47:05+09:00
+function kstISO() {
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const p = (n) => String(n).padStart(2, '0');
+  return kst.getUTCFullYear() + '-' + p(kst.getUTCMonth() + 1) + '-' + p(kst.getUTCDate())
+    + 'T' + p(kst.getUTCHours()) + ':' + p(kst.getUTCMinutes()) + ':' + p(kst.getUTCSeconds()) + '+09:00';
+}
+
 const CONFIG = {
   WEBHOOK_SURVEY:  'https://hook.us2.make.com/mwy6yaa4276zkr2xqb3yv5xbtayq8556',
   WEBHOOK_CONFIRM: 'https://hook.us2.make.com/mwy6yaa4276zkr2xqb3yv5xbtayq8556',
@@ -1853,7 +1862,7 @@ function showResult() {
   // 웹훅 전송 (영업·B2B용 데이터 적재) — 결과 표시는 이것과 무관하게 진행
   const payload = {
     submission_id: submissionId, track: state.track, track_label: SURVEYS[state.track].label,
-    submitted_at: new Date().toISOString(), tier: 'lite',
+    submitted_at: kstISO(), tier: 'lite',
     user_name: state.info.name, user_phone: state.info.phone,
     user_phone_normalized: normalizePhone(state.info.phone),
     child_name: state.info.childName, child_gender: state.info.childGender,
@@ -2076,7 +2085,7 @@ async function submitPremiumAndPay() {
   // 라이트 답 + 프리미엄 답 + 결과를 함께 전송 (PDF 생성용 데이터)
   const payload = {
     submission_id: submissionId, track: state.track, track_label: SURVEYS[state.track].label,
-    submitted_at: new Date().toISOString(), tier: 'premium',
+    submitted_at: kstISO(), tier: 'premium',
     user_name: state.info.name, user_phone: state.info.phone,
     user_phone_normalized: normalizePhone(state.info.phone),
     child_name: state.info.childName, child_gender: state.info.childGender,
@@ -2106,7 +2115,7 @@ async function submitConfirm() {
     event_type: 'order_confirm', order_no: orderNo,
     contact_type: isEmail ? 'email' : 'phone',
     contact_value: isEmail ? contact : normalizePhone(contact),
-    submitted_at: new Date().toISOString()
+    submitted_at: kstISO()
   };
   document.getElementById('confirmBtn').disabled = true;
   document.getElementById('confirmBtn').textContent = '확인 중...';
