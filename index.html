@@ -1866,7 +1866,7 @@ function showResult() {
     score_guardian: rec.child.guardian
   };
   try {
-    fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
   } catch(e) { console.error('Webhook error:', e); }
 
   setTimeout(() => renderResult(rec), 1400);
@@ -1886,15 +1886,16 @@ function renderResult(rec) {
   document.getElementById('resultTitle').innerHTML = `${childName}은(는)<br>${ARCH_DESC[rec.primary].title}`;
   document.getElementById('resultDesc').textContent = ARCH_DESC[rec.primary].desc;
 
-  // 점수 바 (최댓값 기준 정규화)
+  // 점수 바 (최댓값 기준 정규화 → 35~100% 구간으로 매핑해 0점도 막대가 보이도록)
   const maxC = Math.max(...ARCH.map(a => rec.child[a]), 1);
   const scoreRows = ARCH.map(a => {
-    const pct = Math.round(rec.child[a] / maxC * 100);
+    const raw = rec.child[a] / maxC;           // 0~1
+    const pct = Math.round(35 + raw * 65);     // 35~100% (0점이어도 35% 막대 보임)
     const isTop = (a === rec.primary);
     return `<div class="score-row">
       <div class="score-label">${ARCH_KO[a]}</div>
-      <div class="score-bar-track"><div class="score-bar-fill ${isTop?'top':''}" style="width:0%" data-w="${pct}"></div></div>
-      <div class="score-val">${rec.child[a]}</div>
+      <div class="score-bar-track"><div class="score-bar-fill ${isTop?'top':''}" data-w="${pct}" style="width:${pct}%"></div></div>
+      <div class="score-val">${pct}%</div>
     </div>`;
   }).join('');
 
@@ -2091,7 +2092,7 @@ async function submitPremiumAndPay() {
     payment_status: 'pending', order_no: ''
   };
   try {
-    await fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    await fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
   } catch(e) { console.error('Premium webhook error:', e); }
   // 스마트스토어 프리미엄 상품으로 이동
   setTimeout(() => { window.location.href = CONFIG.SMARTSTORE.standard + '?sid=' + submissionId; }, 1500);
@@ -2110,7 +2111,7 @@ async function submitConfirm() {
   document.getElementById('confirmBtn').disabled = true;
   document.getElementById('confirmBtn').textContent = '확인 중...';
   try {
-    await fetch(CONFIG.WEBHOOK_CONFIRM, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    await fetch(CONFIG.WEBHOOK_CONFIRM, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
   } catch(e) { console.error('Confirm webhook error:', e); }
   document.getElementById('confirmSuccess').classList.add('show');
   document.getElementById('confirmBtn').textContent = '결제 확인 요청 →';
