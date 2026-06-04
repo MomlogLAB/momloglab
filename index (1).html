@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Momlog LAB — 우리 아이 맞춤 독서 처방전</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   🎨 디자인 토큰
+   ══════════════════════════════════════════ */
+:root {
+  --navy:       #1a2744;
+  --navy-deep:  #111c33;
+  --navy-mid:   #2c3d5e;
+  --beige:      #f5ede0;
+  --beige-light:#fdf8f2;
+  --beige-mid:  #ede0cc;
+  --beige-dark: #d4c4a8;
+  --ivory:      #fefcf7;
+  --ink:        #1a2744;
+  --ink2:       #4a5568;
+  --ink3:       #8a9ab0;
+  --white:      #ffffff;
+  --border:     #e0d8cc;
+  --ff-serif:   'Noto Sans KR', sans-serif;
+  --ff-sans:    'Noto Sans KR', sans-serif;
+  --ff-en:      'Montserrat', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-sans);
+  background: var(--beige-light);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--beige-light);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════
+   🏠 인트로
+   ══════════════════════════════════════════ */
+#introScreen { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ─── 히어로 ─── */
+.hero {
+  background: var(--navy-deep);
+  padding: 44px 28px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,.04) 0%, transparent 70%);
+}
+.hero-logo {
+  font-family: var(--ff-en);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--beige);
+  letter-spacing: .28em;
+  margin-bottom: 32px;
+}
+.hero-logo span { font-weight: 400; color: var(--beige-dark); }
+
+.hero-content { position: relative; z-index: 1; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(253,248,242,.1);
+  border: 1px solid rgba(253,248,242,.18);
+  color: var(--beige);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  letter-spacing: .1em;
+  margin-bottom: 18px;
+}
+.eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--beige-dark); }
+
+.hero-title {
+  font-family: var(--ff-sans);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.42;
+  margin-bottom: 12px;
+  letter-spacing: -.02em;
+}
+.hero-title em { font-style: normal; font-weight: 900; color: #7eb3ff; }
+
+.hero-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(253,248,242,.62);
+  line-height: 1.85;
+  margin-bottom: 24px;
+}
+
+/* 실시간 카운터 */
+.live-counter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+  flex-shrink: 0;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(.8); }
+}
+.live-txt {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(253,248,242,.8);
+  line-height: 1.4;
+}
+.live-txt strong { color: var(--beige); font-weight: 700; }
+
+.hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 28px;
+}
+.hero-feat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(253,248,242,.78);
+}
+.feat-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.07);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+
+/* 히어로 CTA */
+.hero-cta-box {
+  background: var(--beige-light);
+  margin: 0 -28px;
+  padding: 20px 28px 24px;
+  border-top: none;
+}
+.btn-hero {
+  width: 100%;
+  background: var(--navy);
+  color: var(--beige);
+  font-family: var(--ff-sans);
+  font-size: 16px;
+  font-weight: 700;
+  padding: 17px 0;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  letter-spacing: .02em;
+  transition: all .2s;
+  margin-bottom: 8px;
+}
+.btn-hero:active { transform: scale(.98); background: var(--navy-deep); }
+.hero-cta-sub {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--ink3);
+}
+
+/* ─── 보안 신뢰 바 ─── */
+.trust-bar {
+  background: var(--beige);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.trust-bar-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.trust-bar-txt {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+.trust-bar-txt strong { color: var(--navy-mid); font-weight: 600; }
+
+/* ─── 권위 섹션 ─── */
+.authority-section {
+  background: var(--ivory);
+  padding: 28px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.authority-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.authority-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+}
+.authority-icon { font-size: 20px; margin-bottom: 6px; display: block; }
+.authority-title {
+  font-family: var(--ff-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 3px;
+  letter-spacing: -.01em;
+  line-height: 1.4;
+}
+.authority-desc {
+  font-size: 9px;
+  font-weight: 300;
+  color: var(--ink3);
+  line-height: 1.5;
+}
+
+/* ─── 세로형 플로우 ─── */
+.flow-section {
+  background: var(--beige-light);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.sec-label {
+  font-family: var(--ff-en);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--ink3);
+  letter-spacing: .2em;
+  margin-bottom: 6px;
+}
+.sec-title {
+  font-family: var(--ff-sans);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 24px;
+  letter-spacing: -.01em;
+}
+
+.flow-list { display: flex; flex-direction: column; gap: 0; }
+.flow-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  position: relative;
+}
+.flow-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 40px;
+  width: 1px;
+  height: calc(100% + 12px);
+  background: var(--border);
+}
+.flow-left { flex-shrink: 0; }
+.flow-num-wrap {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+.flow-num {
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--beige);
+}
+.flow-body { padding-top: 8px; padding-bottom: 20px; }
+.flow-icon { font-size: 18px; margin-bottom: 4px; display: block; }
+.flow-step-title {
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -.01em;
+}
+.flow-step-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+
+/* ─── 리포트 미리보기 ─── */
+.preview-section {
+  background: var(--beige);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.preview-phone {
+  background: var(--navy-deep);
+  border-radius: 20px;
+  padding: 18px 16px;
+  box-shadow: 0 12px 40px rgba(26,39,68,.25);
+}
+.preview-phone-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.preview-phone-logo {
+  font-family: var(--ff-en);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--beige);
+  letter-spacing: .18em;
+}
+.preview-phone-menu { color: rgba(253,248,242,.35); font-size: 16px; }
+
+.preview-card {
+  background: var(--beige-light);
+  border-radius: 14px;
+  padding: 16px 14px;
+}
+.preview-eyebrow {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--ink3);
+  letter-spacing: .14em;
+  margin-bottom: 4px;
+}
+.preview-name {
+  font-family: var(--ff-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -.01em;
+}
+.preview-lock-hint {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--ink3);
+  background: var(--beige);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.preview-list { display: flex; flex-direction: column; gap: 7px; }
+.preview-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.preview-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-rank {
+  font-family: var(--ff-en);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink3);
+  width: 14px;
+  flex-shrink: 0;
+}
+.preview-book-img {
+  width: 30px; height: 36px;
+  background: var(--beige-mid);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.preview-book-name {
+  font-size: 11px; font-weight: 600; color: var(--ink); margin-bottom: 2px;
+}
+.preview-match-tag {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--beige);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: .04em;
+}
+.preview-lock { color: var(--ink3); font-size: 14px; }
+
+.preview-blur-row { margin-top: 10px; }
+.bl { height: 7px; background: var(--beige-mid); border-radius: 4px; margin-bottom: 6px; opacity: .5; }
+.bl.s { width: 50%; }
+.bl.m { width: 76%; }
+
+.preview-value-hint {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--beige);
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--ink2);
+  line-height: 1.6;
+  text-align: center;
+}
+
+.preview-unlock {
+  margin-top: 12px;
+  background: var(--navy);
+  color: var(--beige);
+  font-family: var(--ff-sans);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 13px 0;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+.preview-hint {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--ink2);
+  margin-top: 12px;
+}
+
+/* ─── 월령 선택 ─── */
+.age-section {
+  background: var(--ivory);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.age-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.age-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+}
+.age-card:hover { border-color: var(--navy-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,39,68,.08); }
+.age-card:active { transform: scale(.97); }
+.age-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+.age-track {
+  font-family: var(--ff-en);
+  font-size: 9px; font-weight: 500;
+  color: var(--ink3); letter-spacing: .16em;
+  margin-bottom: 5px;
+}
+.age-range {
+  font-family: var(--ff-sans);
+  font-size: 16px; font-weight: 600;
+  color: var(--ink); margin-bottom: 6px;
+  letter-spacing: -.01em;
+}
+.age-desc { font-size: 10px; font-weight: 300; color: var(--ink2); line-height: 1.5; }
+.age-arrow { margin-top: 10px; color: var(--beige-dark); font-size: 14px; font-weight: 500; }
+
+/* ─── 특별함 ─── */
+.special-section {
+  background: var(--navy);
+  padding: 32px 24px;
+}
+.special-label { font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: rgba(253,248,242,.35); letter-spacing: .2em; margin-bottom: 6px; }
+.special-title {
+  font-family: var(--ff-sans);
+  font-size: 18px; font-weight: 600;
+  color: var(--white); margin-bottom: 20px;
+  letter-spacing: -.01em; line-height: 1.45;
+}
+.special-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.special-item {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 16px 14px;
+}
+.special-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+.special-item-title {
+  font-family: var(--ff-sans);
+  font-size: 13px; font-weight: 600;
+  color: var(--beige); margin-bottom: 4px;
+  letter-spacing: -.01em;
+}
+.special-item-desc { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.5); line-height: 1.6; }
+
+/* ─── 가격 ─── */
+.price-section {
+  background: var(--beige);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.plan-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+.plan-card.featured { border-color: var(--navy); }
+.plan-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.plan-name {
+  font-family: var(--ff-sans);
+  font-size: 15px; font-weight: 600;
+  color: var(--ink); letter-spacing: -.01em;
+}
+.plan-badge {
+  background: var(--navy); color: var(--beige);
+  font-size: 9px; font-weight: 700;
+  padding: 4px 10px; border-radius: 10px;
+  letter-spacing: .04em; white-space: nowrap;
+}
+.plan-price-wrap { display: flex; align-items: baseline; gap: 5px; margin-bottom: 10px; }
+.plan-price {
+  font-family: var(--ff-sans);
+  font-size: 28px; font-weight: 600;
+  color: var(--navy); line-height: 1;
+}
+.plan-price span { font-family: var(--ff-sans); font-size: 14px; font-weight: 400; }
+.plan-og { font-size: 12px; font-weight: 300; color: #bbb; text-decoration: line-through; }
+.plan-features { display: flex; flex-direction: column; gap: 6px; }
+.plan-feat {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 300; color: var(--ink2);
+}
+.plan-feat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--navy-mid); flex-shrink: 0; }
+.plan-desc { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
+
+/* ─── 개인정보 고지 ─── */
+.privacy-section {
+  background: var(--ivory);
+  padding: 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.privacy-title {
+  font-family: var(--ff-sans);
+  font-size: 13px; font-weight: 600;
+  color: var(--ink); margin-bottom: 10px;
+}
+.privacy-list { display: flex; flex-direction: column; gap: 6px; }
+.privacy-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 11px; font-weight: 300;
+  color: var(--ink2); line-height: 1.65;
+}
+.privacy-dot { color: var(--navy-mid); flex-shrink: 0; margin-top: 1px; }
+
+/* ─── 이미 결제 ─── */
+.confirm-link-wrap {
+  text-align: center;
+  padding: 14px 24px;
+  background: var(--beige-light);
+  border-bottom: 1px solid var(--border);
+}
+.confirm-link {
+  font-size: 12px; font-weight: 400;
+  color: var(--ink3); cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ─── 푸터 CTA ─── */
+.footer-cta {
+  background: var(--navy-deep);
+  padding: 28px 24px 44px;
+}
+.btn-footer {
+  width: 100%;
+  background: var(--beige);
+  color: var(--navy);
+  font-family: var(--ff-sans);
+  font-size: 15px; font-weight: 700;
+  padding: 17px 0; border-radius: 14px;
+  border: none; cursor: pointer;
+  letter-spacing: .02em; margin-bottom: 10px;
+  transition: all .2s;
+}
+.btn-footer:active { transform: scale(.98); }
+.footer-sub { text-align: center; font-size: 10px; font-weight: 300; color: rgba(253,248,242,.35); }
+.footer-trust { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+.trust-item {
+  font-size: 10px; font-weight: 300;
+  color: rgba(253,248,242,.3);
+  display: flex; align-items: center; gap: 4px;
+}
+.trust-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(253,248,242,.25); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.06);
+  margin-top: 26px; padding-top: 18px;
+}
+.footer-logo { font-family: var(--ff-en); font-size: 11px; font-weight: 600; color: rgba(253,248,242,.3); letter-spacing: .18em; margin-bottom: 5px; }
+.footer-copy { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.2); }
+.footer-links { display: flex; gap: 14px; margin-top: 10px; }
+.footer-link { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.3); text-decoration: none; cursor: pointer; }
+
+/* ─── 플로팅 CTA ─── */
+.floating-cta {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  padding: 12px 20px 20px;
+  background: var(--beige-light);
+  border-top: 1px solid var(--border);
+  z-index: 200;
+  transition: opacity .3s;
+}
+.floating-cta.hidden { opacity: 0; pointer-events: none; }
+.btn-floating {
+  width: 100%;
+  background: var(--navy);
+  color: var(--beige);
+  font-family: var(--ff-sans);
+  font-size: 15px; font-weight: 700;
+  padding: 15px 0; border-radius: 12px;
+  border: none; cursor: pointer;
+  letter-spacing: .02em;
+  transition: all .2s;
+}
+.btn-floating:active { transform: scale(.98); background: var(--navy-deep); }
+.floating-sub { text-align: center; font-size: 10px; font-weight: 300; color: var(--ink3); margin-top: 5px; }
+
+/* ══════════════════════════════════════════
+   📋 설문 화면
+   ══════════════════════════════════════════ */
+#surveyScreen { display: none; flex-direction: column; min-height: 100vh; }
+#surveyScreen.active { display: flex; }
+#premiumScreen { display: none; flex-direction: column; min-height: 100vh; }
+#premiumScreen.active { display: flex; }
+
+.survey-header {
+  background: var(--navy-deep);
+  padding: 16px 20px;
+  position: sticky; top: 0; z-index: 50;
+}
+.survey-header-top {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.btn-back { font-size: 12px; font-weight: 400; color: rgba(253,248,242,.5); background: none; border: none; cursor: pointer; padding: 4px 0; }
+.progress-info { font-family: var(--ff-sans); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .05em; }
+.progress-label { font-size: 11px; font-weight: 300; color: rgba(253,248,242,.4); text-align: center; margin-bottom: 10px; }
+.progress-track { height: 3px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--beige); border-radius: 2px; transition: width .3s ease; width: 0; }
+
+.survey-body { flex: 1; padding: 24px 24px 120px; }
+
+.stage-intro {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 22px 20px;
+  margin-bottom: 26px;
+}
+.stage-intro-label { font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: var(--beige-dark); letter-spacing: .18em; margin-bottom: 8px; }
+.stage-intro-title { font-family: var(--ff-sans); font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -.01em; }
+.stage-intro-desc { font-size: 12px; font-weight: 300; color: rgba(253,248,242,.6); line-height: 1.75; }
+
+.question { animation: fadeUp .3s ease; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.q-stage {
+  display: inline-block;
+  background: var(--beige);
+  color: var(--navy-mid);
+  font-size: 10px; font-weight: 700;
+  padding: 4px 12px; border-radius: 20px;
+  margin-bottom: 8px; letter-spacing: .05em;
+}
+.q-number { font-family: var(--ff-en); font-size: 12px; font-weight: 400; color: var(--ink3); letter-spacing: .1em; margin-bottom: 6px; }
+.q-title { font-family: var(--ff-sans); font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.5; margin-bottom: 8px; letter-spacing: -.02em; }
+.q-desc { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.7; margin-bottom: 20px; padding: 10px 14px; background: var(--beige); border-radius: 10px; }
+
+.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; margin-bottom: 28px; }
+.option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px; background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px; cursor: pointer;
+  transition: all .15s;
+  font-size: 14px; font-weight: 400;
+  color: var(--ink); line-height: 1.5;
+  min-height: 54px;
+}
+.option:hover { border-color: var(--navy-mid); background: var(--beige-light); }
+.option.selected { border-color: var(--navy); background: var(--beige); }
+.option-marker {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  flex-shrink: 0; transition: all .15s;
+}
+.option.selected .option-marker {
+  background: var(--navy); border-color: var(--navy);
+  box-shadow: inset 0 0 0 4px var(--white);
+}
+
+.nav-btns {
+  display: flex; gap: 10px;
+  position: fixed; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  padding: 14px 24px 28px;
+  background: var(--beige-light);
+  border-top: 1px solid var(--border);
+  z-index: 100;
+}
+.btn { font-family: var(--ff-sans); font-size: 15px; font-weight: 700; padding: 15px 0; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; }
+.btn-prev { background: var(--beige); color: var(--ink2); width: 90px; flex-shrink: 0; }
+.btn-next { background: var(--navy); color: var(--beige); flex: 1; }
+.btn-next:disabled { background: var(--beige-mid); color: var(--ink3); cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(.97); }
+
+.info-form { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; margin-bottom: 28px; }
+.info-field { display: flex; flex-direction: column; gap: 6px; }
+.info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.info-label { font-size: 12px; font-weight: 600; color: var(--ink); }
+.info-label .req { color: #e53e3e; margin-left: 2px; }
+.info-input {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 13px 14px;
+  font-family: var(--ff-sans); font-size: 14px;
+  font-weight: 400; color: var(--ink);
+  outline: none; transition: border-color .2s; width: 100%;
+}
+.info-input:focus { border-color: var(--navy); }
+.info-hint { font-size: 10px; font-weight: 300; color: var(--ink3); line-height: 1.5; }
+.info-privacy { background: var(--beige); border-radius: 10px; padding: 12px 14px; }
+.info-privacy label { display: flex; align-items: flex-start; gap: 10px; font-size: 11px; font-weight: 300; color: var(--ink2); line-height: 1.65; cursor: pointer; }
+.info-privacy input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--navy); width: 15px; height: 15px; }
+.phone-notice { background: var(--beige); border-left: 3px solid var(--beige-dark); border-radius: 0 10px 10px 0; padding: 12px 14px; font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.7; margin-top: 16px; }
+.phone-notice strong { color: var(--navy-mid); font-weight: 600; }
+
+.plans-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; margin-bottom: 28px; }
+.plan-item { background: var(--white); border: 1.5px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; transition: all .2s; }
+.plan-item:hover { border-color: var(--navy-mid); }
+.plan-item.featured { border-color: var(--beige-dark); background: var(--beige-light); }
+.plan-item.selected { border-color: var(--navy); background: var(--beige); }
+.plan-item-badge { display: inline-block; background: var(--navy); color: var(--beige); font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: .05em; margin-bottom: 10px; }
+.plan-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.plan-item-title { font-family: var(--ff-sans); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; letter-spacing: -.01em; }
+.plan-item-sub { font-size: 11px; font-weight: 300; color: var(--ink2); }
+.plan-item-price { font-family: var(--ff-sans); font-size: 24px; font-weight: 600; color: var(--navy); line-height: 1; white-space: nowrap; }
+.plan-item-price span { font-family: var(--ff-sans); font-size: 13px; font-weight: 400; }
+.plan-item-orig { font-size: 10px; font-weight: 300; color: #bbb; text-decoration: line-through; text-align: right; margin-top: 2px; }
+.plan-item-features { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.plan-chip { background: var(--beige); border: 1px solid var(--beige-dark); color: var(--ink2); font-size: 10px; font-weight: 400; padding: 4px 10px; border-radius: 20px; }
+.final-submit { background: var(--navy-deep); color: var(--beige-light); border-radius: 14px; padding: 16px 18px; font-size: 12px; font-weight: 300; line-height: 1.75; margin-bottom: 24px; }
+.final-submit strong { color: var(--beige); font-weight: 600; }
+
+/* ══════════════════════════════════════════
+   📬 확인 페이지
+   ══════════════════════════════════════════ */
+#confirmPage { display: none; flex-direction: column; min-height: 100vh; background: var(--beige-light); }
+#confirmPage.active { display: flex; }
+.confirm-header { background: var(--navy-deep); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+.confirm-logo { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .18em; flex: 1; }
+.confirm-logo span { font-weight: 400; color: var(--beige-dark); }
+.btn-close { color: rgba(253,248,242,.45); font-size: 20px; background: none; border: none; cursor: pointer; line-height: 1; }
+.confirm-body { padding: 32px 24px; flex: 1; }
+.confirm-title { font-family: var(--ff-sans); font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 8px; letter-spacing: -.02em; }
+.confirm-desc { font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.75; margin-bottom: 28px; }
+.confirm-form { display: flex; flex-direction: column; gap: 16px; }
+.confirm-success { display: none; background: var(--beige); border: 1px solid var(--beige-dark); border-radius: 14px; padding: 20px; text-align: center; margin-top: 16px; }
+.confirm-success.show { display: block; }
+.confirm-success-icon { font-size: 32px; margin-bottom: 10px; }
+.confirm-success-txt { font-family: var(--ff-sans); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.confirm-success-sub { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
+.btn-confirm { background: var(--navy); color: var(--beige); font-family: var(--ff-sans); font-size: 15px; font-weight: 700; padding: 16px 0; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; margin-top: 8px; }
+.btn-confirm:disabled { background: var(--beige-mid); color: var(--ink3); cursor: not-allowed; }
+
+/* ══════════════════════════════════════════
+   ⏳ 로딩
+   ══════════════════════════════════════════ */
+#loadingOverlay { display: none; position: fixed; inset: 0; background: rgba(17,28,51,.97); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+#loadingOverlay.active { display: flex; }
+.loading-spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(253,248,242,.15); border-top-color: var(--beige); animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-family: var(--ff-sans); font-size: 16px; font-weight: 400; color: var(--beige); letter-spacing: .02em; }
+.loading-sub { font-size: 12px; font-weight: 300; color: rgba(253,248,242,.4); }
+
+/* ══════════════════════════════════════════
+   🎉 라이트 결과 화면
+   ══════════════════════════════════════════ */
+#resultScreen { display: none; flex-direction: column; min-height: 100vh; background: var(--beige-light); }
+#resultScreen.active { display: flex; }
+
+.result-hero {
+  background: var(--navy-deep);
+  padding: 32px 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.result-hero::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(126,179,255,.1) 0%, transparent 70%);
+}
+.result-hero-logo { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .2em; margin-bottom: 24px; }
+.result-hero-logo span { font-weight: 400; color: var(--beige-dark); }
+.result-eyebrow { position: relative; font-size: 11px; font-weight: 400; color: var(--beige-dark); letter-spacing: .12em; margin-bottom: 10px; }
+.result-archetype-badge {
+  position: relative; display: inline-block;
+  background: rgba(126,179,255,.15); border: 1px solid rgba(126,179,255,.3);
+  color: #7eb3ff; font-size: 12px; font-weight: 700;
+  padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; letter-spacing: .03em;
+}
+.result-title { position: relative; font-family: var(--ff-sans); font-size: 24px; font-weight: 800; color: var(--white); line-height: 1.45; margin-bottom: 12px; letter-spacing: -.02em; }
+.result-title em { font-style: normal; color: #7eb3ff; }
+.result-desc { position: relative; font-size: 13px; font-weight: 300; color: rgba(253,248,242,.65); line-height: 1.8; }
+
+.result-body { padding: 28px 24px 40px; }
+
+/* 5각형 점수 바 */
+.score-section { margin-bottom: 32px; }
+.score-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+.score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.score-row:last-child { margin-bottom: 0; }
+.score-label { font-size: 12px; font-weight: 600; color: var(--ink); width: 64px; flex-shrink: 0; }
+.score-bar-track { flex: 1; height: 10px; background: var(--beige-mid); border-radius: 5px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 5px; background: var(--navy-mid); transition: width .8s ease; }
+.score-bar-fill.top { background: linear-gradient(90deg, #7eb3ff, #4a7fd6); }
+.score-val { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--ink2); width: 30px; text-align: right; flex-shrink: 0; }
+
+/* TOP3 전집 */
+.rec-section { margin-bottom: 28px; }
+.rec-card {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 18px; margin-bottom: 12px; position: relative;
+}
+.rec-card.rank1 { border-color: var(--navy); box-shadow: 0 6px 20px rgba(26,39,68,.1); }
+.rec-card-top { display: flex; align-items: flex-start; gap: 14px; }
+.rec-rank-badge {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-en); font-size: 15px; font-weight: 700;
+  background: var(--beige); color: var(--navy);
+}
+.rec-card.rank1 .rec-rank-badge { background: var(--navy); color: var(--beige); }
+.rec-info { flex: 1; min-width: 0; }
+.rec-name { font-family: var(--ff-sans); font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 3px; letter-spacing: -.01em; }
+.rec-meta { font-size: 11px; font-weight: 300; color: var(--ink3); margin-bottom: 8px; }
+.rec-match { display: inline-flex; align-items: center; gap: 5px; background: var(--beige); border-radius: 8px; padding: 4px 10px; }
+.rec-match-bar { width: 40px; height: 5px; background: var(--beige-mid); border-radius: 3px; overflow: hidden; }
+.rec-match-fill { height: 100%; background: var(--navy); border-radius: 3px; }
+.rec-match-txt { font-family: var(--ff-en); font-size: 11px; font-weight: 600; color: var(--navy); }
+.rec-locked {
+  margin-top: 12px; padding: 12px 14px;
+  background: var(--beige-light); border: 1px dashed var(--beige-dark);
+  border-radius: 10px; display: flex; align-items: center; gap: 8px;
+}
+.rec-locked-icon { font-size: 14px; flex-shrink: 0; }
+.rec-locked-txt { font-size: 11px; font-weight: 300; color: var(--ink2); line-height: 1.5; }
+.rec-locked-txt strong { color: var(--navy-mid); font-weight: 600; }
+/* 구매 버튼 (링크 채워지면 노출, 기본 숨김) */
+.rec-buy-btns { display: none; gap: 8px; margin-top: 12px; }
+.rec-buy-btns.show { display: flex; }
+.rec-buy-btn { flex: 1; text-align: center; font-size: 11px; font-weight: 600; padding: 8px 0; border-radius: 8px; background: var(--beige); color: var(--navy); text-decoration: none; border: 1px solid var(--beige-dark); }
+
+/* 프리미엄 페이월 */
+.paywall {
+  background: var(--navy); border-radius: 18px; padding: 26px 22px; margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.paywall::before {
+  content: ''; position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(126,179,255,.12) 0%, transparent 70%);
+}
+.paywall-label { position: relative; font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: var(--beige-dark); letter-spacing: .18em; margin-bottom: 8px; }
+.paywall-title { position: relative; font-family: var(--ff-sans); font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.45; margin-bottom: 16px; letter-spacing: -.01em; }
+.paywall-title em { font-style: normal; color: #7eb3ff; }
+.paywall-list { position: relative; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.paywall-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: rgba(253,248,242,.8); line-height: 1.5; }
+.paywall-check { color: #7eb3ff; flex-shrink: 0; font-weight: 700; }
+.paywall-btn {
+  position: relative; width: 100%; background: var(--beige); color: var(--navy);
+  font-family: var(--ff-sans); font-size: 15px; font-weight: 700;
+  padding: 16px 0; border-radius: 12px; border: none; cursor: pointer; letter-spacing: .02em;
+  transition: all .2s;
+}
+.paywall-btn:active { transform: scale(.98); }
+.paywall-price { position: relative; text-align: center; font-size: 11px; font-weight: 300; color: rgba(253,248,242,.5); margin-top: 10px; }
+.paywall-price strong { color: var(--beige); font-weight: 600; }
+
+.result-restart { text-align: center; padding: 8px; }
+.result-restart-btn { font-size: 12px; font-weight: 400; color: var(--ink3); background: none; border: none; cursor: pointer; text-decoration: underline; }
+
+.result-disclaimer {
+  margin-top: 20px; padding: 14px 16px; background: var(--ivory);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-size: 10px; font-weight: 300; color: var(--ink3); line-height: 1.7;
+}
+
+@media (max-width: 380px) {
+  .hero-title { font-size: 26px; }
+  .q-title { font-size: 18px; }
+  .authority-grid { grid-template-columns: 1fr 1fr; }
+  .authority-item:last-child { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════════════════════════════
+     🏠 인트로 화면
+     ══════════════════════════════════════════ -->
+<div id="introScreen">
+
+  <!-- 히어로 -->
+  <div class="hero">
+    <div class="hero-logo">Momlog <span>LAB</span></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        아동 발달 이론 기반 AI 성향 매칭
+      </div>
+      <div class="hero-title">
+        우리 아이에게 딱 맞는<br>전집을 <em>AI가</em> 찾아드려요.
+      </div>
+      <div class="hero-sub">
+        아이의 성향과 발달단계를 분석해<br>실패 없는 전집 선택을 도와드려요.
+      </div>
+
+      <!-- 실시간 카운터 -->
+      <div class="live-counter">
+        <div class="live-dot"></div>
+        <div class="live-txt">
+          지금 <strong id="liveCount">12명</strong>이 분석 중이에요 · 베타 서비스 기간 한정 리포트 특가 제공
+        </div>
+      </div>
+
+      <div class="hero-features">
+        <div class="hero-feat">
+          <div class="feat-icon">🎯</div>
+          우리 아이 성향에 딱 맞는 전집 TOP3 큐레이션
+        </div>
+        <div class="hero-feat">
+          <div class="feat-icon">🥕</div>
+          새책·중고·대여 중 뭐가 나은지도 알려드려요
+        </div>
+        <div class="hero-feat">
+          <div class="feat-icon">📅</div>
+          전집 사고 나서 어떻게 쓸지 6개월 플랜 제공
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-cta-box">
+      <button class="btn-hero" onclick="scrollToAge()">무료 분석 시작하기 →</button>
+      <div class="hero-cta-sub">1분 내 결과 확인 · 회원가입 없이 이용 가능</div>
+    </div>
+  </div>
+
+  <!-- 보안 신뢰 바 -->
+  <div class="trust-bar">
+    <div class="trust-bar-icon">🔒</div>
+    <div class="trust-bar-txt">
+      <strong>개인정보 보호 안내</strong><br>
+      입력하신 정보는 분석 즉시 암호화되어 안전하게 보호됩니다. 리포트 전송 후 마케팅 용도로 활용되지 않습니다.
+    </div>
+  </div>
+
+  <!-- 권위 섹션 -->
+  <div class="authority-section">
+    <div class="authority-grid">
+      <div class="authority-item">
+        <span class="authority-icon">🎯</span>
+        <div class="authority-title">기질별<br>1:1 매칭</div>
+        <div class="authority-desc">아이 성향에 딱 맞는 전집만</div>
+      </div>
+      <div class="authority-item">
+        <span class="authority-icon">🥕</span>
+        <div class="authority-title">중고·대여<br>가이드 포함</div>
+        <div class="authority-desc">현명하게 구매하는 방법까지</div>
+      </div>
+      <div class="authority-item">
+        <span class="authority-icon">📖</span>
+        <div class="authority-title">활용법까지<br>알려드려요</div>
+        <div class="authority-desc">사고 끝이 아니라 시작이에요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 세로형 플로우 -->
+  <div class="flow-section">
+    <div class="sec-label">HOW IT WORKS</div>
+    <div class="sec-title">이렇게 진행돼요</div>
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="flow-left">
+          <div class="flow-num-wrap"><div class="flow-num">1</div></div>
+        </div>
+        <div class="flow-body">
+          <span class="flow-icon">📝</span>
+          <div class="flow-step-title">가입 없이 바로 시작</div>
+          <div class="flow-step-desc">6개 질문, 1분이면 끝나요</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-left">
+          <div class="flow-num-wrap"><div class="flow-num">2</div></div>
+        </div>
+        <div class="flow-body">
+          <span class="flow-icon">🔍</span>
+          <div class="flow-step-title">우리 아이 성향 파악</div>
+          <div class="flow-step-desc">기질, 집중력, 책 선호 형태까지 꼼꼼하게 봐요</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-left">
+          <div class="flow-num-wrap"><div class="flow-num">3</div></div>
+        </div>
+        <div class="flow-body">
+          <span class="flow-icon">👁️</span>
+          <div class="flow-step-title">내 아이 성향 먼저 확인</div>
+          <div class="flow-step-desc">어떤 성향인지, 어떤 전집이 맞는지 미리 볼 수 있어요</div>
+        </div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-left">
+          <div class="flow-num-wrap"><div class="flow-num">4</div></div>
+        </div>
+        <div class="flow-body">
+          <span class="flow-icon">🔓</span>
+          <div class="flow-step-title">맞춤 리포트 받기</div>
+          <div class="flow-step-desc">상세 분석과 활용법이 담긴 리포트가 이메일로 와요</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 리포트 미리보기 -->
+  <div class="preview-section">
+    <div class="sec-label">REPORT PREVIEW</div>
+    <div class="sec-title">리포트 미리보기 <span style="font-size:14px;font-weight:300;color:var(--ink2);">(일부 공개)</span></div>
+    <div class="preview-phone">
+      <div class="preview-phone-header">
+        <div class="preview-phone-logo">Momlog LAB</div>
+        <div class="preview-phone-menu">≡</div>
+      </div>
+      <div class="preview-card">
+        <div class="preview-eyebrow">OOO 아이에게 추천하는</div>
+        <div class="preview-name">맞춤 전집 TOP3</div>
+        <div class="preview-lock-hint">
+          🔒 우리 아이만을 위한 맞춤형 활용법과 상세 분석은<br>리포트에서만 공개됩니다.
+        </div>
+        <div class="preview-list">
+          <div class="preview-item">
+            <div class="preview-item-left">
+              <div class="preview-rank">1</div>
+              <div class="preview-book-img">📗</div>
+              <div>
+                <div class="preview-book-name">아이챌린지 초비</div>
+                <div class="preview-match-tag">성향 일치율 98%</div>
+              </div>
+            </div>
+            <div class="preview-lock">🔒</div>
+          </div>
+          <div class="preview-item">
+            <div class="preview-item-left">
+              <div class="preview-rank">2</div>
+              <div class="preview-book-img">📙</div>
+              <div>
+                <div class="preview-book-name">슬기로운 생활동화</div>
+                <div class="preview-match-tag">성향 일치율 94%</div>
+              </div>
+            </div>
+            <div class="preview-lock">🔒</div>
+          </div>
+          <div class="preview-item">
+            <div class="preview-item-left">
+              <div class="preview-rank">3</div>
+              <div class="preview-book-img">📘</div>
+              <div>
+                <div class="preview-book-name">그레이트북스 자연관찰</div>
+                <div class="preview-match-tag">성향 일치율 91%</div>
+              </div>
+            </div>
+            <div class="preview-lock">🔒</div>
+          </div>
+        </div>
+        <div class="preview-blur-row">
+          <div class="bl m"></div>
+          <div class="bl s"></div>
+          <div class="bl"></div>
+        </div>
+        <div class="preview-value-hint">
+          아이에게 꼭 맞는 이유와 활용법은 리포트에서 확인하세요!
+        </div>
+        <button class="preview-unlock" onclick="scrollToAge()">
+          전체 리포트 보기 →
+        </button>
+      </div>
+    </div>
+    <div class="preview-hint">설문 완료 후 이메일로 전송돼요</div>
+  </div>
+
+  <!-- 특별함 -->
+  <div class="special-section">
+    <div class="special-label">WHY MOMLOG LAB</div>
+    <div class="special-title">맘로그랩 리포트는<br>이런 점이 특별해요.</div>
+    <div class="special-grid">
+      <div class="special-item">
+        <span class="special-icon">🎯</span>
+        <div class="special-item-title">우리 아이 기질에<br>딱 맞는 전집만</div>
+        <div class="special-item-desc">유행이 아닌 아이 성향 기준으로 골라요</div>
+      </div>
+      <div class="special-item">
+        <span class="special-icon">🥕</span>
+        <div class="special-item-title">새책·중고·대여<br>어떻게 살지도 알려줘요</div>
+        <div class="special-item-desc">전집 추천에서 구매 전략까지</div>
+      </div>
+      <div class="special-item">
+        <span class="special-icon">📅</span>
+        <div class="special-item-title">사고 나서가<br>더 중요해요</div>
+        <div class="special-item-desc">월별 활용법과 독후 활동 가이드 제공</div>
+      </div>
+      <div class="special-item">
+        <span class="special-icon">💬</span>
+        <div class="special-item-title">맘카페 후기 데이터<br>기반 추천</div>
+        <div class="special-item-desc">실제 엄마들 반응을 분석해 골라요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 월령 선택 -->
+  <div class="age-section" id="ageSec">
+    <div class="sec-label">GET STARTED</div>
+    <div class="sec-title">아이 월령을 선택해주세요</div>
+    <div class="age-grid">
+      <div class="age-card" onclick="startSurvey('baby')">
+        <span class="age-icon">🍼</span>
+        <div class="age-track">BABY TRACK</div>
+        <div class="age-range">0~36개월</div>
+        <div class="age-desc">책에 막 눈뜨는<br>영아기 아이</div>
+        <div class="age-arrow">시작하기 →</div>
+      </div>
+      <div class="age-card" onclick="startSurvey('kid')">
+        <span class="age-icon">🌿</span>
+        <div class="age-track">KID TRACK</div>
+        <div class="age-range">37개월+</div>
+        <div class="age-desc">지식이 폭발하는<br>유아기 아이</div>
+        <div class="age-arrow">시작하기 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 가격 -->
+  <div class="price-section">
+    <div class="sec-label">PRICING</div>
+    <div class="sec-title">리포트 플랜</div>
+    <div class="plan-card">
+      <div class="plan-top">
+        <div class="plan-name">라이트 분석</div>
+        <div class="plan-badge">무료</div>
+      </div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">0<span>원</span></div>
+      </div>
+      <div class="plan-desc">5가지 성향 분석 + 전집 TOP3 추천 (지금 바로 화면에서 확인)</div>
+    </div>
+    <div class="plan-card featured">
+      <div class="plan-top">
+        <div class="plan-name">프리미엄 리포트</div>
+        <div class="plan-badge">추천</div>
+      </div>
+      <div class="plan-price-wrap">
+        <div class="plan-price">19,900<span>원</span></div>
+      </div>
+      <div class="plan-features">
+        <div class="plan-feat"><div class="plan-feat-dot"></div>6각형 레이더 차트 기질 정밀 분석</div>
+        <div class="plan-feat"><div class="plan-feat-dot"></div>전집 TOP3 밀착 분석 + 타사 비교표</div>
+        <div class="plan-feat"><div class="plan-feat-dot"></div>6개월 월별 성장 로드맵</div>
+        <div class="plan-feat"><div class="plan-feat-dot"></div>당근마켓 꿀팁 + 시너지 아이템 가이드</div>
+        <div class="plan-feat"><div class="plan-feat-dot"></div>독후 활동 주차별 스케줄</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 개인정보 고지 -->
+  <div class="privacy-section">
+    <div class="privacy-title">🔒 맘로그랩은 사용자의 개인정보를 소중히 여깁니다.</div>
+    <div class="privacy-list">
+      <div class="privacy-item">
+        <span class="privacy-dot">·</span>
+        본 서비스는 회원가입 없이 이용 가능합니다.
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-dot">·</span>
+        입력하신 정보는 구글 보안 서버를 통해 안전하게 관리되며, 리포트 전송 후에는 마케팅 용도로 임의 활용되지 않습니다.
+      </div>
+      <div class="privacy-item">
+        <span class="privacy-dot">·</span>
+        개인정보 수집 및 이용에 대한 동의는 설문 마지막 단계에서 진행됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 이미 결제 링크 -->
+  <div class="confirm-link-wrap">
+    <span class="confirm-link" onclick="showConfirmPage()">이미 결제하셨나요? 주문번호로 리포트 받기 →</span>
+  </div>
+
+  <!-- 푸터 CTA -->
+  <div class="footer-cta">
+    <button class="btn-footer" onclick="scrollToAge()">지금 무료로 시작하기 →</button>
+    <div class="footer-sub">설문 1분 · 이메일 발송 · 개인정보 보호</div>
+    <div class="footer-trust">
+      <div class="trust-item"><div class="trust-dot"></div>전문가 검수</div>
+      <div class="trust-item"><div class="trust-dot"></div>광고 없음</div>
+      <div class="trust-item"><div class="trust-dot"></div>만족 보장</div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-logo">Momlog LAB</div>
+      <div class="footer-copy">© MOMLOG LAB. All rights reserved.</div>
+      <div class="footer-links">
+        <a class="footer-link">이용약관</a>
+        <a class="footer-link">개인정보처리방침</a>
+        <a class="footer-link">고객센터</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /introScreen -->
+
+<!-- 플로팅 CTA (인트로에서만) -->
+<div class="floating-cta" id="floatingCta">
+  <button class="btn-floating" onclick="scrollToAge()">무료 분석 시작하기 →</button>
+  <div class="floating-sub">1분 완성 · 회원가입 불필요</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     📋 설문 화면
+     ══════════════════════════════════════════ -->
+<div id="surveyScreen">
+  <div class="survey-header">
+    <div class="survey-header-top">
+      <button class="btn-back" onclick="goBackToIntro()">← 처음으로</button>
+      <div class="progress-info" id="progressCurrent">1 / 7</div>
+    </div>
+    <div class="progress-label" id="progressLabel"></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+  </div>
+  <div class="survey-body" id="surveyBody"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     📬 확인 페이지
+     ══════════════════════════════════════════ -->
+<div id="confirmPage">
+  <div class="confirm-header">
+    <div class="confirm-logo">Momlog <span>LAB</span></div>
+    <button class="btn-close" onclick="hideConfirmPage()">×</button>
+  </div>
+  <div class="confirm-body">
+    <div class="confirm-title">리포트 수령 확인</div>
+    <div class="confirm-desc">
+      결제 완료 후 리포트를 받지 못하셨나요?<br>
+      스마트스토어 주문번호와 연락처를 입력하시면 빠르게 처리해드려요.
+    </div>
+    <div class="confirm-form">
+      <div class="info-field">
+        <label class="info-label">스마트스토어 주문번호<span class="req">*</span></label>
+        <input type="text" class="info-input" id="cf_orderNo" placeholder="예) 2024012312345" oninput="validateConfirm()">
+      </div>
+      <div class="info-field">
+        <label class="info-label">이메일 또는 전화번호<span class="req">*</span></label>
+        <input type="text" class="info-input" id="cf_contact" placeholder="설문 시 입력하신 정보" oninput="validateConfirm()">
+      </div>
+      <button class="btn-confirm" id="confirmBtn" disabled onclick="submitConfirm()">결제 확인 요청 →</button>
+    </div>
+    <div class="confirm-success" id="confirmSuccess">
+      <div class="confirm-success-icon">📬</div>
+      <div class="confirm-success-txt">확인 요청이 접수됐어요</div>
+      <div class="confirm-success-sub">입력하신 이메일로 리포트가 발송됩니다.<br>보통 10분 이내에 도착해요.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     🎉 라이트 결과 화면
+     ══════════════════════════════════════════ -->
+<div id="resultScreen">
+  <div class="result-hero">
+    <div class="result-hero-logo">Momlog <span>LAB</span></div>
+    <div class="result-eyebrow" id="resultEyebrow">우리 아이 성향 분석 결과</div>
+    <div class="result-archetype-badge" id="resultBadge">분석형</div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-desc" id="resultDesc"></div>
+  </div>
+  <div class="result-body" id="resultBody"></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     💎 프리미엄 추가 설문 화면 (P1~P6)
+     ══════════════════════════════════════════ -->
+<div id="premiumScreen">
+  <div class="survey-header">
+    <div class="survey-header-top">
+      <button class="btn-back" onclick="cancelPremium()">← 결과로</button>
+      <div class="progress-info" id="pmProgressCurrent">1 / 6</div>
+    </div>
+    <div class="progress-label" id="pmProgressLabel"></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="pmProgressBar"></div>
+    </div>
+  </div>
+  <div class="survey-body" id="premiumBody"></div>
+</div>
+
+<!-- 로딩 -->
+<div id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">우리 아이 성향을 분석하고 있어요</div>
+  <div class="loading-sub">잠시만 기다려주세요...</div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+/* ══════════════════════════════════════════
+   ⚙️ 설정
+   ══════════════════════════════════════════ */
+const CONFIG = {
+  WEBHOOK_SURVEY:  'https://hook.us2.make.com/vz5pbktu74nt9rkn2s2jofrhyvylsg5p',
+  WEBHOOK_CONFIRM: 'https://hook.us2.make.com/vz5pbktu74nt9rkn2s2jofrhyvylsg5p',
+  SMARTSTORE: {
+    earlybird_1: 'https://smartstore.naver.com/momloglab/products/earlybird1',
+    earlybird_2: 'https://smartstore.naver.com/momloglab/products/earlybird2',
+    standard:    'https://smartstore.naver.com/momloglab/products/standard'
+  }
+};
+
+/* ─── 실시간 카운터 애니메이션 ─── */
+(function() {
+  const base = 12;
+  const el = document.getElementById('liveCount');
+  if (!el) return;
+  setInterval(() => {
+    const v = base + Math.floor(Math.random() * 6);
+    el.textContent = v + '명';
+  }, 4000);
+})();
+
+/* ─── 플로팅 CTA 스크롤 제어 ─── */
+(function() {
+  const cta = document.getElementById('floatingCta');
+  const hero = document.querySelector('.hero-cta-box');
+  if (!cta || !hero) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      cta.classList.toggle('hidden', e.isIntersecting);
+    });
+  }, { threshold: 0.5 });
+  obs.observe(hero);
+})();
+
+function scrollToAge() {
+  document.getElementById('ageSec').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════════
+   📋 설문 데이터 (무료 Freemium · 6문항)
+   ── 신규 Q1~Q6 = 기존 Q1, Q2, Q3, Q5, Q8, Q12 에서 잔류·재번호
+   ══════════════════════════════════════════ */
+const SURVEYS = {
+  baby: {
+    label: '0~36개월',
+    stages: [
+      { num: 1, title: '아이의 성장을 기록합니다',
+        desc: '아이의 월령과 집중력에 따라 추천되는 전집의 글밥과 깊이가 달라집니다. 가장 먼저 발달 단계를 확인합니다.' },
+      { num: 2, title: '아이의 성향을 관찰합니다',
+        desc: '기질은 바뀌지 않지만 환경은 바꿔줄 수 있습니다. 아이가 반응하는 신호와 선호하는 책 형태로 실패 없는 적중 도서를 찾아냅니다.' },
+      { num: 3, title: '엄마의 구매 전략을 설계합니다',
+        desc: '이미 가진 전집과 겹치지 않게, 새 책·중고·대여 중 우리 집 상황에 딱 맞는 방식을 함께 정합니다.' }
+    ],
+    questions: [
+      { stage: 1, id: 'Q1', title: '우리 아이, 지금 몇 개월인가요?',
+        desc: '월령에 맞는 전집을 정확하게 추천해드려요.',
+        options: ['👶 10~17개월 — 이제 막 책에 눈뜨는 구강기 아기','🌱 18~23개월 — 자기주장 뿜뿜! 신체·언어 폭발 준비기','💬 24~29개월 — 말문이 빵 터지는 미운 세 살','🏫 30~36개월 — 어린이집·유치원 사회생활 시작!'] },
+      { stage: 1, id: 'Q2', title: '우리 아이, 책 펴면 어느 정도 집중하나요?',
+        desc: '집중력에 따라 추천 전집의 글밥과 구성이 달라져요.',
+        options: ['⚡ 1분 컷 — 휘리릭 넘기고 바로 덮고 도망가요','👀 그림만 후다닥 — 읽어줘도 잘 안 듣고 넘겨요','🙂 한 권은 끝까지 — 엄마 무릎에서 집중해서 잘 봐요','📚 연속 독서 — "또 읽어줘!" 여러 권 연달아 요청해요'] },
+      { stage: 2, id: 'Q3', title: '새로운 소리나 낯선 촉감에 어떻게 반응하나요?',
+        desc: '모래, 밀가루, 시끄러운 장난감 등을 마주했을 때',
+        options: ['🐾 바로 달려들어요 — 호기심이 넘쳐서 바로 만져보고 탐색해요','🔭 지켜보다가 슬그머니 — 안전하다 싶으면 그때 접근해요','🙅 싫어요! — 낯선 소리나 촉감에 거부 반응을 보여요'] },
+      { stage: 2, id: 'Q4', title: '우리 아이가 가장 좋아하는 책의 형태는?',
+        desc: '아이 취향에 맞는 책을 고르는 데 가장 중요한 질문이에요.',
+        options: ['🔊 세이펜 호환책 — 콕 찍으면 소리가 나요','🎪 팝업·조작북 — 잡아당기고 펼치느라 바빠요','📗 일반 종이책(양장본) — 큼직한 그림이 시원시원해요','🧱 보드북 — 물고 빨고 던져도 끄떡없어요'] },
+      { stage: 3, id: 'Q5', title: '지금 우리 집 책장 메인 자리를 차지하는 전집은?',
+        desc: '이미 보유한 전집과 겹치지 않게 추천해드려요.',
+        options: ['🏠 생활·감성 — 추피, 베베코알라, 망고라이언 등','🎶 음악·창작 — 도레미곰, 라라랜드, 베이비올 명화음악 등','🌿 자연·지식 — 놀라운 자연, 자연이랑, 생생 자연관찰 등','✨ 아직 비싼 전집은 한 번도 안 들였어요!'] },
+      { stage: 3, id: 'Q6', title: '이번 전집, 어떤 방식으로 들이고 싶으세요?',
+        options: ['✨ 새 책 구매 — 공식 몰에서 깨끗한 새 책으로 들일래요','🥕 중고 구매 — 당근마켓 키워드 알림으로 가성비 챙길래요','📦 대여 — 한 달 빌려서 아이 반응 먼저 볼래요','🔄 구독 — 매달 알아서 배송 오는 구독형이 편할 것 같아요'] }
+    ]
+  },
+  kid: {
+    label: '37개월 이상 (4~7세)',
+    stages: [
+      { num: 1, title: '아이의 성장을 기록합니다', desc: '초등 입학 전 독서 골든타임, 진짜 문해력의 뿌리를 찾는 시간입니다.' },
+      { num: 2, title: '아이의 몰입 패턴을 관찰합니다', desc: '아이가 가장 몰입하는 지식 반응과 독서 형태를 파악합니다.' },
+      { num: 3, title: '현실적인 쇼핑 전략', desc: '공간·활용도·가격을 모두 반영해, 우리 집에 맞는 구매 방식을 찾습니다.' }
+    ],
+    questions: [
+      { stage: 1, id: 'Q1', title: '우리 아이, 지금 몇 살(몇 개월)인가요?',
+        options: ['🌱 37~47개월 (4세) — 말문 터지고 "왜?"가 폭발하는 탐구 시작기','🔍 48~59개월 (5세) — 호기심 폭발! 지식 흡수력이 가장 뛰어난 시기','📖 60~71개월 (6세) — 본격 독서 몰입! 집중력이 길어지는 시기','🎒 72개월 이상 (7세) — 예비 초등! 어휘력과 문해력이 실력이 되는 시기'] },
+      { stage: 1, id: 'Q2', title: '요즘 아이의 독서 집중력, 어느 정도인가요?',
+        options: ['⚡ 3분 컷 — 그림만 훑고 "다 봤다!" 해요','🦕 편식 독서 — 좋아하는 분야 책만 반복해서 봐요','🙂 엄마표 집중 — 읽어주면 끝까지 잘 들어요','📚 자기주도 독서 — 혼자서도 15분 이상 몰입해요'] },
+      { stage: 2, id: 'Q3', title: '새로운 지식을 접할 때 아이의 반응은?',
+        options: ['🔬 탐구형 — "이건 왜 그래?" 원리를 끝까지 파헤쳐야 해요','🔭 관찰형 — 가만히 지켜보다가 스스로 이해하는 타입이에요','🎨 직관형 — 화려한 그림이나 영상에 먼저 반응해요'] },
+      { stage: 2, id: 'Q4', title: '아이가 가장 편안해하는 독서 형태는?',
+        options: ['🖼️ 그림책 — 그림이 크고 글자가 적은 책을 좋아해요','📷 지식 전집·도감 — 실감 나는 사진과 정보가 빽빽한 책이 좋아요','🤣 학습 만화 — 캐릭터와 말풍선이 있어야 집중해요','✏️ 워크북·활동지 — 직접 풀고 스티커 붙이는 걸 좋아해요'] },
+      { stage: 3, id: 'Q5', title: '현재 거실 책장을 가장 크게 차지하는 전집은?',
+        desc: '중복 제거용, 겹치지 않게 추천드릴게요',
+        options: ['💛 인성·감성 — 안녕 마음아, 이야기 꽃할망, 행복한 명작 등','🔬 과학·자연 — 내 친구 과학공룡, 과학도깨비, 솔루토이 과학 등','🔢 수학·한글 — 내 친구 수학공룡, 꼬꼬마 수학자, 스마트 한글 크루 등','📦 기타 — 물려받은 전집이나 단행본 위주로 있어요'] },
+      { stage: 3, id: 'Q6', title: '이번 전집, 어떤 방식으로 들이고 싶으신가요?',
+        options: ['✨ 새 책 구매 — 깨끗한 공식 판매처에서 AS 확실하게 들일래요','🥕 중고 구매 — 당근마켓에서 상태 좋은 책을 가성비 있게 구할래요','📦 대여·구독 — 볼지 안 볼지 모르니 한 달씩 빌려볼래요','📗 단행본 큐레이션 — 전집보다 좋은 책 몇 권만 골라받고 싶어요'] }
+    ]
+  }
+};
+
+/* ══════════════════════════════════════════
+   💎 프리미엄 추가 설문 (P1~P6)
+   ── 아키타입 점수와 무관, 리포트 콘텐츠 생성용 입력
+   ── 수정 시 이 영역만 손대면 됩니다
+   ══════════════════════════════════════════ */
+const PREMIUM_SURVEY = {
+  baby: {
+    questions: [
+      { id:'P1', section:'발달 단계 분석', title:'요즘 아이의 말·표현은 어느 정도인가요?',
+        desc:'발달 단계에 맞춘 책 난이도를 정하는 데 사용돼요.',
+        options:['🍼 아직 옹알이 위주예요','🗣️ 단어를 몇 개 말해요','💬 두 단어를 연결해요 ("엄마 줘")','📣 짧은 문장으로 말해요'] },
+      { id:'P2', section:'미래 예측 로드맵', title:'새로운 걸 배우는 속도는 어떤가요?',
+        desc:'성장 예측과 다음 단계 추천에 반영돼요.',
+        options:['🐢 천천히, 반복해서 익혀요','🙂 보통 속도예요','🐇 한 번 보면 금방 익혀요','⚡ 또래보다 빠른 편이에요'] },
+      { id:'P3', section:'독후 활동 가이드', title:'책 읽어줄 때 아이의 상호작용은?',
+        desc:'우리 집에 맞는 독후 활동법을 처방하는 데 써요.',
+        options:['📖 혼자 보려고 해요','👂 가만히 듣기만 해요','🙋 질문하고 반응이 많아요','🤝 같이 읽고 따라 해요'] },
+      { id:'P4', section:'최적 소비 방법', title:'전집 구매 시 가장 중요한 것은?',
+        desc:'예산에 맞는 구매 전략을 짜는 데 써요.',
+        options:['💸 최저가가 최고','⚖️ 적당한 가성비','✨ 품질이 우선','👶 아이 반응이 우선'] },
+      { id:'P5', section:'시너지 아이템·선행학습', title:'지금 가장 키우고 싶은 다음 목표는?',
+        desc:'시너지 교구와 다음 단계 도서를 추천하는 데 써요.',
+        options:['🍚 생활습관','💬 언어·표현','🤗 정서·사회성','🦕 호기심·지식'] },
+      { id:'P6', section:'부모-아이 궁합 분석', title:'어머님의 양육 스타일에 가까운 건?',
+        desc:'아이 기질과 부모 스타일의 궁합(Goodness of Fit)을 봐요.',
+        options:['🌿 차분하고 일관된 편','🔥 활발하고 자극을 주는 편','🕊️ 허용적이고 자율적인 편','📋 계획적이고 체계적인 편'] }
+    ]
+  },
+  kid: {
+    questions: [
+      { id:'P1', section:'발달 단계 분석', title:'아이의 한글·문해 수준은 어느 정도인가요?',
+        desc:'발달 단계에 맞춘 책 난이도를 정하는 데 사용돼요.',
+        options:['🌱 아직 글자에 관심이 없어요','👀 글자에 관심을 보여요','📖 통글자를 읽어요','📚 혼자 읽을 수 있어요'] },
+      { id:'P2', section:'미래 예측 로드맵', title:'관심 분야의 깊이·확장은 어떤가요?',
+        desc:'성장 예측과 선행학습 추천에 반영돼요.',
+        options:['🤔 아직 뚜렷한 관심이 없어요','🎯 한 분야를 좋아해요','🔬 좋아하는 분야를 깊이 파고들어요','🌈 여러 분야로 확장 중이에요'] },
+      { id:'P3', section:'독후 활동 가이드', title:'책 읽은 후 활동·표현은 어떤가요?',
+        desc:'우리 집에 맞는 독후 활동법을 처방하는 데 써요.',
+        options:['📕 읽고 바로 끝이에요','💬 가끔 내용을 이야기해요','🎨 그림·역할놀이로 표현해요','🗣️ 질문하고 토론을 즐겨요'] },
+      { id:'P4', section:'최적 소비 방법', title:'전집 구매 시 가장 중요한 것은?',
+        desc:'예산에 맞는 구매 전략을 짜는 데 써요.',
+        options:['💸 최저가가 최고','⚖️ 가성비','📚 교육 효과','😊 아이 흥미'] },
+      { id:'P5', section:'시너지 아이템·선행학습', title:'초등 전 가장 키우고 싶은 다음 목표는?',
+        desc:'시너지 교구와 다음 단계 도서를 추천하는 데 써요.',
+        options:['📝 문해력·어휘','🤝 사회성·인성','🧠 사고력·끈기','📚 자기주도 학습'] },
+      { id:'P6', section:'부모-아이 궁합 분석', title:'어머님의 양육 스타일에 가까운 건?',
+        desc:'아이 기질과 부모 스타일의 궁합(Goodness of Fit)을 봐요.',
+        options:['🌿 차분하고 일관된 편','🔥 활발하고 자극을 주는 편','🕊️ 허용적이고 자율적인 편','📋 계획적이고 체계적인 편'] }
+    ]
+  }
+};
+
+/* ══════════════════════════════════════════
+   📦 상태
+   ══════════════════════════════════════════ */
+const state = { track: null, currentStep: 0, answers: {}, info: {}, premiumStep: 0, premiumAnswers: {} };
+function normalizePhone(raw) { return (raw || '').replace(/\D/g, ''); }
+
+/* ══════════════════════════════════════════
+   🎬 화면 전환
+   ══════════════════════════════════════════ */
+function startSurvey(track) {
+  state.track = track; state.currentStep = 0; state.answers = {}; state.info = {};
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('floatingCta').style.display = 'none';
+  document.getElementById('confirmPage').classList.remove('active');
+  document.getElementById('surveyScreen').classList.add('active');
+  window.scrollTo(0, 0);
+  renderStep();
+}
+
+function goBackToIntro() {
+  if (!confirm('처음 화면으로 돌아가시겠습니까? 지금까지의 답변은 사라집니다.')) return;
+  document.getElementById('introScreen').style.display = 'flex';
+  document.getElementById('floatingCta').style.display = '';
+  document.getElementById('surveyScreen').classList.remove('active');
+  window.scrollTo(0, 0);
+}
+
+function showConfirmPage() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('floatingCta').style.display = 'none';
+  document.getElementById('confirmPage').classList.add('active');
+  document.getElementById('confirmSuccess').classList.remove('show');
+  document.getElementById('cf_orderNo').value = '';
+  document.getElementById('cf_contact').value = '';
+  document.getElementById('confirmBtn').disabled = true;
+  window.scrollTo(0, 0);
+}
+
+function hideConfirmPage() {
+  document.getElementById('confirmPage').classList.remove('active');
+  document.getElementById('introScreen').style.display = 'flex';
+  document.getElementById('floatingCta').style.display = '';
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════
+   🖼 단계 렌더링
+   ── 총 8스텝: 6문항(0~5) + 정보입력(6) + 플랜선택(7)
+   ══════════════════════════════════════════ */
+function renderStep() {
+  const survey = SURVEYS[state.track];
+  const totalSteps = 7;
+  const step = state.currentStep;
+
+  document.getElementById('progressBar').style.width = ((step + 1) / totalSteps * 100) + '%';
+  document.getElementById('progressCurrent').textContent = `${step + 1} / ${totalSteps}`;
+  const body = document.getElementById('surveyBody');
+
+  if (step < 6) {
+    const q = survey.questions[step];
+    const stageInfo = survey.stages.find(s => s.num === q.stage);
+    document.getElementById('progressLabel').textContent = `${stageInfo.num}단계 · ${stageInfo.title}`;
+    const prevQ = step > 0 ? survey.questions[step - 1] : null;
+    const isStageFirst = !prevQ || prevQ.stage !== q.stage;
+    body.innerHTML = `
+      <div class="question active">
+        ${isStageFirst ? `<div class="stage-intro">
+          <div class="stage-intro-label">STAGE ${stageInfo.num} / ${survey.stages.length}</div>
+          <div class="stage-intro-title">${stageInfo.title}</div>
+          <div class="stage-intro-desc">${stageInfo.desc}</div>
+        </div>` : ''}
+        <div class="q-stage">${stageInfo.num}단계</div>
+        <div class="q-number">Q${step + 1}</div>
+        <div class="q-title">${q.title}</div>
+        ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
+        <div class="options">
+          ${q.options.map((opt, i) => `
+            <div class="option ${state.answers[q.id] === opt ? 'selected' : ''}"
+                 onclick="selectOption('${q.id}', this, ${i})">
+              <div class="option-marker"></div>
+              <div>${opt}</div>
+            </div>`).join('')}
+        </div>
+        <div class="nav-btns">
+          ${step > 0 ? '<button class="btn btn-prev" onclick="prevStep()">← 이전</button>' : '<div></div>'}
+          <button class="btn btn-next" id="nextBtn"
+            ${!state.answers[q.id] ? 'disabled' : ''} onclick="nextStep()">다음 →</button>
+        </div>
+      </div>`;
+
+  } else if (step === 6) {
+    document.getElementById('progressLabel').textContent = '결과 받으실 정보를 입력해주세요';
+    body.innerHTML = `
+      <div class="question active">
+        <div class="stage-intro">
+          <div class="stage-intro-label">ALMOST DONE</div>
+          <div class="stage-intro-title">마지막! 아이 정보를 입력해주세요</div>
+          <div class="stage-intro-desc">입력 후 바로 우리 아이 성향 분석 결과를 화면에서 확인할 수 있어요.</div>
+        </div>
+        <div class="info-form">
+          <div class="info-field">
+            <label class="info-label">어머님 성함<span class="req">*</span></label>
+            <input type="text" class="info-input" id="f_name" value="${state.info.name||''}" placeholder="홍길동" oninput="updateInfo()">
+          </div>
+          <div class="info-field">
+            <label class="info-label">휴대폰 번호<span class="req">*</span></label>
+            <input type="tel" class="info-input" id="f_phone" value="${state.info.phone||''}" placeholder="010-0000-0000" oninput="updateInfo()">
+            <div class="info-hint">분석 결과 안내 및 베타 운영 목적으로만 사용됩니다</div>
+          </div>
+          <div class="info-row">
+            <div class="info-field">
+              <label class="info-label">아이 이름<span class="req">*</span></label>
+              <input type="text" class="info-input" id="f_childName" value="${state.info.childName||''}" placeholder="민준" oninput="updateInfo()">
+            </div>
+            <div class="info-field">
+              <label class="info-label">아이 성별<span class="req">*</span></label>
+              <select class="info-input" id="f_childGender" onchange="updateInfo()">
+                <option value="">선택</option>
+                <option value="남아" ${state.info.childGender==='남아'?'selected':''}>남아</option>
+                <option value="여아" ${state.info.childGender==='여아'?'selected':''}>여아</option>
+              </select>
+            </div>
+          </div>
+          <div class="info-privacy">
+            <label>
+              <input type="checkbox" id="f_consent" ${state.info.consent?'checked':''} onchange="updateInfo()">
+              <span>개인정보 수집·이용에 동의합니다. 수집된 정보(성함·연락처·아이 정보)는 <strong>분석 결과 제공 및 서비스 안내 목적</strong>으로 사용되며, 관련 법령에 따라 안전하게 관리됩니다.</span>
+            </label>
+          </div>
+        </div>
+        <div class="nav-btns">
+          <button class="btn btn-prev" onclick="prevStep()">← 이전</button>
+          <button class="btn btn-next" id="nextBtn" disabled onclick="showResult()">결과 보기 →</button>
+        </div>
+      </div>`;
+    validateInfo();
+
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ══════════════════════════════════════════
+   🎯 이벤트
+   ══════════════════════════════════════════ */
+function selectOption(qid, el, idx) {
+  const q = SURVEYS[state.track].questions.find(x => x.id === qid);
+  state.answers[qid] = q.options[idx];
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('nextBtn').disabled = false;
+}
+function prevStep() { if (state.currentStep > 0) { state.currentStep--; renderStep(); } }
+function nextStep() { if (state.currentStep < 6) { state.currentStep++; renderStep(); } }
+function updateInfo() {
+  state.info.name        = document.getElementById('f_name').value.trim();
+  state.info.phone       = document.getElementById('f_phone').value.trim();
+  state.info.childName   = document.getElementById('f_childName').value.trim();
+  state.info.childGender = document.getElementById('f_childGender').value;
+  state.info.consent     = document.getElementById('f_consent').checked;
+  validateInfo();
+}
+function validateInfo() {
+  const i = state.info;
+  const phoneOk = normalizePhone(i.phone).length >= 10;
+  const ok = i.name && phoneOk && i.childName && i.childGender && i.consent;
+  document.getElementById('nextBtn').disabled = !ok;
+}
+function validateConfirm() {
+  const o = document.getElementById('cf_orderNo').value.trim();
+  const c = document.getElementById('cf_contact').value.trim();
+  document.getElementById('confirmBtn').disabled = !(o.length >= 8 && c.length >= 5);
+}
+
+/* ══════════════════════════════════════════
+   🧠 추천 엔진 (DB + 규칙표 내장)
+   ══════════════════════════════════════════ */
+const ARCH = ['analyst','storyteller','explorer','expressor','guardian'];
+const ARCH_KO = { analyst:'분석형', storyteller:'이야기형', explorer:'탐구형', expressor:'표현형', guardian:'안정형' };
+const ARCH_DESC = {
+  analyst:    { title:'<em>지식</em>을 파고드는 분석가', desc:'원리와 규칙을 좋아하고, "왜?"라는 질문을 멈추지 않는 아이예요. 수·과학·백과처럼 깊이 있는 책에서 가장 빛납니다.' },
+  storyteller:{ title:'<em>이야기</em>에 빠져드는 공감가', desc:'감정과 서사를 통해 세상을 배우는 아이예요. 인성·명작·전래동화 같은 이야기책에 깊이 몰입합니다.' },
+  explorer:   { title:'<em>세상</em>이 궁금한 탐험가', desc:'직접 보고 만지며 발견하는 걸 즐기는 아이예요. 자연·관찰·조작 책에서 호기심이 폭발합니다.' },
+  expressor:  { title:'<em>감각</em>으로 표현하는 예술가', desc:'음악·그림·리듬에 민감하게 반응하는 아이예요. 감성·예술·음악 책에서 풍부하게 표현합니다.' },
+  guardian:   { title:'<em>안정</em>을 좋아하는 생활러', desc:'익숙하고 반복되는 일상에서 편안함을 느끼는 아이예요. 생활습관·훈육 책으로 차근차근 자랍니다.' }
+};
+
+// 전집 DB (시트2 정답본 · 61종) — [id,name,publisher,category,price,age_min,age_max,band,purchase, a,s,ex,exp,g, urls...]
+const BOOK_DB = [
+["B001","망고라이언 1: 왜 안돼요","글뿌리","생활/훈육",200000,18,36,"baby","new",25,53,25,25,54],
+["B002","망고라이언 2: 어떡해요","글뿌리","생활/훈육",200000,24,40,"baby","new",25,67,25,25,54],
+["B003","망고라이언 3: 원생활","글뿌리","생활/사회성",150000,24,36,"baby","new",25,53,45,25,44],
+["B004","공룡 대발이 1: 만나요","봄봄스쿨","생활/감각",100000,18,36,"baby","used",25,25,53,25,44],
+["B005","공룡 대발이 2: 생활","봄봄스쿨","생활/훈육",100000,24,40,"baby","used",25,39,53,25,76],
+["B006","추피의 생활이야기","무지개","생활/공감",180000,18,48,"baby","new",25,39,25,25,58],
+["B007","도레미곰","그레이트","감성/음악",380000,18,48,"baby","new",25,25,25,81,25],
+["B008","베베코알라","그레이트","미디어/감성",270000,18,48,"baby","new",25,25,25,53,25],
+["B009","돌잡이 토탈패키지","천재교육","감각/조작",300000,10,24,"baby","new",25,25,25,39,53],
+["B010","프뢰벨 영아다중","프뢰벨","프리미엄/조작",600000,6,24,"baby","new",28,28,28,52,52],
+["B011","프뢰벨 말하기","프뢰벨","언어/챈트",400000,15,30,"baby","new",25,25,25,67,30],
+["B012","핀덴 베베","한솔교육","탈것/조작",600000,10,30,"baby","new",25,25,57,43,40],
+["B013","맥밀란 퍼스트","키즈스콜레","감성/조작",200000,6,36,"baby","new",25,25,25,67,40],
+["B014","아이챌린지 월령","NE능률","구독/생활",0,12,36,"baby","rent",25,25,25,25,53],
+["B015","두두스토리 토탈","두두스토리","미디어/장난감",400000,0,24,"baby","new",25,25,25,31,35],
+["B016","시작완성 풀패키지","블루래빗","가성비/홈쇼핑",300000,18,36,"baby","used",25,25,25,25,33],
+["B017","생생 자연관찰","블루래빗","자연/실사",300000,15,48,"baby","used",25,25,57,25,29],
+["B018","곰곰이 생활동화","한국글랜도","가성비/외출",50000,18,36,"baby","used",25,25,25,25,53],
+["B019","노부영 베이비","제이와이","영어/노래",300000,12,48,"baby","new",31,25,25,51,25],
+["B020","튼튼영어 베이비리그","튼튼영어","영어/학습",600000,18,48,"baby","new",31,25,25,37,25],
+["B021","베이비올 명화음악","아람","예술/감성",350000,18,48,"baby","new",25,25,25,67,25],
+["B022","베이비올 수과학","아람","수과학/논리",350000,24,60,"baby","new",53,25,25,25,25],
+["B023","베스트 차일드애플","스마일북스","창작/조작",350000,24,60,"baby","new",25,25,25,67,30],
+["B024","바나나 세계창작","아람","창작/예술",350000,24,60,"baby","used",25,25,41,67,25],
+["B025","릴라팝","도서 성우","팝업/조작",350000,24,60,"baby","new",25,25,25,67,30],
+["B026","라라랜드","아람","음악/시각",380000,24,60,"baby","new",25,25,25,81,25],
+["B027","빅키즈 수학","천재교육","수학/입문",200000,18,36,"baby","used",39,25,25,25,44],
+["B028","잉글리쉬 에그","잉글리쉬에그","영어/음원",500000,12,48,"baby","new",31,25,25,51,25],
+["B029","튼튼영어 주니어","튼튼영어","영어/활동",500000,24,48,"baby","new",31,25,25,51,25],
+["B030","월드패밀리잉글리쉬","디즈니","영어/프리미엄",1200000,12,48,"baby","used",34,28,28,54,28],
+["B031","브레인나우","브레인나우","우뇌/교구",300000,18,36,"baby","new",53,25,25,25,30],
+["B032","꼬꼬마 수학자","아람","수학/이야기",250000,24,48,"baby","used",53,33,25,33,25],
+["K001","망고라이언 4: 성교육","글뿌리","성교육/인성",150000,36,60,"kid","new",25,53,41,25,25],
+["K002","안녕 마음아","그레이트","인성/감정",380000,36,72,"kid","new",25,67,25,25,25],
+["K003","공룡 대발이 3: 수과학","봄봄스쿨","수과학/입문",120000,30,48,"kid","used",53,25,57,25,25],
+["K004","내친구 과학공룡","그레이트","과학/탐구",380000,36,72,"kid","new",54,30,57,25,25],
+["K005","내친구 수학공룡","그레이트","수학/스토리",380000,36,72,"kid","new",53,33,41,30,25],
+["K006","놀라운 자연 (놀자)","그레이트","자연/조작",480000,18,60,"kid","new",25,25,73,38,30],
+["K007","프리미엄 100 자연이랑","아람","자연/예술",500000,24,60,"kid","new",28,28,44,42,28],
+["K008","야호 자연아","여원미디어","자연/인지",300000,24,60,"kid","used",25,25,67,25,25],
+["K009","마이퍼스트월드","키즈스콜레","백과/탐구",500000,24,72,"kid","new",53,25,57,25,25],
+["K010","생생다큐 자연관찰","프뢰벨","자연/다큐",400000,24,60,"kid","new",25,25,73,25,25],
+["K011","드림차일드애플","헤르만헤세","창작/글밥",300000,30,60,"kid","used",25,25,25,39,29],
+["K012","사파리 똑똑모두누리","키즈스콜레","창작/예술",450000,30,72,"kid","new",25,30,25,53,25],
+["K013","스텝스 (STEPS)","키즈스콜레","인성/테라피",450000,36,72,"kid","new",25,67,25,25,25],
+["K014","비룡소 사각사각","비룡소","창작/유머",300000,30,72,"kid","new",25,30,25,39,25],
+["K015","내 친구 사회공룡","그레이트","사회/규칙",380000,36,72,"kid","new",25,30,67,25,25],
+["K016","이야기 꽃할망","그레이트","전래/문학",350000,36,72,"kid","new",25,53,25,25,39],
+["K017","행복한 명작","그레이트","명작/문학",380000,36,72,"kid","new",25,67,25,25,25],
+["K018","그리스 로마 신화","아람","인문/신화",350000,48,84,"kid","used",35,67,25,25,25],
+["K019","뒤집기 시리즈","성우","지식/심화",350000,48,84,"kid","used",53,30,25,25,25],
+["K020","픽처북 킨더랜드","킨더랜드","창작/감성",350000,36,72,"kid","rent",25,30,25,53,25],
+["K021","세계문학 책마중","그레이트","문학/소양",380000,48,84,"kid","used",35,53,25,25,25],
+["K022","요술항아리","아람","전래/심화",350000,48,84,"kid","used",35,30,25,25,53],
+["K023","과학도깨비","아람","과학/원리",350000,48,84,"kid","used",63,30,41,25,25],
+["K024","솔루토이 과학","교원","과학/방대",400000,48,84,"kid","used",49,30,41,25,25],
+["K025","탄탄 원리과학","여원미디어","과학/원리",350000,48,84,"kid","rent",63,30,41,25,25],
+["K026","스마트 한글 크루","웅진","한글/학습",350000,48,84,"kid","new",53,30,25,25,25],
+["K027","어린이 백과사전","웅진","백과/지식",400000,48,84,"kid","new",67,30,25,25,25],
+["K028","인체박물관","그레이트","과학/인체",380000,48,84,"kid","used",63,30,41,25,25],
+["K029","솔루토이 위인","교원","위인/롤모델",400000,60,96,"kid","used",49,40,25,25,25]
+];
+
+// 규칙표 (확정본 · Baby Q2 연속독서 3점, Kid Q4 도감 3점 반영)
+const RULE = {
+  baby: {
+    Q2:[{explorer:1,guardian:2},{explorer:2,expressor:1},{analyst:1,storyteller:2},{analyst:1,storyteller:2}],
+    Q3:[{explorer:3},{analyst:2,guardian:1},{storyteller:1,guardian:2}],
+    Q4:[{expressor:2,guardian:1},{explorer:2,expressor:1},{analyst:1,storyteller:2},{explorer:1,guardian:2}]
+  },
+  kid: {
+    Q2:[{explorer:2,guardian:1},{analyst:1,explorer:2},{storyteller:2},{analyst:2,storyteller:1}],
+    Q3:[{analyst:3},{analyst:1,explorer:2},{explorer:1,expressor:2}],
+    Q4:[{storyteller:1,expressor:2},{analyst:2,explorer:1},{storyteller:1,explorer:1,expressor:1},{analyst:2,guardian:1}]
+  }
+};
+const AGE_RANGE = { baby:[[10,17],[18,23],[24,29],[30,36]], kid:[[37,47],[48,59],[60,71],[72,96]] };
+const Q5_PENALTY = { baby:[['guardian'],['expressor'],['explorer'],[]], kid:[['storyteller'],['analyst','explorer'],['analyst'],[]] };
+const Q6_PREF = ['new','used','rent','new'];
+
+function getAnswerIndex(track, qid) {
+  const q = SURVEYS[track].questions.find(x => x.id === qid);
+  return q.options.indexOf(state.answers[qid]);
+}
+
+function computeRecommendation() {
+  const track = state.track;
+  const i1 = getAnswerIndex(track,'Q1');
+  const i2 = getAnswerIndex(track,'Q2');
+  const i3 = getAnswerIndex(track,'Q3');
+  const i4 = getAnswerIndex(track,'Q4');
+  const i5 = getAnswerIndex(track,'Q5');
+  const i6 = getAnswerIndex(track,'Q6');
+
+  // 1) 아이 아키타입 점수
+  const child = { analyst:0, storyteller:0, explorer:0, expressor:0, guardian:0 };
+  [['Q2',i2],['Q3',i3],['Q4',i4]].forEach(([q,idx]) => {
+    const w = RULE[track][q][idx] || {};
+    for (const a in w) child[a] += w[a];
+  });
+  let primary = ARCH[0];
+  ARCH.forEach(a => { if (child[a] > child[primary]) primary = a; });
+
+  // 2) 월령 필터
+  const [lo,hi] = AGE_RANGE[track][i1] || [0,200];
+  const archIdx = { analyst:9, storyteller:10, explorer:11, expressor:12, guardian:13 };
+  const pen = Q5_PENALTY[track][i5] || [];
+  const pref = Q6_PREF[i6] || 'new';
+
+  const ranked = BOOK_DB
+    .filter(r => r[7] === track && r[5] <= hi && r[6] >= lo)
+    .map(r => {
+      let s = r[archIdx[primary]];
+      // 전집 자체의 대표 아키타입(최고점 컬럼)이 감점 대상이면 0.7배
+      const sc = { analyst:r[9], storyteller:r[10], explorer:r[11], expressor:r[12], guardian:r[13] };
+      let bookTop = ARCH[0]; ARCH.forEach(a => { if (sc[a] > sc[bookTop]) bookTop = a; });
+      if (pen.includes(bookTop)) s *= 0.7;
+      if (r[8] === pref) s += 5;
+      return { row:r, score:s };
+    })
+    .sort((a,b) => b.score - a.score);
+
+  const maxScore = ranked.length ? ranked[0].score : 100;
+  const top3 = ranked.slice(0,3).map((x,idx) => ({
+    id:x.row[0], name:x.row[1], publisher:x.row[2], price:x.row[4],
+    purchase:x.row[8],
+    // 매칭률: 1위 기준 상대값을 88~98% 구간으로 보기 좋게 변환
+    match: Math.round(98 - idx*3 - Math.max(0,(maxScore - x.score))/maxScore*6)
+  }));
+  return { primary, child, top3 };
+}
+
+/* ══════════════════════════════════════════
+   🎉 결과 화면 표시
+   ══════════════════════════════════════════ */
+function showResult() {
+  document.getElementById('loadingOverlay').classList.add('active');
+  const rec = computeRecommendation();
+  const submissionId = 'ML_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+
+  // 웹훅 전송 (영업·B2B용 데이터 적재) — 결과 표시는 이것과 무관하게 진행
+  const payload = {
+    submission_id: submissionId, track: state.track, track_label: SURVEYS[state.track].label,
+    submitted_at: new Date().toISOString(), tier: 'lite',
+    user_name: state.info.name, user_phone: state.info.phone,
+    user_phone_normalized: normalizePhone(state.info.phone),
+    child_name: state.info.childName, child_gender: state.info.childGender,
+    Q1:state.answers.Q1,Q2:state.answers.Q2,Q3:state.answers.Q3,
+    Q4:state.answers.Q4,Q5:state.answers.Q5,Q6:state.answers.Q6,
+    result_archetype: rec.primary,
+    result_top3: rec.top3.map(b => b.id).join(','),
+    score_analyst: rec.child.analyst, score_storyteller: rec.child.storyteller,
+    score_explorer: rec.child.explorer, score_expressor: rec.child.expressor,
+    score_guardian: rec.child.guardian
+  };
+  try {
+    fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  } catch(e) { console.error('Webhook error:', e); }
+
+  setTimeout(() => renderResult(rec), 1400);
+}
+
+function renderResult(rec) {
+  const childName = state.info.childName || '우리 아이';
+  document.getElementById('loadingOverlay').classList.remove('active');
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('surveyScreen').classList.remove('active');
+  document.getElementById('confirmPage').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+
+  // 히어로
+  document.getElementById('resultEyebrow').textContent = `${childName}(이)의 성향 분석 결과`;
+  document.getElementById('resultBadge').textContent = ARCH_KO[rec.primary];
+  document.getElementById('resultTitle').innerHTML = `${childName}은(는)<br>${ARCH_DESC[rec.primary].title}`;
+  document.getElementById('resultDesc').textContent = ARCH_DESC[rec.primary].desc;
+
+  // 점수 바 (최댓값 기준 정규화)
+  const maxC = Math.max(...ARCH.map(a => rec.child[a]), 1);
+  const scoreRows = ARCH.map(a => {
+    const pct = Math.round(rec.child[a] / maxC * 100);
+    const isTop = (a === rec.primary);
+    return `<div class="score-row">
+      <div class="score-label">${ARCH_KO[a]}</div>
+      <div class="score-bar-track"><div class="score-bar-fill ${isTop?'top':''}" style="width:0%" data-w="${pct}"></div></div>
+      <div class="score-val">${rec.child[a]}</div>
+    </div>`;
+  }).join('');
+
+  // TOP3 (대안 A: 전집명·매칭률 공개, 이유·활용법 잠금)
+  const recCards = rec.top3.map((b, idx) => {
+    const rank = idx + 1;
+    const priceTxt = b.price > 0 ? (b.price/10000) + '만원대' : '구독형';
+    const purchaseKo = { new:'새책 추천', used:'중고 추천', rent:'대여 추천' }[b.purchase] || '';
+    return `<div class="rec-card ${rank===1?'rank1':''}">
+      <div class="rec-card-top">
+        <div class="rec-rank-badge">${rank}</div>
+        <div class="rec-info">
+          <div class="rec-name">${b.name}</div>
+          <div class="rec-meta">${b.publisher} · ${priceTxt} · ${purchaseKo}</div>
+          <div class="rec-match">
+            <div class="rec-match-bar"><div class="rec-match-fill" style="width:${b.match}%"></div></div>
+            <div class="rec-match-txt">성향 일치율 ${b.match}%</div>
+          </div>
+        </div>
+      </div>
+      <div class="rec-locked">
+        <span class="rec-locked-icon">🔒</span>
+        <span class="rec-locked-txt"><strong>왜 ${childName}에게 맞는지</strong>와 <strong>이 전집 200% 활용법</strong>은 프리미엄 리포트에서 확인할 수 있어요.</span>
+      </div>
+      <div class="rec-buy-btns" id="buy-${b.id}">
+        <!-- 링크가 채워지면 JS가 여기에 구매 버튼을 노출합니다 -->
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('resultBody').innerHTML = `
+    <div class="score-section">
+      <div class="sec-label">TEMPERAMENT</div>
+      <div class="sec-title">${childName}의 5가지 성향 점수</div>
+      <div class="score-card">${scoreRows}</div>
+    </div>
+    <div class="rec-section">
+      <div class="sec-label">RECOMMENDATION</div>
+      <div class="sec-title">${childName}에게 맞는 전집 TOP 3</div>
+      ${recCards}
+    </div>
+    <div class="paywall">
+      <div class="paywall-label">PREMIUM REPORT</div>
+      <div class="paywall-title">${childName}만을 위한<br><em>완전 분석 리포트</em>가 준비됐어요</div>
+      <div class="paywall-list">
+        <div class="paywall-item"><span class="paywall-check">✓</span><span>TOP3가 <strong>왜 우리 아이에게 맞는지</strong> 밀착 분석</span></div>
+        <div class="paywall-item"><span class="paywall-check">✓</span><span>전집별 <strong>월별·주차별 활용 스케줄</strong></span></div>
+        <div class="paywall-item"><span class="paywall-check">✓</span><span>6개월 <strong>성장 로드맵</strong> + 시너지 아이템</span></div>
+        <div class="paywall-item"><span class="paywall-check">✓</span><span>새책·중고·대여 <strong>구매 전략 가이드</strong></span></div>
+      </div>
+      <button class="paywall-btn" onclick="startPremium()">프리미엄 리포트 받기 →</button>
+      <div class="paywall-price">베타 기간 한정 <strong>특가</strong> 제공 예정</div>
+    </div>
+    <div class="result-restart">
+      <button class="result-restart-btn" onclick="restartSurvey()">처음부터 다시하기</button>
+    </div>
+    <div class="result-disclaimer">
+      ※ 본 결과는 입력하신 6개 문항을 바탕으로 한 <strong>성향 참고 자료</strong>이며, 의학적·발달 진단이 아닙니다. 아이 발달에 우려가 있으시면 전문가 상담을 권장합니다.
+    </div>`;
+
+  // 점수 바 애니메이션
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  }, 100);
+
+  // 구매 링크가 있으면 버튼 노출 (지금은 DB에 링크 없음 → 자동 숨김)
+  attachBuyButtons(rec.top3);
+  window.scrollTo(0, 0);
+}
+
+// 링크 채워지면 자동으로 구매 버튼 노출 (현재 BOOK_DB에 URL 컬럼 없음 → 미노출)
+function attachBuyButtons(top3) {
+  top3.forEach(b => {
+    const wrap = document.getElementById('buy-' + b.id);
+    if (!wrap) return;
+    const links = (BOOK_LINKS && BOOK_LINKS[b.id]) ? BOOK_LINKS[b.id] : null;
+    if (!links) return;
+    let html = '';
+    if (links.cp) html += `<a class="rec-buy-btn" href="${links.cp}" target="_blank" rel="noopener">쿠팡</a>`;
+    if (links.nv) html += `<a class="rec-buy-btn" href="${links.nv}" target="_blank" rel="noopener">네이버</a>`;
+    if (links.dg) html += `<a class="rec-buy-btn" href="${links.dg}" target="_blank" rel="noopener">당근</a>`;
+    if (html) { wrap.innerHTML = html; wrap.classList.add('show'); }
+  });
+}
+// 나중에 Bitly 링크 채우면 여기에 { B001:{cp:'...',nv:'...',dg:'...'}, ... } 형태로 입력
+const BOOK_LINKS = {};
+
+function restartSurvey() {
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('introScreen').style.display = 'flex';
+  document.getElementById('floatingCta').style.display = '';
+  state.track = null; state.currentStep = 0; state.answers = {}; state.info = {};
+  state.premiumStep = 0; state.premiumAnswers = {};
+  window.scrollTo(0, 0);
+}
+
+/* ══════════════════════════════════════════
+   💎 프리미엄 설문 흐름 (P1~P6 → 결제)
+   ══════════════════════════════════════════ */
+function startPremium() {
+  state.premiumStep = 0;
+  state.premiumAnswers = {};
+  document.getElementById('resultScreen').classList.remove('active');
+  document.getElementById('premiumScreen').classList.add('active');
+  window.scrollTo(0, 0);
+  renderPremiumStep();
+}
+
+function cancelPremium() {
+  document.getElementById('premiumScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function renderPremiumStep() {
+  const survey = PREMIUM_SURVEY[state.track];
+  const total = 6;
+  const step = state.premiumStep;
+  const q = survey.questions[step];
+
+  document.getElementById('pmProgressBar').style.width = ((step + 1) / total * 100) + '%';
+  document.getElementById('pmProgressCurrent').textContent = `${step + 1} / ${total}`;
+  document.getElementById('pmProgressLabel').textContent = `프리미엄 정밀 분석 · ${q.section}`;
+
+  const body = document.getElementById('premiumBody');
+  const isFirst = (step === 0);
+  body.innerHTML = `
+    <div class="question active">
+      ${isFirst ? `<div class="stage-intro">
+        <div class="stage-intro-label">PREMIUM ANALYSIS</div>
+        <div class="stage-intro-title">조금 더 깊이 들어가 볼게요</div>
+        <div class="stage-intro-desc">발달 단계와 가정 환경을 6가지만 더 여쭤볼게요. 이 답변으로 ${state.info.childName||'우리 아이'}만의 완전 분석 리포트가 만들어져요.</div>
+      </div>` : ''}
+      <div class="q-stage">${q.section}</div>
+      <div class="q-number">P${step + 1}</div>
+      <div class="q-title">${q.title}</div>
+      ${q.desc ? `<div class="q-desc">${q.desc}</div>` : ''}
+      <div class="options">
+        ${q.options.map((opt, i) => `
+          <div class="option ${state.premiumAnswers[q.id] === opt ? 'selected' : ''}"
+               onclick="selectPremiumOption('${q.id}', this, ${i})">
+            <div class="option-marker"></div>
+            <div>${opt}</div>
+          </div>`).join('')}
+      </div>
+      <div class="nav-btns">
+        ${step > 0 ? '<button class="btn btn-prev" onclick="prevPremiumStep()">← 이전</button>' : '<div></div>'}
+        <button class="btn btn-next" id="pmNextBtn" ${!state.premiumAnswers[q.id] ? 'disabled' : ''} onclick="nextPremiumStep()">
+          ${step === total - 1 ? '결제하고 리포트 받기 →' : '다음 →'}
+        </button>
+      </div>
+    </div>`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectPremiumOption(qid, el, idx) {
+  const q = PREMIUM_SURVEY[state.track].questions.find(x => x.id === qid);
+  state.premiumAnswers[qid] = q.options[idx];
+  document.querySelectorAll('#premiumBody .option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('pmNextBtn').disabled = false;
+}
+
+function prevPremiumStep() {
+  if (state.premiumStep > 0) { state.premiumStep--; renderPremiumStep(); }
+  else cancelPremium();
+}
+
+function nextPremiumStep() {
+  if (state.premiumStep < 5) { state.premiumStep++; renderPremiumStep(); }
+  else submitPremiumAndPay();
+}
+
+async function submitPremiumAndPay() {
+  document.getElementById('loadingOverlay').classList.add('active');
+  const submissionId = 'MLP_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+  const rec = computeRecommendation();
+  // 라이트 답 + 프리미엄 답 + 결과를 함께 전송 (PDF 생성용 데이터)
+  const payload = {
+    submission_id: submissionId, track: state.track, track_label: SURVEYS[state.track].label,
+    submitted_at: new Date().toISOString(), tier: 'premium',
+    user_name: state.info.name, user_phone: state.info.phone,
+    user_phone_normalized: normalizePhone(state.info.phone),
+    child_name: state.info.childName, child_gender: state.info.childGender,
+    Q1:state.answers.Q1,Q2:state.answers.Q2,Q3:state.answers.Q3,
+    Q4:state.answers.Q4,Q5:state.answers.Q5,Q6:state.answers.Q6,
+    P1:state.premiumAnswers.P1,P2:state.premiumAnswers.P2,P3:state.premiumAnswers.P3,
+    P4:state.premiumAnswers.P4,P5:state.premiumAnswers.P5,P6:state.premiumAnswers.P6,
+    result_archetype: rec.primary,
+    result_top3: rec.top3.map(b => b.id).join(','),
+    score_analyst: rec.child.analyst, score_storyteller: rec.child.storyteller,
+    score_explorer: rec.child.explorer, score_expressor: rec.child.expressor,
+    score_guardian: rec.child.guardian,
+    payment_status: 'pending', order_no: ''
+  };
+  try {
+    await fetch(CONFIG.WEBHOOK_SURVEY, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  } catch(e) { console.error('Premium webhook error:', e); }
+  // 스마트스토어 프리미엄 상품으로 이동
+  setTimeout(() => { window.location.href = CONFIG.SMARTSTORE.standard + '?sid=' + submissionId; }, 1500);
+}
+
+async function submitConfirm() {
+  const orderNo = document.getElementById('cf_orderNo').value.trim();
+  const contact = document.getElementById('cf_contact').value.trim();
+  const isEmail = contact.includes('@');
+  const payload = {
+    event_type: 'order_confirm', order_no: orderNo,
+    contact_type: isEmail ? 'email' : 'phone',
+    contact_value: isEmail ? contact : normalizePhone(contact),
+    submitted_at: new Date().toISOString()
+  };
+  document.getElementById('confirmBtn').disabled = true;
+  document.getElementById('confirmBtn').textContent = '확인 중...';
+  try {
+    await fetch(CONFIG.WEBHOOK_CONFIRM, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+  } catch(e) { console.error('Confirm webhook error:', e); }
+  document.getElementById('confirmSuccess').classList.add('show');
+  document.getElementById('confirmBtn').textContent = '결제 확인 요청 →';
+}
+</script>
+</body>
+</html>
