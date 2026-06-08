@@ -2,1372 +2,710 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Momlog LAB — 우리 아이 맞춤 독서 처방전</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맘로그랩 — 검증된 분석법으로 읽는 우리 아이</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-/* ══════════════════════════════════════════
-   🎨 디자인 토큰
-   ══════════════════════════════════════════ */
-:root {
-  --navy:       #1a2744;
-  --navy-deep:  #111c33;
-  --navy-mid:   #2c3d5e;
-  --beige:      #f5ede0;
-  --beige-light:#fdf8f2;
-  --beige-mid:  #ede0cc;
-  --beige-dark: #d4c4a8;
-  --ivory:      #fefcf7;
-  --ink:        #1a2744;
-  --ink2:       #4a5568;
-  --ink3:       #8a9ab0;
-  --white:      #ffffff;
-  --border:     #e0d8cc;
-  --ff-serif:   'Noto Sans KR', sans-serif;
-  --ff-sans:    'Noto Sans KR', sans-serif;
-  --ff-en:      'Montserrat', sans-serif;
-}
+  :root{
+    --beige:#F1E6D0; --beige-2:#E7D6B8; --gold:#C7A35E; --gold-deep:#A07B3E;
+    --sky:#BBDDF0; --sky-2:#9CCBE8; --sky-deep:#3E8CC2; --sky-deeper:#2E72A6;
+    --ink:#2B2A28; --soft:#6E665A; --line:#E7DDC9;
+    --cream:#FBF6EC; --cream-2:#F4EAD6;
+    --radius:22px; --shadow:0 14px 40px -20px rgba(60,90,120,.35);
+    --shadow-sm:0 8px 24px -16px rgba(60,90,120,.4);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{font-family:'Pretendard',sans-serif;background:#000;color:var(--ink);
+    line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .phone{max-width:430px;margin:0 auto;background:var(--cream);min-height:100vh;position:relative;overflow:hidden}
+  section{padding:54px 24px;position:relative}
+  .grad-text{background:linear-gradient(120deg,var(--sky-deep),var(--sky-deeper));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .eyebrow{font-size:12.5px;font-weight:800;color:var(--sky-deeper);letter-spacing:.04em;
+    display:inline-flex;align-items:center;gap:7px;margin-bottom:14px}
+  .eyebrow.gold{color:var(--gold-deep)}
+  h1{font-size:28px;font-weight:800;line-height:1.44;letter-spacing:-.02em}
+  h2{font-size:24px;font-weight:800;line-height:1.42;letter-spacing:-.02em}
+  h3{font-size:17px;font-weight:800}
+  p.lead{font-size:15px;color:var(--soft);margin-top:14px;font-weight:500}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: var(--ff-sans);
-  background: var(--beige-light);
-  color: var(--ink);
-  -webkit-font-smoothing: antialiased;
-}
+  .btn{display:flex;align-items:center;justify-content:space-between;width:100%;cursor:pointer;border:none;
+    background:linear-gradient(135deg,var(--sky-deep),var(--sky-deeper));color:#fff;font-weight:800;
+    font-size:16px;padding:18px 24px;border-radius:18px;font-family:inherit;
+    box-shadow:0 14px 30px -12px rgba(46,114,166,.65);transition:transform .15s}
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .btn .arr{font-size:18px}
 
-#app {
-  max-width: 480px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: var(--beige-light);
-  position: relative;
-  overflow-x: hidden;
-}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes twinkle{0%,100%{opacity:.3;transform:scale(.85)}50%{opacity:.95;transform:scale(1.1)}}
+  .spark{position:absolute;pointer-events:none}
+  .cloud{position:absolute;background:#fff;border-radius:100px;pointer-events:none}
+  .cloud::before,.cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
 
-/* ══════════════════════════════════════════
-   🏠 인트로
-   ══════════════════════════════════════════ */
-#introScreen { display: flex; flex-direction: column; min-height: 100vh; }
+  /* ===== HERO ===== */
+  .hero{padding:0;position:relative;border-bottom-left-radius:30px;border-bottom-right-radius:30px;overflow:hidden;
+    aspect-ratio:9/14.5;display:flex;flex-direction:column;
+    background:linear-gradient(155deg,#A6CEE8 0%,#C9E0EF 30%,#EAD9BE 70%,#F4EAD6 100%)}
+  .mesh div{position:absolute;border-radius:50%;filter:blur(2px)}
+  .m1{width:300px;height:300px;background:radial-gradient(circle,rgba(155,203,232,.95),rgba(155,203,232,0) 70%);top:-70px;right:-90px}
+  .m2{width:260px;height:260px;background:radial-gradient(circle,rgba(166,206,232,.85),rgba(166,206,232,0) 70%);top:90px;left:-110px}
+  .m3{width:340px;height:340px;background:radial-gradient(circle,rgba(247,236,214,.97),rgba(247,236,214,0) 70%);bottom:-120px;right:-80px}
+  .m4{width:200px;height:200px;background:radial-gradient(circle,rgba(234,217,190,.9),rgba(234,217,190,0) 70%);bottom:40px;left:-70px}
+  .grain{position:absolute;inset:0;opacity:.04;background-image:radial-gradient(rgba(0,0,0,.6) .5px,transparent .5px);background-size:3px 3px}
+  .deco{position:absolute;inset:0;z-index:2;overflow:hidden}
+  .deco .c1{width:64px;height:20px;top:80px;left:26px;opacity:.55;animation:float 9s ease-in-out infinite}
+  .deco .c1::before{width:30px;height:30px;top:-14px;left:8px}.deco .c1::after{width:22px;height:22px;top:-9px;left:30px}
+  .deco .c2{width:48px;height:15px;top:158px;right:34px;opacity:.4;animation:float 11s ease-in-out infinite .6s}
+  .deco .c2::before{width:22px;height:22px;top:-10px;left:6px}.deco .c2::after{width:17px;height:17px;top:-7px;left:24px}
+  .deco .s1{top:128px;left:60%;animation:twinkle 3.2s ease-in-out infinite}
+  .deco .s2{top:210px;left:20%;animation:twinkle 3.8s ease-in-out infinite .8s}
+  .deco .s3{top:64px;right:60px;animation:twinkle 4.2s ease-in-out infinite 1.4s}
+  .deco .bk1{position:absolute;top:255px;right:38px;transform:rotate(-8deg);animation:float 8s ease-in-out infinite .3s}
+  .deco .bk2{position:absolute;top:182px;left:52px;transform:rotate(7deg);animation:float 10s ease-in-out infinite 1s}
+  .deco .dots{position:absolute;top:175px;left:0;width:100%;opacity:.5}
+  .pdot{position:absolute;border-radius:50%}
+  .pd1{width:9px;height:9px;background:var(--sky-deep);top:108px;left:34px;opacity:.5;animation:float 7s ease-in-out infinite}
+  .pd3{width:11px;height:11px;background:var(--sky-2);top:96px;right:48px;opacity:.55;animation:float 8.5s ease-in-out infinite 1.2s}
 
-/* ─── 히어로 ─── */
-.hero {
-  background: var(--navy-deep);
-  padding: 44px 28px 0;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -80px; right: -80px;
-  width: 260px; height: 260px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,.04) 0%, transparent 70%);
-}
-.hero-logo {
-  font-family: var(--ff-en);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--beige);
-  letter-spacing: .28em;
-  margin-bottom: 32px;
-}
-.hero-logo span { font-weight: 400; color: var(--beige-dark); }
+  .hero-top{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding:20px 22px 0}
+  .brand{display:flex;align-items:center;gap:7px}
+  .brand .mark{width:27px;height:27px;border-radius:9px;background:linear-gradient(140deg,var(--sky-deep),var(--sky-deeper));
+    display:grid;place-items:center;color:#fff;font-weight:900;font-size:14px;box-shadow:0 4px 12px -4px rgba(46,114,166,.6)}
+  .brand .bname{color:var(--sky-deeper);font-weight:800;font-size:17px;letter-spacing:-.02em}
+  .top-pill{background:rgba(255,255,255,.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.8);
+    color:var(--sky-deeper);font-weight:700;font-size:11.5px;padding:6px 12px;border-radius:999px;white-space:nowrap}
 
-.hero-content { position: relative; z-index: 1; }
+  .hero-body{position:relative;z-index:3;margin-top:auto;padding:0 24px 16px}
+  .hpill{display:inline-block;background:rgba(255,255,255,.55);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.75);color:var(--sky-deeper);font-weight:700;font-size:12px;
+    padding:6px 13px;border-radius:999px;margin-bottom:16px}
+  .hl{font-weight:800;color:var(--ink);font-size:28px;line-height:1.44;letter-spacing:-.02em}
+  .hsub{color:var(--soft);font-size:14px;margin-top:13px;line-height:1.6;font-weight:500}
+  .hquote{font-size:13.5px;color:var(--sky-deeper);margin-top:16px;line-height:1.85;font-weight:600;
+    background:rgba(255,255,255,.5);backdrop-filter:blur(6px);border-left:3px solid var(--sky-deep);
+    border-radius:4px 14px 14px 4px;padding:13px 16px}
+  .hquote em{font-style:normal;font-weight:800;color:var(--sky-deeper)}
+  .hero-cta{position:relative;z-index:3;padding:0 22px 24px}
+  .hero-cta .micro{text-align:center;font-size:12px;color:var(--sky-deeper);margin-top:10px;font-weight:600;opacity:.85}
+  .live{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sky-deeper);font-weight:600;
+    background:rgba(255,255,255,.45);padding:5px 12px;border-radius:999px;margin-bottom:12px}
+  .live .ldot{width:6px;height:6px;border-radius:50%;background:#34C759;animation:twinkle 1.6s infinite}
 
-.hero-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(253,248,242,.1);
-  border: 1px solid rgba(253,248,242,.18);
-  color: var(--beige);
-  font-size: 10px;
-  font-weight: 500;
-  padding: 5px 14px;
-  border-radius: 20px;
-  letter-spacing: .1em;
-  margin-bottom: 18px;
-}
-.eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--beige-dark); }
+  /* ===== PROBLEM ===== */
+  .problem{background:var(--cream-2)}
+  .prob-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:17px 18px;margin-top:13px;
+    display:flex;gap:13px;align-items:flex-start;box-shadow:var(--shadow)}
+  .prob-card .x{flex:0 0 26px;width:26px;height:26px;border-radius:9px;background:#E6F0F8;color:var(--sky-deeper);
+    display:grid;place-items:center;font-weight:900;margin-top:2px}
+  .prob-card p{font-size:14px;color:var(--soft)}
+  .prob-card p b{color:var(--ink)}
 
-.hero-title {
-  font-family: var(--ff-sans);
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--white);
-  line-height: 1.42;
-  margin-bottom: 12px;
-  letter-spacing: -.02em;
-}
-.hero-title em { font-style: normal; font-weight: 900; color: #7eb3ff; }
+  /* ===== STEPS ===== */
+  .steps{display:flex;flex-direction:column;gap:13px;margin-top:22px}
+  .step{display:flex;gap:15px;align-items:flex-start}
+  .step .num{flex:0 0 44px;width:44px;height:44px;border-radius:14px;color:#fff;font-weight:900;font-size:19px;
+    display:grid;place-items:center;background:linear-gradient(140deg,var(--sky-deep),var(--sky-deeper))}
+  .step:nth-child(2) .num{background:linear-gradient(140deg,var(--gold),var(--gold-deep))}
+  .step:nth-child(3) .num{background:linear-gradient(140deg,var(--sky-2),var(--sky-deep))}
+  .step h3{margin-bottom:2px}.step p{font-size:13.5px;color:var(--soft)}
 
-.hero-sub {
-  font-size: 13px;
-  font-weight: 300;
-  color: rgba(253,248,242,.62);
-  line-height: 1.85;
-  margin-bottom: 24px;
-}
+  /* ===== PHILOSOPHY ===== */
+  .philo{background:linear-gradient(165deg,#EAF4FB,#F4EAD6);text-align:center;
+    border-top:1px solid rgba(62,140,194,.12);border-bottom:1px solid rgba(62,140,194,.12);position:relative;overflow:hidden}
+  .philo::before{content:'';position:absolute;top:-40px;left:-40px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(155,203,232,.3),transparent 70%)}
+  .philo .qm{font-size:60px;font-weight:900;color:var(--sky-deep);opacity:.5;line-height:.6;margin-bottom:10px;position:relative}
+  .philo h2{position:relative}.philo .pmain em{font-style:normal;color:var(--sky-deeper)}
+  .philo .pdesc{font-size:14.5px;color:var(--soft);line-height:2;margin-top:18px;font-weight:500;position:relative}
+  .philo .pdesc b{color:var(--sky-deeper);font-weight:700}
+  .philo .psub{font-size:12.5px;color:var(--soft);margin-top:18px;padding-top:18px;
+    border-top:1px dashed rgba(62,140,194,.3);display:inline-block;line-height:1.8;position:relative}
 
-/* 실시간 카운터 */
-.live-counter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-.live-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #4ade80;
-  animation: pulse 2s infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50% { opacity: .5; transform: scale(.8); }
-}
-.live-txt {
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(253,248,242,.8);
-  line-height: 1.4;
-}
-.live-txt strong { color: var(--beige); font-weight: 700; }
+  /* ===== PHILO EXTEND (책육아 확장) ===== */
+  .philo2{background:var(--cream)}
+  .philo2 .pe-list{display:flex;flex-direction:column;gap:14px;margin-top:22px}
+  .pe-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 20px 20px 22px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .pe-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:linear-gradient(180deg,var(--sky-2),var(--sky-deep))}
+  .pe-card:nth-child(2)::before{background:linear-gradient(180deg,var(--gold),var(--gold-deep))}
+  .pe-card:nth-child(3)::before{background:linear-gradient(180deg,var(--sky-deep),var(--sky-deeper))}
+  .pe-ico{font-size:24px;margin-bottom:10px}
+  .pe-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:7px;line-height:1.4;letter-spacing:-.01em}
+  .pe-card p{font-size:13.5px;color:var(--soft);line-height:1.75;font-weight:500}
+  .pe-card p b{color:var(--sky-deeper);font-weight:700}
 
-.hero-features {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  margin-bottom: 28px;
-}
-.hero-feat {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 300;
-  color: rgba(253,248,242,.78);
-}
-.feat-icon {
-  width: 28px; height: 28px;
-  border-radius: 8px;
-  background: rgba(255,255,255,.07);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
-}
+  /* 인용 강조 섹션 (네이비 배경, 변주) */
+  .philo3{background:linear-gradient(165deg,var(--sky-deep),var(--sky-deeper));color:#fff;text-align:center;overflow:hidden;position:relative}
+  .philo3::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%)}
+  .philo3 .p3-label{font-size:12px;font-weight:800;color:#D6EBF7;letter-spacing:.05em;margin-bottom:14px;position:relative}
+  .philo3 .p3-main{font-size:22px;font-weight:800;line-height:1.6;letter-spacing:-.01em;position:relative}
+  .philo3 .p3-main em{font-style:normal;color:#FFE6C2}
+  .philo3 .p3-sub{font-size:14px;color:rgba(255,255,255,.82);line-height:1.85;margin-top:16px;font-weight:500;position:relative}
+  .get{background:var(--cream-2)}
+  .tier{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;margin-top:15px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .tier.paid{border:1.5px solid var(--sky-deep)}
+  .tier-tag{display:inline-block;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+  .tier-tag.free{background:#E6F0F8;color:var(--sky-deeper)}
+  .tier-tag.paid{background:linear-gradient(135deg,var(--sky-deep),var(--sky-deeper));color:#fff}
+  .tier h3{font-size:19px;margin-bottom:3px}
+  .tier .tprice{font-size:14px;color:var(--soft);margin-bottom:14px;font-weight:600}
+  .feat{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:6px 0;color:var(--ink)}
+  .feat .ck{flex:0 0 20px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;margin-top:2px;font-size:11px;font-weight:900}
+  .ck.b{background:#E6F0F8;color:var(--sky-deeper)}.ck.g{background:#F4E8D2;color:var(--gold-deep)}
+  .ribbon{position:absolute;top:15px;right:-34px;background:linear-gradient(135deg,var(--sky-deep),var(--sky-deeper));
+    color:#fff;font-size:11px;font-weight:800;padding:5px 40px;transform:rotate(45deg)}
 
-/* 히어로 CTA */
-.hero-cta-box {
-  background: var(--beige-light);
-  margin: 0 -28px;
-  padding: 20px 28px 24px;
-  border-top: none;
-}
-.btn-hero {
-  width: 100%;
-  background: var(--navy);
-  color: var(--beige);
-  font-family: var(--ff-sans);
-  font-size: 16px;
-  font-weight: 700;
-  padding: 17px 0;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  letter-spacing: .02em;
-  transition: all .2s;
-  margin-bottom: 8px;
-}
-.btn-hero:active { transform: scale(.98); background: var(--navy-deep); }
-.hero-cta-sub {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--ink3);
-}
+  /* ===== BOOKS ===== */
+  .books{background:var(--cream)}
+  .bgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px}
+  .bcard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .bcover{aspect-ratio:3/4;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff;text-align:center;padding:8px;line-height:1.3}
+  .bcard:nth-child(1) .bcover{background:linear-gradient(160deg,var(--sky-deep),var(--sky-deeper))}
+  .bcard:nth-child(2) .bcover{background:linear-gradient(160deg,var(--gold),var(--gold-deep))}
+  .bcard:nth-child(3) .bcover{background:linear-gradient(160deg,var(--sky-2),var(--sky-deep))}
+  .bmeta{padding:9px 9px 12px}.bmeta .rank{font-size:10px;font-weight:900;color:var(--sky-deeper)}
+  .bmeta .bt{font-size:11.5px;font-weight:700;margin-top:2px;line-height:1.3}
 
-/* ─── 보안 신뢰 바 ─── */
-.trust-bar {
-  background: var(--beige);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.trust-bar-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-.trust-bar-txt {
-  font-size: 11px;
-  font-weight: 300;
-  color: var(--ink2);
-  line-height: 1.65;
-}
-.trust-bar-txt strong { color: var(--navy-mid); font-weight: 600; }
+  /* ===== FOUNDER (엄마 스토리) ===== */
+  .founder{background:linear-gradient(165deg,#FBF6EC,#F4EAD6);position:relative;overflow:hidden}
+  .founder::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;
+    background:radial-gradient(circle,rgba(199,163,94,.18),transparent 70%)}
+  .founder-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;margin-top:16px;
+    box-shadow:var(--shadow);position:relative}
+  .founder-badge{display:inline-flex;align-items:center;gap:7px;background:#F4E8D2;color:var(--gold-deep);
+    font-size:12px;font-weight:800;padding:6px 13px;border-radius:999px;margin-bottom:16px}
+  .founder-quote{font-size:16.5px;font-weight:700;color:var(--ink);line-height:1.6;letter-spacing:-.01em;margin-bottom:14px}
+  .founder-quote em{font-style:normal;color:var(--sky-deeper)}
+  .founder-body{font-size:14px;color:var(--soft);line-height:1.85;font-weight:500}
+  .founder-body b{color:var(--ink);font-weight:700}
+  .founder-sign{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+  .founder-sign .fav{width:38px;height:38px;border-radius:50%;background:linear-gradient(140deg,var(--sky-2),var(--sky-deep));
+    display:grid;place-items:center;font-size:18px}
+  .founder-sign .fname{font-size:13px;font-weight:800;color:var(--ink)}
+  .founder-sign .frole{font-size:11.5px;color:var(--soft)}
+  .value{background:linear-gradient(165deg,var(--sky-deep),var(--sky-deeper));color:#fff;overflow:hidden}
+  .value .eyebrow{color:#D6EBF7}
+  .value h2{color:#fff}
+  .vcards{display:flex;flex-direction:column;gap:11px;margin-top:20px}
+  .vcard{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:17px 18px}
+  .vcard .vno{font-size:13px;font-weight:800;color:#FFE6C2;letter-spacing:.04em}
+  .vcard h3{margin:5px 0 4px;font-size:16px}.vcard p{font-size:13px;color:rgba(255,255,255,.82);font-weight:500}
 
-/* ─── 권위 섹션 ─── */
-.authority-section {
-  background: var(--ivory);
-  padding: 28px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.authority-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-}
-.authority-item {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 10px;
-  text-align: center;
-}
-.authority-icon { font-size: 20px; margin-bottom: 6px; display: block; }
-.authority-title {
-  font-family: var(--ff-sans);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 3px;
-  letter-spacing: -.01em;
-  line-height: 1.4;
-}
-.authority-desc {
-  font-size: 9px;
-  font-weight: 300;
-  color: var(--ink3);
-  line-height: 1.5;
-}
+  /* ===== TESTIMONIAL ===== */
+  .testi{background:var(--cream-2)}
+  .testi-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:15px;box-shadow:var(--shadow)}
+  .stars{color:var(--gold);font-size:15px;letter-spacing:2px;margin-bottom:9px}
+  .testi-card p{font-size:14px;color:var(--ink);font-style:italic}
+  .testi-card .who{font-size:12px;color:var(--soft);margin-top:11px;font-style:normal}
+  .beta-note{margin-top:13px;font-size:12.5px;color:var(--sky-deeper);background:#E6F0F8;border-radius:12px;padding:12px 14px;text-align:center;font-weight:600}
 
-/* ─── 세로형 플로우 ─── */
-.flow-section {
-  background: var(--beige-light);
-  padding: 32px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.sec-label {
-  font-family: var(--ff-en);
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--ink3);
-  letter-spacing: .2em;
-  margin-bottom: 6px;
-}
-.sec-title {
-  font-family: var(--ff-sans);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 24px;
-  letter-spacing: -.01em;
-}
+  /* ===== PRICING ===== */
+  .pricing{background:var(--cream)}
+  .price-hook{font-size:14.5px;color:var(--soft);line-height:1.9;text-align:center;padding:18px 20px;margin-top:18px;
+    background:linear-gradient(135deg,rgba(62,140,194,.08),rgba(155,203,232,.05));border-radius:14px;border:1px dashed rgba(62,140,194,.3)}
+  .price-hook em{font-style:normal;font-weight:700;color:var(--sky-deeper)}
+  .ptable{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+  .prow{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);
+    border-radius:14px;padding:15px 18px}
+  .prow:first-child{border-color:var(--sky-deep);box-shadow:0 8px 24px -14px rgba(46,114,166,.5)}
+  .prow .ptier{font-weight:800;font-size:14.5px}.prow .pseat{font-size:12px;color:var(--soft)}
+  .prow .pamt{font-weight:800;font-size:18px}.prow:first-child .pamt{color:var(--sky-deeper)}
+  .pnote{font-size:12px;color:var(--soft);margin-top:12px;text-align:center}
 
-.flow-list { display: flex; flex-direction: column; gap: 0; }
-.flow-item {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  position: relative;
-}
-.flow-item:not(:last-child)::after {
-  content: '';
-  position: absolute;
-  left: 19px;
-  top: 40px;
-  width: 1px;
-  height: calc(100% + 12px);
-  background: var(--border);
-}
-.flow-left { flex-shrink: 0; }
-.flow-num-wrap {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  background: var(--navy);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 24px;
-}
-.flow-num {
-  font-family: var(--ff-sans);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--beige);
-}
-.flow-body { padding-top: 8px; padding-bottom: 20px; }
-.flow-icon { font-size: 18px; margin-bottom: 4px; display: block; }
-.flow-step-title {
-  font-family: var(--ff-sans);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 4px;
-  letter-spacing: -.01em;
-}
-.flow-step-desc {
-  font-size: 12px;
-  font-weight: 300;
-  color: var(--ink2);
-  line-height: 1.65;
-}
+  /* ===== FAQ ===== */
+  .faq{background:var(--cream-2)}
+  .faq-item{border-bottom:1px solid var(--line)}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 2px;cursor:pointer;font-weight:700;font-size:14.5px}
+  .faq-q .pm{flex:0 0 22px;font-size:20px;color:var(--sky-deep);transition:transform .2s}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s;font-size:13.5px;color:var(--soft)}
+  .faq-item.open .faq-a{max-height:260px;padding-bottom:17px}
+  .faq-item.open .pm{transform:rotate(45deg)}
 
-/* ─── 리포트 미리보기 ─── */
-.preview-section {
-  background: var(--beige);
-  padding: 32px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.preview-phone {
-  background: var(--navy-deep);
-  border-radius: 20px;
-  padding: 18px 16px;
-  box-shadow: 0 12px 40px rgba(26,39,68,.25);
-}
-.preview-phone-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.preview-phone-logo {
-  font-family: var(--ff-en);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--beige);
-  letter-spacing: .18em;
-}
-.preview-phone-menu { color: rgba(253,248,242,.35); font-size: 16px; }
+  /* ===== FINAL CTA ===== */
+  .final{position:relative;overflow:hidden;text-align:center;
+    background:linear-gradient(165deg,#A6CEE8 0%,#C9E0EF 35%,#EAD9BE 100%)}
+  .final .eyebrow{justify-content:center}
+  .final .fclose{font-size:18px;font-weight:800;color:var(--ink);line-height:1.6;margin-top:8px}
+  .final .fclose em{font-style:normal;color:var(--sky-deeper)}
 
-.preview-card {
-  background: var(--beige-light);
-  border-radius: 14px;
-  padding: 16px 14px;
-}
-.preview-eyebrow {
-  font-size: 9px;
-  font-weight: 500;
-  color: var(--ink3);
-  letter-spacing: .14em;
-  margin-bottom: 4px;
-}
-.preview-name {
-  font-family: var(--ff-sans);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 4px;
-  letter-spacing: -.01em;
-}
-.preview-lock-hint {
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--ink3);
-  background: var(--beige);
-  border-radius: 6px;
-  padding: 6px 10px;
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
+  /* ===== FOOTER ===== */
+  footer{background:var(--ink);color:rgba(255,255,255,.55);padding:32px 24px 56px;font-size:12.5px}
+  footer .flogo{color:#fff;font-size:17px;font-weight:800;margin-bottom:10px}
+  footer .flogo span{color:var(--sky-2)}
+  footer .flinks{display:flex;flex-wrap:wrap;gap:14px;margin:13px 0;color:rgba(255,255,255,.75)}
+  footer .fcopy{opacity:.5;margin-top:12px;line-height:1.6}
 
-.preview-list { display: flex; flex-direction: column; gap: 7px; }
-.preview-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.preview-item-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.preview-rank {
-  font-family: var(--ff-en);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--ink3);
-  width: 14px;
-  flex-shrink: 0;
-}
-.preview-book-img {
-  width: 30px; height: 36px;
-  background: var(--beige-mid);
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  flex-shrink: 0;
-}
-.preview-book-name {
-  font-size: 11px; font-weight: 600; color: var(--ink); margin-bottom: 2px;
-}
-.preview-match-tag {
-  display: inline-block;
-  background: var(--navy);
-  color: var(--beige);
-  font-size: 8px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 10px;
-  letter-spacing: .04em;
-}
-.preview-lock { color: var(--ink3); font-size: 14px; }
+  /* ===== FLOATING CTA ===== */
+  .floating-cta{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;width:calc(100% - 36px);max-width:394px;
+    z-index:50;transition:opacity .3s,transform .3s}
+  .floating-cta.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(20px)}
 
-.preview-blur-row { margin-top: 10px; }
-.bl { height: 7px; background: var(--beige-mid); border-radius: 4px; margin-bottom: 6px; opacity: .5; }
-.bl.s { width: 50%; }
-.bl.m { width: 76%; }
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+  .reveal.in{opacity:1;transform:none}
 
-.preview-value-hint {
-  margin-top: 10px;
-  padding: 10px 12px;
-  background: var(--beige);
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--ink2);
-  line-height: 1.6;
-  text-align: center;
-}
-
-.preview-unlock {
-  margin-top: 12px;
-  background: var(--navy);
-  color: var(--beige);
-  font-family: var(--ff-sans);
-  font-size: 13px;
-  font-weight: 700;
-  padding: 13px 0;
-  border-radius: 10px;
-  border: none;
-  width: 100%;
-  cursor: pointer;
-  text-align: center;
-}
-.preview-hint {
-  text-align: center;
-  font-size: 10px;
-  font-weight: 300;
-  color: var(--ink2);
-  margin-top: 12px;
-}
-
-/* ─── 월령 선택 ─── */
-.age-section {
-  background: var(--ivory);
-  padding: 32px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.age-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.age-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: 18px;
-  padding: 24px 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .2s;
-}
-.age-card:hover { border-color: var(--navy-mid); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,39,68,.08); }
-.age-card:active { transform: scale(.97); }
-.age-icon { font-size: 26px; margin-bottom: 10px; display: block; }
-.age-track {
-  font-family: var(--ff-en);
-  font-size: 9px; font-weight: 500;
-  color: var(--ink3); letter-spacing: .16em;
-  margin-bottom: 5px;
-}
-.age-range {
-  font-family: var(--ff-sans);
-  font-size: 16px; font-weight: 600;
-  color: var(--ink); margin-bottom: 6px;
-  letter-spacing: -.01em;
-}
-.age-desc { font-size: 10px; font-weight: 300; color: var(--ink2); line-height: 1.5; }
-.age-arrow { margin-top: 10px; color: var(--beige-dark); font-size: 14px; font-weight: 500; }
-
-/* ─── 특별함 ─── */
-.special-section {
-  background: var(--navy);
-  padding: 32px 24px;
-}
-.special-label { font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: rgba(253,248,242,.35); letter-spacing: .2em; margin-bottom: 6px; }
-.special-title {
-  font-family: var(--ff-sans);
-  font-size: 18px; font-weight: 600;
-  color: var(--white); margin-bottom: 20px;
-  letter-spacing: -.01em; line-height: 1.45;
-}
-.special-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.special-item {
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 14px;
-  padding: 16px 14px;
-}
-.special-icon { font-size: 20px; margin-bottom: 8px; display: block; }
-.special-item-title {
-  font-family: var(--ff-sans);
-  font-size: 13px; font-weight: 600;
-  color: var(--beige); margin-bottom: 4px;
-  letter-spacing: -.01em;
-}
-.special-item-desc { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.5); line-height: 1.6; }
-
-/* ─── 가격 ─── */
-.price-section {
-  background: var(--beige);
-  padding: 32px 24px;
-  border-bottom: 1px solid var(--border);
-}
-.plan-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 12px;
-}
-.plan-card.featured { border-color: var(--navy); }
-.plan-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
-.plan-name {
-  font-family: var(--ff-sans);
-  font-size: 15px; font-weight: 600;
-  color: var(--ink); letter-spacing: -.01em;
-}
-.plan-badge {
-  background: var(--navy); color: var(--beige);
-  font-size: 9px; font-weight: 700;
-  padding: 4px 10px; border-radius: 10px;
-  letter-spacing: .04em; white-space: nowrap;
-}
-.plan-price-wrap { display: flex; align-items: baseline; gap: 5px; margin-bottom: 10px; }
-.plan-price {
-  font-family: var(--ff-sans);
-  font-size: 28px; font-weight: 600;
-  color: var(--navy); line-height: 1;
-}
-.plan-price span { font-family: var(--ff-sans); font-size: 14px; font-weight: 400; }
-.plan-og { font-size: 12px; font-weight: 300; color: #bbb; text-decoration: line-through; }
-.plan-features { display: flex; flex-direction: column; gap: 6px; }
-.plan-feat {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 300; color: var(--ink2);
-}
-.plan-feat-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--navy-mid); flex-shrink: 0; }
-.plan-desc { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
-
-/* ─── 개인정보 고지 ─── */
-.privacy-section {
-  background: var(--ivory);
-  padding: 24px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.privacy-title {
-  font-family: var(--ff-sans);
-  font-size: 13px; font-weight: 600;
-  color: var(--ink); margin-bottom: 10px;
-}
-.privacy-list { display: flex; flex-direction: column; gap: 6px; }
-.privacy-item {
-  display: flex; align-items: flex-start; gap: 8px;
-  font-size: 11px; font-weight: 300;
-  color: var(--ink2); line-height: 1.65;
-}
-.privacy-dot { color: var(--navy-mid); flex-shrink: 0; margin-top: 1px; }
-
-/* ─── 이미 결제 ─── */
-.confirm-link-wrap {
-  text-align: center;
-  padding: 14px 24px;
-  background: var(--beige-light);
-  border-bottom: 1px solid var(--border);
-}
-.confirm-link {
-  font-size: 12px; font-weight: 400;
-  color: var(--ink3); cursor: pointer;
-  text-decoration: underline;
-}
-
-/* ─── 푸터 CTA ─── */
-.footer-cta {
-  background: var(--navy-deep);
-  padding: 28px 24px 44px;
-}
-.btn-footer {
-  width: 100%;
-  background: var(--beige);
-  color: var(--navy);
-  font-family: var(--ff-sans);
-  font-size: 15px; font-weight: 700;
-  padding: 17px 0; border-radius: 14px;
-  border: none; cursor: pointer;
-  letter-spacing: .02em; margin-bottom: 10px;
-  transition: all .2s;
-}
-.btn-footer:active { transform: scale(.98); }
-.footer-sub { text-align: center; font-size: 10px; font-weight: 300; color: rgba(253,248,242,.35); }
-.footer-trust { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
-.trust-item {
-  font-size: 10px; font-weight: 300;
-  color: rgba(253,248,242,.3);
-  display: flex; align-items: center; gap: 4px;
-}
-.trust-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(253,248,242,.25); }
-.footer-bottom {
-  border-top: 1px solid rgba(255,255,255,.06);
-  margin-top: 26px; padding-top: 18px;
-}
-.footer-logo { font-family: var(--ff-en); font-size: 11px; font-weight: 600; color: rgba(253,248,242,.3); letter-spacing: .18em; margin-bottom: 5px; }
-.footer-copy { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.2); }
-.footer-links { display: flex; gap: 14px; margin-top: 10px; }
-.footer-link { font-size: 10px; font-weight: 300; color: rgba(253,248,242,.3); text-decoration: none; cursor: pointer; }
-
-/* ─── 플로팅 CTA ─── */
-.floating-cta {
-  position: fixed;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 100%; max-width: 480px;
-  padding: 12px 20px 20px;
-  background: var(--beige-light);
-  border-top: 1px solid var(--border);
-  z-index: 200;
-  transition: opacity .3s;
-}
-.floating-cta.hidden { opacity: 0; pointer-events: none; }
-.btn-floating {
-  width: 100%;
-  background: var(--navy);
-  color: var(--beige);
-  font-family: var(--ff-sans);
-  font-size: 15px; font-weight: 700;
-  padding: 15px 0; border-radius: 12px;
-  border: none; cursor: pointer;
-  letter-spacing: .02em;
-  transition: all .2s;
-}
-.btn-floating:active { transform: scale(.98); background: var(--navy-deep); }
-.floating-sub { text-align: center; font-size: 10px; font-weight: 300; color: var(--ink3); margin-top: 5px; }
-
-/* ══════════════════════════════════════════
-   📋 설문 화면
-   ══════════════════════════════════════════ */
-#surveyScreen { display: none; flex-direction: column; min-height: 100vh; }
-#surveyScreen.active { display: flex; }
-#premiumScreen { display: none; flex-direction: column; min-height: 100vh; }
-#premiumScreen.active { display: flex; }
-
-.survey-header {
-  background: var(--navy-deep);
-  padding: 16px 20px;
-  position: sticky; top: 0; z-index: 50;
-}
-.survey-header-top {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.btn-back { font-size: 12px; font-weight: 400; color: rgba(253,248,242,.5); background: none; border: none; cursor: pointer; padding: 4px 0; }
-.progress-info { font-family: var(--ff-sans); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .05em; }
-.progress-label { font-size: 11px; font-weight: 300; color: rgba(253,248,242,.4); text-align: center; margin-bottom: 10px; }
-.progress-track { height: 3px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--beige); border-radius: 2px; transition: width .3s ease; width: 0; }
-
-.survey-body { flex: 1; padding: 24px 24px 120px; }
-
-.stage-intro {
-  background: var(--navy);
-  color: var(--white);
-  border-radius: 16px;
-  padding: 22px 20px;
-  margin-bottom: 26px;
-}
-.stage-intro-label { font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: var(--beige-dark); letter-spacing: .18em; margin-bottom: 8px; }
-.stage-intro-title { font-family: var(--ff-sans); font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 8px; letter-spacing: -.01em; }
-.stage-intro-desc { font-size: 12px; font-weight: 300; color: rgba(253,248,242,.6); line-height: 1.75; }
-
-.question { animation: fadeUp .3s ease; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.q-stage {
-  display: inline-block;
-  background: var(--beige);
-  color: var(--navy-mid);
-  font-size: 10px; font-weight: 700;
-  padding: 4px 12px; border-radius: 20px;
-  margin-bottom: 8px; letter-spacing: .05em;
-}
-.q-number { font-family: var(--ff-en); font-size: 12px; font-weight: 400; color: var(--ink3); letter-spacing: .1em; margin-bottom: 6px; }
-.q-title { font-family: var(--ff-sans); font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.5; margin-bottom: 8px; letter-spacing: -.02em; }
-.q-desc { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.7; margin-bottom: 20px; padding: 10px 14px; background: var(--beige); border-radius: 10px; }
-
-.options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; margin-bottom: 28px; }
-.option {
-  display: flex; align-items: center; gap: 12px;
-  padding: 16px; background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: 14px; cursor: pointer;
-  transition: all .15s;
-  font-size: 14px; font-weight: 400;
-  color: var(--ink); line-height: 1.5;
-  min-height: 54px;
-}
-.option:hover { border-color: var(--navy-mid); background: var(--beige-light); }
-.option.selected { border-color: var(--navy); background: var(--beige); }
-.option-marker {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  flex-shrink: 0; transition: all .15s;
-}
-.option.selected .option-marker {
-  background: var(--navy); border-color: var(--navy);
-  box-shadow: inset 0 0 0 4px var(--white);
-}
-
-.nav-btns {
-  display: flex; gap: 10px;
-  position: fixed; bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 100%; max-width: 480px;
-  padding: 14px 24px 28px;
-  background: var(--beige-light);
-  border-top: 1px solid var(--border);
-  z-index: 100;
-}
-.btn { font-family: var(--ff-sans); font-size: 15px; font-weight: 700; padding: 15px 0; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; }
-.btn-prev { background: var(--beige); color: var(--ink2); width: 90px; flex-shrink: 0; }
-.btn-next { background: var(--navy); color: var(--beige); flex: 1; }
-.btn-next:disabled { background: var(--beige-mid); color: var(--ink3); cursor: not-allowed; }
-.btn:active:not(:disabled) { transform: scale(.97); }
-
-.info-form { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; margin-bottom: 28px; }
-.info-field { display: flex; flex-direction: column; gap: 6px; }
-.info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.info-label { font-size: 12px; font-weight: 600; color: var(--ink); }
-.info-label .req { color: #e53e3e; margin-left: 2px; }
-.info-input {
-  background: var(--white); border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 13px 14px;
-  font-family: var(--ff-sans); font-size: 14px;
-  font-weight: 400; color: var(--ink);
-  outline: none; transition: border-color .2s; width: 100%;
-}
-.info-input:focus { border-color: var(--navy); }
-.info-hint { font-size: 10px; font-weight: 300; color: var(--ink3); line-height: 1.5; }
-.info-privacy { background: var(--beige); border-radius: 10px; padding: 12px 14px; }
-.info-privacy label { display: flex; align-items: flex-start; gap: 10px; font-size: 11px; font-weight: 300; color: var(--ink2); line-height: 1.65; cursor: pointer; }
-.info-privacy input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: var(--navy); width: 15px; height: 15px; }
-.phone-notice { background: var(--beige); border-left: 3px solid var(--beige-dark); border-radius: 0 10px 10px 0; padding: 12px 14px; font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.7; margin-top: 16px; }
-.phone-notice strong { color: var(--navy-mid); font-weight: 600; }
-
-.plans-wrap { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; margin-bottom: 28px; }
-.plan-item { background: var(--white); border: 1.5px solid var(--border); border-radius: 16px; padding: 18px; cursor: pointer; transition: all .2s; }
-.plan-item:hover { border-color: var(--navy-mid); }
-.plan-item.featured { border-color: var(--beige-dark); background: var(--beige-light); }
-.plan-item.selected { border-color: var(--navy); background: var(--beige); }
-.plan-item-badge { display: inline-block; background: var(--navy); color: var(--beige); font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 20px; letter-spacing: .05em; margin-bottom: 10px; }
-.plan-item-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.plan-item-title { font-family: var(--ff-sans); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; letter-spacing: -.01em; }
-.plan-item-sub { font-size: 11px; font-weight: 300; color: var(--ink2); }
-.plan-item-price { font-family: var(--ff-sans); font-size: 24px; font-weight: 600; color: var(--navy); line-height: 1; white-space: nowrap; }
-.plan-item-price span { font-family: var(--ff-sans); font-size: 13px; font-weight: 400; }
-.plan-item-orig { font-size: 10px; font-weight: 300; color: #bbb; text-decoration: line-through; text-align: right; margin-top: 2px; }
-.plan-item-features { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
-.plan-chip { background: var(--beige); border: 1px solid var(--beige-dark); color: var(--ink2); font-size: 10px; font-weight: 400; padding: 4px 10px; border-radius: 20px; }
-.final-submit { background: var(--navy-deep); color: var(--beige-light); border-radius: 14px; padding: 16px 18px; font-size: 12px; font-weight: 300; line-height: 1.75; margin-bottom: 24px; }
-.final-submit strong { color: var(--beige); font-weight: 600; }
-
-/* ══════════════════════════════════════════
-   📬 확인 페이지
-   ══════════════════════════════════════════ */
-#confirmPage { display: none; flex-direction: column; min-height: 100vh; background: var(--beige-light); }
-#confirmPage.active { display: flex; }
-.confirm-header { background: var(--navy-deep); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
-.confirm-logo { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .18em; flex: 1; }
-.confirm-logo span { font-weight: 400; color: var(--beige-dark); }
-.btn-close { color: rgba(253,248,242,.45); font-size: 20px; background: none; border: none; cursor: pointer; line-height: 1; }
-.confirm-body { padding: 32px 24px; flex: 1; }
-.confirm-title { font-family: var(--ff-sans); font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 8px; letter-spacing: -.02em; }
-.confirm-desc { font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.75; margin-bottom: 28px; }
-.confirm-form { display: flex; flex-direction: column; gap: 16px; }
-.confirm-success { display: none; background: var(--beige); border: 1px solid var(--beige-dark); border-radius: 14px; padding: 20px; text-align: center; margin-top: 16px; }
-.confirm-success.show { display: block; }
-.confirm-success-icon { font-size: 32px; margin-bottom: 10px; }
-.confirm-success-txt { font-family: var(--ff-sans); font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
-.confirm-success-sub { font-size: 12px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
-.btn-confirm { background: var(--navy); color: var(--beige); font-family: var(--ff-sans); font-size: 15px; font-weight: 700; padding: 16px 0; border-radius: 12px; border: none; cursor: pointer; transition: all .2s; margin-top: 8px; }
-.btn-confirm:disabled { background: var(--beige-mid); color: var(--ink3); cursor: not-allowed; }
-
-/* ══════════════════════════════════════════
-   ⏳ 로딩
-   ══════════════════════════════════════════ */
-#loadingOverlay { display: none; position: fixed; inset: 0; background: rgba(17,28,51,.97); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
-#loadingOverlay.active { display: flex; }
-.loading-spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(253,248,242,.15); border-top-color: var(--beige); animation: spin .9s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-family: var(--ff-sans); font-size: 16px; font-weight: 400; color: var(--beige); letter-spacing: .02em; }
-.loading-sub { font-size: 12px; font-weight: 300; color: rgba(253,248,242,.4); }
-
-/* ══════════════════════════════════════════
-   🎉 라이트 결과 화면
-   ══════════════════════════════════════════ */
-#resultScreen { display: none; flex-direction: column; min-height: 100vh; background: var(--beige-light); }
-#resultScreen.active { display: flex; }
-
-.result-hero {
-  background: var(--navy-deep);
-  padding: 32px 24px 28px;
-  position: relative;
-  overflow: hidden;
-}
-.result-hero::before {
-  content: '';
-  position: absolute; top: -60px; right: -60px;
-  width: 220px; height: 220px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(126,179,255,.1) 0%, transparent 70%);
-}
-.result-hero-logo { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--beige); letter-spacing: .2em; margin-bottom: 24px; }
-.result-hero-logo span { font-weight: 400; color: var(--beige-dark); }
-.result-eyebrow { position: relative; font-size: 11px; font-weight: 400; color: var(--beige-dark); letter-spacing: .12em; margin-bottom: 10px; }
-.result-archetype-badge {
-  position: relative; display: inline-block;
-  background: rgba(126,179,255,.15); border: 1px solid rgba(126,179,255,.3);
-  color: #7eb3ff; font-size: 12px; font-weight: 700;
-  padding: 6px 16px; border-radius: 20px; margin-bottom: 14px; letter-spacing: .03em;
-}
-.result-title { position: relative; font-family: var(--ff-sans); font-size: 24px; font-weight: 800; color: var(--white); line-height: 1.45; margin-bottom: 12px; letter-spacing: -.02em; }
-.result-title em { font-style: normal; color: #7eb3ff; }
-.result-desc { position: relative; font-size: 13px; font-weight: 300; color: rgba(253,248,242,.65); line-height: 1.8; }
-
-.result-body { padding: 28px 24px 40px; }
-
-/* 5각형 점수 바 */
-.score-section { margin-bottom: 32px; }
-.score-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
-.score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-.score-row:last-child { margin-bottom: 0; }
-.score-label { font-size: 12px; font-weight: 600; color: var(--ink); width: 64px; flex-shrink: 0; }
-.score-bar-track { flex: 1; height: 10px; background: var(--beige-mid); border-radius: 5px; overflow: hidden; }
-.score-bar-fill { height: 100%; border-radius: 5px; background: var(--navy-mid); transition: width .8s ease; }
-.score-bar-fill.top { background: linear-gradient(90deg, #7eb3ff, #4a7fd6); }
-.score-val { font-family: var(--ff-en); font-size: 12px; font-weight: 600; color: var(--ink2); width: 30px; text-align: right; flex-shrink: 0; }
-
-/* TOP3 전집 */
-.rec-section { margin-bottom: 28px; }
-.rec-card {
-  background: var(--white); border: 1.5px solid var(--border);
-  border-radius: 16px; padding: 18px; margin-bottom: 12px; position: relative;
-}
-.rec-card.rank1 { border-color: var(--navy); box-shadow: 0 6px 20px rgba(26,39,68,.1); }
-.rec-card-top { display: flex; align-items: flex-start; gap: 14px; }
-.rec-rank-badge {
-  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--ff-en); font-size: 15px; font-weight: 700;
-  background: var(--beige); color: var(--navy);
-}
-.rec-card.rank1 .rec-rank-badge { background: var(--navy); color: var(--beige); }
-.rec-info { flex: 1; min-width: 0; }
-.rec-name { font-family: var(--ff-sans); font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 3px; letter-spacing: -.01em; }
-.rec-meta { font-size: 11px; font-weight: 300; color: var(--ink3); margin-bottom: 8px; }
-.rec-match { display: inline-flex; align-items: center; gap: 5px; background: var(--beige); border-radius: 8px; padding: 4px 10px; }
-.rec-match-bar { width: 40px; height: 5px; background: var(--beige-mid); border-radius: 3px; overflow: hidden; }
-.rec-match-fill { height: 100%; background: var(--navy); border-radius: 3px; }
-.rec-match-txt { font-family: var(--ff-en); font-size: 11px; font-weight: 600; color: var(--navy); }
-.rec-locked {
-  margin-top: 12px; padding: 12px 14px;
-  background: var(--beige-light); border: 1px dashed var(--beige-dark);
-  border-radius: 10px; display: flex; align-items: center; gap: 8px;
-}
-.rec-locked-icon { font-size: 14px; flex-shrink: 0; }
-.rec-locked-txt { font-size: 11px; font-weight: 300; color: var(--ink2); line-height: 1.5; }
-.rec-locked-txt strong { color: var(--navy-mid); font-weight: 600; }
-/* 구매 버튼 (링크 채워지면 노출, 기본 숨김) */
-.rec-buy-btns { display: none; gap: 8px; margin-top: 12px; }
-.rec-buy-btns.show { display: flex; }
-.rec-buy-btn { flex: 1; text-align: center; font-size: 11px; font-weight: 600; padding: 8px 0; border-radius: 8px; background: var(--beige); color: var(--navy); text-decoration: none; border: 1px solid var(--beige-dark); }
-
-/* 프리미엄 페이월 */
-.paywall {
-  background: var(--navy); border-radius: 18px; padding: 26px 22px; margin-bottom: 24px;
-  position: relative; overflow: hidden;
-}
-.paywall::before {
-  content: ''; position: absolute; top: -40px; right: -40px;
-  width: 160px; height: 160px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(126,179,255,.12) 0%, transparent 70%);
-}
-.paywall-label { position: relative; font-family: var(--ff-en); font-size: 10px; font-weight: 400; color: var(--beige-dark); letter-spacing: .18em; margin-bottom: 8px; }
-.paywall-title { position: relative; font-family: var(--ff-sans); font-size: 18px; font-weight: 700; color: var(--white); line-height: 1.45; margin-bottom: 16px; letter-spacing: -.01em; }
-.paywall-title em { font-style: normal; color: #7eb3ff; }
-.paywall-list { position: relative; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.paywall-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; font-weight: 300; color: rgba(253,248,242,.8); line-height: 1.5; }
-.paywall-check { color: #7eb3ff; flex-shrink: 0; font-weight: 700; }
-.paywall-btn {
-  position: relative; width: 100%; background: var(--beige); color: var(--navy);
-  font-family: var(--ff-sans); font-size: 15px; font-weight: 700;
-  padding: 16px 0; border-radius: 12px; border: none; cursor: pointer; letter-spacing: .02em;
-  transition: all .2s;
-}
-.paywall-btn:active { transform: scale(.98); }
-.paywall-price { position: relative; text-align: center; font-size: 11px; font-weight: 300; color: rgba(253,248,242,.5); margin-top: 10px; }
-.paywall-price strong { color: var(--beige); font-weight: 600; }
-
-.result-restart { text-align: center; padding: 8px; }
-.result-restart-btn { font-size: 12px; font-weight: 400; color: var(--ink3); background: none; border: none; cursor: pointer; text-decoration: underline; }
-
-.result-disclaimer {
-  margin-top: 20px; padding: 14px 16px; background: var(--ivory);
-  border: 1px solid var(--border); border-radius: 10px;
-  font-size: 10px; font-weight: 300; color: var(--ink3); line-height: 1.7;
-}
-
-@media (max-width: 380px) {
-  .hero-title { font-size: 26px; }
-  .q-title { font-size: 18px; }
-  .authority-grid { grid-template-columns: 1fr 1fr; }
-  .authority-item:last-child { display: none; }
-}
+  /* ===== 섹션 배경 포인트 장식 ===== */
+  .sec-deco{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+  .sec-deco > *{position:absolute}
+  section:not(.hero){position:relative}
+  section:not(.hero) > *:not(.sec-deco){position:relative;z-index:1}
+  .sd-cloud{background:#fff;border-radius:100px;opacity:.45}
+  .sd-cloud::before,.sd-cloud::after{content:'';position:absolute;background:#fff;border-radius:50%}
+  .sd-spark{animation:twinkle 3.5s ease-in-out infinite}
+  .sd-book{opacity:.5;animation:float 9s ease-in-out infinite}
+  /* 위치 변형 */
+  .sd-c-a{width:56px;height:18px;top:36px;right:30px;animation:float 10s ease-in-out infinite}
+  .sd-c-a::before{width:26px;height:26px;top:-12px;left:7px}.sd-c-a::after{width:19px;height:19px;top:-8px;left:26px}
+  .sd-c-b{width:44px;height:14px;bottom:50px;left:24px;opacity:.35;animation:float 12s ease-in-out infinite .8s}
+  .sd-c-b::before{width:20px;height:20px;top:-9px;left:5px}.sd-c-b::after{width:15px;height:15px;top:-6px;left:21px}
+  .sd-s-a{top:60px;left:8%}.sd-s-b{bottom:80px;right:14%;animation-delay:1s}.sd-s-c{top:120px;right:24%;animation-delay:.5s}
+  .sd-b-a{top:50px;right:40px;transform:rotate(-8deg)}
+  .sd-dots{top:30px;left:0;width:100%;opacity:.35}
 </style>
 </head>
-<body>
-<div id="app">
+<style>
+  /* ===== 화면 전환 (설문/결과/프리미엄/확인) ===== */
+  .screen{display:none;min-height:100vh;background:var(--cream)}
+  .screen.active{display:block}
+  #introScreen{display:flex;flex-direction:column}
 
-<!-- ══════════════════════════════════════════
-     🏠 인트로 화면
-     ══════════════════════════════════════════ -->
+  /* 공통 상단바 */
+  .sv-top{position:sticky;top:0;z-index:20;background:rgba(251,246,236,.92);backdrop-filter:blur(10px);
+    padding:16px 22px 14px;border-bottom:1px solid var(--line)}
+  .sv-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .sv-back{background:none;border:none;font-size:14px;color:var(--soft);cursor:pointer;font-family:inherit;font-weight:600}
+  .sv-progress-label{font-size:12px;font-weight:700;color:var(--sky-deeper)}
+  .sv-progress-current{font-size:12px;font-weight:700;color:var(--soft)}
+  .sv-bar-track{height:4px;background:rgba(62,140,194,.15);border-radius:4px;overflow:hidden}
+  .sv-bar-fill{height:100%;background:linear-gradient(90deg,var(--sky-deep),var(--sky-deeper));border-radius:4px;transition:width .4s;width:14%}
+
+  .sv-body{padding:28px 24px 120px}
+  .question{animation:fadeIn .4s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .stage-intro{background:linear-gradient(135deg,#E6F0F8,#F4EAD6);border-radius:18px;padding:20px;margin-bottom:24px;
+    border:1px solid rgba(62,140,194,.15)}
+  .stage-intro-label{font-size:11px;font-weight:800;color:var(--sky-deeper);letter-spacing:.08em;margin-bottom:6px}
+  .stage-intro-title{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.4}
+  .stage-intro-desc{font-size:13px;color:var(--soft);line-height:1.6}
+
+  .q-stage{font-size:11px;font-weight:800;color:var(--sky-deeper);letter-spacing:.05em;margin-bottom:4px}
+  .q-number{font-size:12px;font-weight:800;color:var(--gold-deep);margin-bottom:6px}
+  .q-title{font-size:20px;font-weight:800;color:var(--ink);line-height:1.45;margin-bottom:8px;letter-spacing:-.01em}
+  .q-desc{font-size:13.5px;color:var(--soft);margin-bottom:20px;line-height:1.6}
+
+  .options{display:flex;flex-direction:column;gap:11px;margin-top:18px}
+  .option{display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid var(--line);border-radius:15px;
+    padding:16px 18px;cursor:pointer;transition:all .18s;font-size:14.5px;color:var(--ink);font-weight:500;line-height:1.5}
+  .option:active{transform:scale(.99)}
+  .option-marker{flex:0 0 20px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);transition:all .18s}
+  .option.selected{border-color:var(--sky-deep);background:#F2F8FC}
+  .option.selected .option-marker{border-color:var(--sky-deep);background:var(--sky-deep);box-shadow:inset 0 0 0 3px #fff}
+
+  .nav-btns{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+  .nav-btns .btn{justify-content:center;width:100%}
+  .btn-prev{background:#fff;color:var(--soft);border:1.5px solid var(--line);box-shadow:none;padding:16px 22px}
+  .btn-next{width:100%}
+
+  /* 정보 입력 */
+  .info-form{display:flex;flex-direction:column;gap:16px;margin-top:4px}
+  .info-row{display:flex;gap:12px}.info-row .info-field{flex:1}
+  .info-field{display:flex;flex-direction:column}
+  .info-label{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px}
+  .info-label .req{color:var(--sky-deep);margin-left:2px}
+  .info-input{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;
+    font-family:inherit;background:#fff;color:var(--ink)}
+  .info-input:focus{outline:none;border-color:var(--sky-deep)}
+  select.info-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236E665A' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center}
+  .info-hint{font-size:11.5px;color:var(--soft);margin-top:6px;line-height:1.5}
+  .info-privacy{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--soft);line-height:1.5;
+    background:#F2F8FC;border-radius:12px;padding:13px 15px;cursor:pointer}
+  .info-privacy input{margin-top:2px;flex:0 0 auto;width:16px;height:16px;accent-color:var(--sky-deep)}
+
+  /* ===== 결과 화면 ===== */
+  .sec-label{font-size:10px;font-weight:800;color:var(--sky-deeper);letter-spacing:.18em;margin-bottom:8px}
+  .sec-title{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:18px;letter-spacing:-.01em;line-height:1.4}
+
+  .result-hero{background:linear-gradient(165deg,#A6CEE8,#C9E0EF 50%,#EAD9BE);padding:40px 24px 32px;text-align:center;
+    border-bottom-left-radius:28px;border-bottom-right-radius:28px;position:relative;overflow:hidden}
+  #resultEyebrow{font-size:12px;font-weight:800;color:var(--sky-deeper);letter-spacing:.05em;margin-bottom:10px;position:relative}
+  #resultBadge{display:inline-block;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--sky-deep),var(--sky-deeper));
+    padding:8px 20px;border-radius:999px;margin-bottom:14px;position:relative;box-shadow:0 8px 20px -8px rgba(46,114,166,.6)}
+  #resultTitle{font-size:25px;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:10px;position:relative}
+  #resultDesc{font-size:14px;color:var(--soft);line-height:1.7;position:relative;font-weight:500}
+
+  .score-section{padding:30px 24px;background:var(--cream)}
+  .score-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 20px;box-shadow:var(--shadow)}
+  .score-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .score-row:last-child{margin-bottom:0}
+  .score-label{flex:0 0 60px;font-size:12.5px;font-weight:700;color:var(--ink)}
+  .score-bar-track{flex:1;height:10px;background:rgba(62,140,194,.12);border-radius:6px;overflow:hidden}
+  .score-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--sky-2),var(--sky-deep));transition:width .8s}
+  .score-val{flex:0 0 40px;text-align:right;font-size:12px;font-weight:700;color:var(--sky-deeper)}
+
+  .rec-section{padding:30px 24px;background:var(--cream-2)}
+  .rec-card-top{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:16px;margin-bottom:12px;box-shadow:var(--shadow);position:relative}
+  .rec-rank-badge{flex:0 0 36px;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;
+    color:#fff;font-weight:900;font-size:15px;background:linear-gradient(140deg,var(--sky-deep),var(--sky-deeper))}
+  .rec-card-top:nth-child(2) .rec-rank-badge{background:linear-gradient(140deg,var(--gold),var(--gold-deep))}
+  .rec-card-top:nth-child(3) .rec-rank-badge{background:linear-gradient(140deg,var(--sky-2),var(--sky-deep))}
+  .rec-info{flex:1;min-width:0}
+  .rec-name{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:5px;line-height:1.3}
+  .rec-match{display:flex;align-items:center;gap:8px}
+  .rec-match-bar{flex:1;height:7px;background:rgba(62,140,194,.12);border-radius:5px;overflow:hidden}
+  .rec-match-fill{height:100%;background:linear-gradient(90deg,var(--sky-2),var(--sky-deep));border-radius:5px}
+  .rec-match-txt{font-size:11px;font-weight:700;color:var(--sky-deeper);flex:0 0 auto}
+  .rec-meta{font-size:11px;color:var(--soft);margin-top:4px}
+  .rec-locked{display:flex;align-items:center;gap:10px;background:rgba(62,140,194,.06);border:1px dashed rgba(62,140,194,.3);
+    border-radius:12px;padding:13px 15px;margin-bottom:12px}
+  .rec-locked-icon{font-size:16px}
+  .rec-locked-txt{font-size:12.5px;color:var(--soft);line-height:1.5}
+  .rec-buy-btns{display:flex;gap:8px;margin-top:8px}
+  .rec-buy-btn{flex:1;text-align:center;font-size:12px;font-weight:700;padding:10px;border-radius:10px;
+    background:#F2F8FC;color:var(--sky-deeper);text-decoration:none;border:1px solid rgba(62,140,194,.2)}
+
+  /* 페이월 */
+  .paywall{background:linear-gradient(165deg,var(--sky-deep),var(--sky-deeper));color:#fff;padding:34px 24px;
+    border-radius:24px;margin:24px;text-align:center;box-shadow:0 20px 50px -24px rgba(46,114,166,.7)}
+  .paywall-title{font-size:21px;font-weight:800;line-height:1.4;margin-bottom:8px}
+  .paywall-price{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:20px}
+  .paywall-price strong{color:#FFE6C2;font-weight:800;font-size:16px}
+  .paywall-list{text-align:left;display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
+  .paywall-item{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:rgba(255,255,255,.95);line-height:1.5}
+  .paywall-check{flex:0 0 20px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.2);
+    display:grid;place-items:center;font-size:11px;font-weight:900;margin-top:1px}
+  .paywall-label{flex:1}
+  .paywall-btn{width:100%;background:#fff;color:var(--sky-deeper);border:none;border-radius:16px;padding:17px;
+    font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;transition:transform .15s}
+  .paywall-btn:active{transform:scale(.98)}
+
+  .result-disclaimer{font-size:11px;color:var(--soft);line-height:1.6;padding:0 24px 20px;text-align:center}
+  .result-restart{padding:0 24px 50px;text-align:center}
+  .result-restart-btn{background:none;border:none;color:var(--soft);font-size:13px;cursor:pointer;font-family:inherit;
+    text-decoration:underline;font-weight:600}
+
+  /* 로딩 */
+  .loading-overlay{position:fixed;inset:0;background:rgba(251,246,236,.96);backdrop-filter:blur(8px);
+    z-index:100;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+  .loading-overlay.active{display:flex}
+  .loading-spinner{width:48px;height:48px;border:4px solid rgba(62,140,194,.2);border-top-color:var(--sky-deep);
+    border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-size:14px;font-weight:600;color:var(--sky-deeper)}
+
+  /* 확인 페이지 */
+  .confirm-page{display:none;min-height:100vh;background:var(--cream);padding:40px 24px}
+  .confirm-page.active{display:block}
+  .confirm-success{display:none}.confirm-success.show{display:block}
+</style>
+<body>
+<div class="phone">
+
+<!-- ══════════ INTRO (랜딩) ══════════ -->
 <div id="introScreen">
 
-  <!-- 히어로 -->
-  <div class="hero">
-    <div class="hero-logo">Momlog <span>LAB</span></div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">
-        <div class="eyebrow-dot"></div>
-        아동 발달 이론 기반 AI 성향 매칭
-      </div>
-      <div class="hero-title">
-        우리 아이에게 딱 맞는<br>전집을 <em>AI가</em> 찾아드려요.
-      </div>
-      <div class="hero-sub">
-        아이의 성향과 발달단계를 분석해<br>실패 없는 전집 선택을 도와드려요.
-      </div>
-
-      <!-- 실시간 카운터 -->
-      <div class="live-counter">
-        <div class="live-dot"></div>
-        <div class="live-txt">
-          지금 <strong id="liveCount">12명</strong>이 분석 중이에요 · 베타 서비스 기간 한정 리포트 특가 제공
-        </div>
-      </div>
-
-      <div class="hero-features">
-        <div class="hero-feat">
-          <div class="feat-icon">🎯</div>
-          우리 아이 성향에 딱 맞는 전집 TOP3 큐레이션
-        </div>
-        <div class="hero-feat">
-          <div class="feat-icon">🥕</div>
-          새책·중고·대여 중 뭐가 나은지도 알려드려요
-        </div>
-        <div class="hero-feat">
-          <div class="feat-icon">📅</div>
-          전집 사고 나서 어떻게 쓸지 6개월 플랜 제공
-        </div>
-      </div>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="mesh"><div class="m1"></div><div class="m2"></div><div class="m3"></div><div class="m4"></div></div>
+    <div class="grain"></div>
+    <div class="deco">
+      <div class="cloud c1"></div><div class="cloud c2"></div>
+      <div class="spark s1"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#3E8CC2"/></svg></div>
+      <div class="spark s2"><svg width="14" height="14" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#C7A35E"/></svg></div>
+      <div class="spark s3"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#9CCBE8"/></svg></div>
+      <div class="bk1"><svg width="34" height="30" viewBox="0 0 34 30"><path d="M17 6C13 2 6 2 2 4L2 26C6 24 13 24 17 28C21 24 28 24 32 26L32 4C28 2 21 2 17 6Z" fill="#fff" stroke="#3E8CC2" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 6L17 28" stroke="#3E8CC2" stroke-width="1.6"/></svg></div>
+      <div class="bk2"><svg width="28" height="25" viewBox="0 0 34 30"><path d="M17 6C13 2 6 2 2 4L2 26C6 24 13 24 17 28C21 24 28 24 32 26L32 4C28 2 21 2 17 6Z" fill="#fff" stroke="#C7A35E" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 6L17 28" stroke="#C7A35E" stroke-width="1.6"/></svg></div>
+      <svg class="dots" height="120" viewBox="0 0 400 120" preserveAspectRatio="none"><path d="M-10 40Q120 -10 200 50T410 60" fill="none" stroke="#3E8CC2" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 12"/></svg>
+      <div class="pdot pd1"></div><div class="pdot pd3"></div>
     </div>
 
-    <div class="hero-cta-box">
-      <button class="btn-hero" onclick="scrollToAge()">무료 분석 시작하기 →</button>
-      <div class="hero-cta-sub">1분 내 결과 확인 · 회원가입 없이 이용 가능</div>
+    <div class="hero-top">
+      <div class="brand"><div class="mark">맘</div><div class="bname">맘로그랩</div></div>
+      <span class="top-pill">🛡️ 광고비 0원</span>
     </div>
-  </div>
 
-  <!-- 보안 신뢰 바 -->
-  <div class="trust-bar">
-    <div class="trust-bar-icon">🔒</div>
-    <div class="trust-bar-txt">
-      <strong>개인정보 보호 안내</strong><br>
-      입력하신 정보는 분석 즉시 암호화되어 안전하게 보호됩니다. 리포트 전송 후 마케팅 용도로 활용되지 않습니다.
+    <div class="hero-body">
+      <div class="live"><span class="ldot"></span>🌱 베타 오픈 — 지금 가장 먼저, 가장 저렴하게</div>
+      <div class="hl">나이가 아니라 <span class="grad-text">기질</span>로,<br>우리 아이에게 <span class="grad-text">딱 맞는 책</span>을<br>찾아드립니다.</div>
+      <div class="hsub">검증된 기질·발달 이론으로, 우리 아이만의 책을 골라드려요.</div>
+      <div class="hquote">“책육아의 본질은 <em>우리 아이와의 소통</em>이에요.<br>읽어주고 끝이 아니라, 다양한 방식으로 함께하는 것.”</div>
     </div>
-  </div>
-
-  <!-- 권위 섹션 -->
-  <div class="authority-section">
-    <div class="authority-grid">
-      <div class="authority-item">
-        <span class="authority-icon">🎯</span>
-        <div class="authority-title">기질별<br>1:1 매칭</div>
-        <div class="authority-desc">아이 성향에 딱 맞는 전집만</div>
-      </div>
-      <div class="authority-item">
-        <span class="authority-icon">🥕</span>
-        <div class="authority-title">중고·대여<br>가이드 포함</div>
-        <div class="authority-desc">현명하게 구매하는 방법까지</div>
-      </div>
-      <div class="authority-item">
-        <span class="authority-icon">📖</span>
-        <div class="authority-title">활용법까지<br>알려드려요</div>
-        <div class="authority-desc">사고 끝이 아니라 시작이에요</div>
-      </div>
+    <div class="hero-cta">
+      <button class="btn" onclick="scrollToAge()"><span>무료로 기질 카드 받기</span><span class="arr">›</span></button>
+      <p class="micro">6문항 · 약 2분 · 결제 정보 없이 시작</p>
     </div>
-  </div>
+  </section>
 
-  <!-- 세로형 플로우 -->
-  <div class="flow-section">
-    <div class="sec-label">HOW IT WORKS</div>
-    <div class="sec-title">이렇게 진행돼요</div>
-    <div class="flow-list">
-      <div class="flow-item">
-        <div class="flow-left">
-          <div class="flow-num-wrap"><div class="flow-num">1</div></div>
-        </div>
-        <div class="flow-body">
-          <span class="flow-icon">📝</span>
-          <div class="flow-step-title">가입 없이 바로 시작</div>
-          <div class="flow-step-desc">6개 질문, 1분이면 끝나요</div>
-        </div>
+  <!-- PROBLEM -->
+  <section class="problem">
+    <div class="eyebrow">😟 혹시 이런 적 없으셨나요</div>
+    <h2>"베스트셀러라길래 샀는데<br>우리 앤 거들떠도 안 봐요"</h2>
+    <div class="prob-card"><div class="x">!</div><p><b>나이 기준 추천의 한계</b> — 같은 24개월이어도 활동적인 아이와 신중한 아이는 좋아하는 책이 완전히 다릅니다.</p></div>
+    <div class="prob-card"><div class="x">!</div><p><b>광고비로 밀어주는 전집</b> — 우리 아이 성향과 무관하게 노출 순위로 추천되는 경우가 많습니다.</p></div>
+    <div class="prob-card"><div class="x">!</div><p><b>한 번 사면 수십만 원</b> — 안 맞으면 그대로 책장 장식. 사기 전에 맞는지 알아야 합니다.</p></div>
+  </section>
+
+  <!-- STEPS -->
+  <section>
+    <div class="eyebrow">○ 이렇게 진행돼요</div>
+    <h2>3단계면 <span class="grad-text">충분</span>합니다</h2>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div><h3>6문항 기질 설문</h3><p>검증된 문항으로 아이의 행동·반응 패턴을 체크해요. 약 2분.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>기질·발달 분석</h3><p>아이의 성향을 5가지 기질축으로 분석해 대표 유형을 찾아요.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>맞춤 결과 + 책 추천</h3><p>우리 아이 기질 카드와, 성향에 꼭 맞는 전집 Top 3를 바로 확인하세요.</p></div></div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philo">
+    <div class="sec-deco">
+      <div class="cloud sd-cloud sd-c-a"></div>
+      <div class="cloud sd-cloud sd-c-b"></div>
+      <div class="sd-spark sd-s-a"><svg width="16" height="16" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#3E8CC2"/></svg></div>
+      <div class="sd-spark sd-s-b"><svg width="13" height="13" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#C7A35E"/></svg></div>
+    </div>
+    <div class="qm">“</div>
+    <h2 class="pmain">책육아의 본질은<br><em>우리 아이와의 소통</em>이에요</h2>
+    <div class="pdesc">단순히 읽어주고 끝내는 것보다,<br>아이의 성향을 이해하고 <b>다양한 방식으로 함께 접근하는 것</b>이<br>훨씬 더 중요해요.</div>
+    <div class="psub">그래서 맘로그랩은 '어떤 책'을 넘어<br>'우리 아이와 어떻게 소통할지'까지 함께 고민해요.</div>
+  </section>
+
+  <!-- PHILO EXTEND 1: 소통하는 책육아 3가지 -->
+  <section class="philo2">
+    <div class="eyebrow">💛 이런 책육아를 도와드려요</div>
+    <h2>같은 책도,<br>아이마다 다르게 읽어요</h2>
+    <div class="pe-list">
+      <div class="pe-card">
+        <div class="pe-ico">🗣️</div>
+        <h3>읽어주기보다 '대화하기'</h3>
+        <p>"다음에 어떻게 될까?", "넌 어떻게 생각해?" — 질문을 주고받으면 책은 <b>소통의 도구</b>가 돼요. 아이 기질에 맞는 대화법을 알려드려요.</p>
       </div>
-      <div class="flow-item">
-        <div class="flow-left">
-          <div class="flow-num-wrap"><div class="flow-num">2</div></div>
-        </div>
-        <div class="flow-body">
-          <span class="flow-icon">🔍</span>
-          <div class="flow-step-title">우리 아이 성향 파악</div>
-          <div class="flow-step-desc">기질, 집중력, 책 선호 형태까지 꼼꼼하게 봐요</div>
-        </div>
+      <div class="pe-card">
+        <div class="pe-ico">🎨</div>
+        <h3>책 한 권으로 여러 방식으로 놀기</h3>
+        <p>읽기만 하지 않아요. 그리기, 역할놀이, 만들기까지 — 아이 성향에 맞는 <b>확장 놀이</b>로 책이 더 오래 기억에 남아요.</p>
       </div>
-      <div class="flow-item">
-        <div class="flow-left">
-          <div class="flow-num-wrap"><div class="flow-num">3</div></div>
-        </div>
-        <div class="flow-body">
-          <span class="flow-icon">👁️</span>
-          <div class="flow-step-title">내 아이 성향 먼저 확인</div>
-          <div class="flow-step-desc">어떤 성향인지, 어떤 전집이 맞는지 미리 볼 수 있어요</div>
-        </div>
-      </div>
-      <div class="flow-item">
-        <div class="flow-left">
-          <div class="flow-num-wrap"><div class="flow-num">4</div></div>
-        </div>
-        <div class="flow-body">
-          <span class="flow-icon">🔓</span>
-          <div class="flow-step-title">맞춤 리포트 받기</div>
-          <div class="flow-step-desc">상세 분석과 활용법이 담긴 리포트가 이메일로 와요</div>
-        </div>
+      <div class="pe-card">
+        <div class="pe-ico">🌱</div>
+        <h3>아이 속도에 맞춰 천천히</h3>
+        <p>진도를 빼는 게 아니라, 아이가 좋아하는 책을 충분히 즐기게 해주는 것. <b>우리 아이의 리듬</b>을 존중하는 책육아예요.</p>
       </div>
     </div>
-  </div>
+  </section>
 
-  <!-- 리포트 미리보기 -->
-  <div class="preview-section">
-    <div class="sec-label">REPORT PREVIEW</div>
-    <div class="sec-title">리포트 미리보기 <span style="font-size:14px;font-weight:300;color:var(--ink2);">(일부 공개)</span></div>
-    <div class="preview-phone">
-      <div class="preview-phone-header">
-        <div class="preview-phone-logo">Momlog LAB</div>
-        <div class="preview-phone-menu">≡</div>
+  <!-- PHILO EXTEND 2: 인용 강조 (변주) -->
+  <section class="philo3">
+    <div class="sec-deco">
+      <div class="sd-spark sd-s-a"><svg width="14" height="14" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#FFE6C2" opacity=".7"/></svg></div>
+      <div class="sd-spark sd-s-c"><svg width="11" height="11" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#fff" opacity=".5"/></svg></div>
+    </div>
+    <div class="p3-label">✦ 맘로그랩이 믿는 것</div>
+    <div class="p3-main">책은 아이를 가르치는<br>도구가 아니라,<br><em>아이와 가까워지는 시간</em>이에요</div>
+    <div class="p3-sub">잘 맞는 책 한 권은,<br>오늘 우리 아이와의 거리를 한 뼘 좁혀줘요.</div>
+  </section>
+
+  <!-- AGE SELECT (연령 선택 → 설문 시작) -->
+  <section class="get" id="ageSec">
+    <div class="eyebrow gold">🎁 무료로 시작하기</div>
+    <h2>우리 아이 나이를<br>선택해주세요</h2>
+    <p class="lead">연령에 맞는 기질 설문으로 바로 시작해요.</p>
+    <div class="tier" style="cursor:pointer" onclick="startSurvey('baby')">
+      <span class="tier-tag free">0~36개월</span>
+      <h3>영아기 아이 →</h3>
+      <div class="tprice">기질 카드 + 전집 Top 3 · 무료</div>
+      <div class="feat"><span class="ck b">✓</span>6문항 설문 (약 2분)</div>
+      <div class="feat"><span class="ck b">✓</span>결제 정보 없이 바로 결과 확인</div>
+    </div>
+    <div class="tier" style="cursor:pointer" onclick="startSurvey('kid')">
+      <span class="tier-tag free">37개월 이상</span>
+      <h3>유아기 아이 (4~7세) →</h3>
+      <div class="tprice">기질 카드 + 전집 Top 3 · 무료</div>
+      <div class="feat"><span class="ck b">✓</span>6문항 설문 (약 2분)</div>
+      <div class="feat"><span class="ck b">✓</span>결제 정보 없이 바로 결과 확인</div>
+    </div>
+  </section>
+
+  <!-- BOOKS PREVIEW -->
+  <section class="books">
+    <div class="sec-deco">
+      <div class="sd-book sd-b-a"><svg width="30" height="27" viewBox="0 0 34 30"><path d="M17 6C13 2 6 2 2 4L2 26C6 24 13 24 17 28C21 24 28 24 32 26L32 4C28 2 21 2 17 6Z" fill="#fff" stroke="#9CCBE8" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 6L17 28" stroke="#9CCBE8" stroke-width="1.6"/></svg></div>
+      <div class="sd-spark sd-s-b"><svg width="12" height="12" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#C7A35E" opacity=".6"/></svg></div>
+    </div>
+    <div class="eyebrow">📚 추천 미리보기</div>
+    <h2>"탐구형" 기질 아이에게는</h2>
+    <p class="lead">활동성이 높은 아이를 위한 전집 큐레이션 예시예요.</p>
+    <div class="bgrid">
+      <div class="bcard"><div class="bcover">움직임 많은<br>그림책</div><div class="bmeta"><div class="rank">RANK 1</div><div class="bt">탐험 그림책</div></div></div>
+      <div class="bcard"><div class="bcover">호기심<br>자극 책</div><div class="bmeta"><div class="rank">RANK 2</div><div class="bt">자연 관찰책</div></div></div>
+      <div class="bcard"><div class="bcover">촉감·놀이<br>북</div><div class="bmeta"><div class="rank">RANK 3</div><div class="bt">오감 놀이책</div></div></div>
+    </div>
+  </section>
+
+  <!-- FOUNDER (엄마 스토리) -->
+  <section class="founder">
+    <div class="sec-deco">
+      <div class="sd-spark sd-s-a"><svg width="13" height="13" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#C7A35E" opacity=".6"/></svg></div>
+      <div class="sd-spark sd-s-c"><svg width="11" height="11" viewBox="0 0 20 20"><path d="M10 0C11 7 13 9 20 10C13 11 11 13 10 20C9 13 7 11 0 10C7 9 9 7 10 0Z" fill="#9CCBE8" opacity=".7"/></svg></div>
+    </div>
+    <div class="eyebrow gold">🤍 맘로그랩을 만든 이유</div>
+    <h2>같은 엄마라서,<br>그 마음을 잘 알아요</h2>
+    <div class="founder-card">
+      <div class="founder-badge">👩‍👧 엄마가 직접 만들었어요</div>
+      <div class="founder-quote">“좋다는 전집 다 사봤지만,<br>정작 <em>우리 아이</em>는 시큰둥하더라고요.”</div>
+      <div class="founder-body">
+        저도 아이를 키우는 엄마예요. 수십만 원짜리 전집을 사놓고 책장 장식으로만 남았던 적이 한두 번이 아니었어요. <b>'우리 아이 성향부터 알았다면 달랐을 텐데'</b> 하는 마음에서 맘로그랩을 시작했어요.<br><br>
+        그래서 광고비로 밀어주는 추천이 아니라, <b>정말 우리 아이에게 맞는 책</b>을 찾는 데만 집중했어요. 엄마의 마음으로 만든 서비스예요.
       </div>
-      <div class="preview-card">
-        <div class="preview-eyebrow">OOO 아이에게 추천하는</div>
-        <div class="preview-name">맞춤 전집 TOP3</div>
-        <div class="preview-lock-hint">
-          🔒 우리 아이만을 위한 맞춤형 활용법과 상세 분석은<br>리포트에서만 공개됩니다.
-        </div>
-        <div class="preview-list">
-          <div class="preview-item">
-            <div class="preview-item-left">
-              <div class="preview-rank">1</div>
-              <div class="preview-book-img">📗</div>
-              <div>
-                <div class="preview-book-name">아이챌린지 초비</div>
-                <div class="preview-match-tag">성향 일치율 98%</div>
-              </div>
-            </div>
-            <div class="preview-lock">🔒</div>
-          </div>
-          <div class="preview-item">
-            <div class="preview-item-left">
-              <div class="preview-rank">2</div>
-              <div class="preview-book-img">📙</div>
-              <div>
-                <div class="preview-book-name">슬기로운 생활동화</div>
-                <div class="preview-match-tag">성향 일치율 94%</div>
-              </div>
-            </div>
-            <div class="preview-lock">🔒</div>
-          </div>
-          <div class="preview-item">
-            <div class="preview-item-left">
-              <div class="preview-rank">3</div>
-              <div class="preview-book-img">📘</div>
-              <div>
-                <div class="preview-book-name">그레이트북스 자연관찰</div>
-                <div class="preview-match-tag">성향 일치율 91%</div>
-              </div>
-            </div>
-            <div class="preview-lock">🔒</div>
-          </div>
-        </div>
-        <div class="preview-blur-row">
-          <div class="bl m"></div>
-          <div class="bl s"></div>
-          <div class="bl"></div>
-        </div>
-        <div class="preview-value-hint">
-          아이에게 꼭 맞는 이유와 활용법은 리포트에서 확인하세요!
-        </div>
-        <button class="preview-unlock" onclick="scrollToAge()">
-          전체 리포트 보기 →
-        </button>
+      <div class="founder-sign">
+        <div class="fav">🌿</div>
+        <div><div class="fname">맘로그랩 드림</div><div class="frole">아이 키우는 엄마이자 창업자</div></div>
       </div>
     </div>
-    <div class="preview-hint">설문 완료 후 이메일로 전송돼요</div>
-  </div>
+  </section>
 
-  <!-- 특별함 -->
-  <div class="special-section">
-    <div class="special-label">WHY MOMLOG LAB</div>
-    <div class="special-title">맘로그랩 리포트는<br>이런 점이 특별해요.</div>
-    <div class="special-grid">
-      <div class="special-item">
-        <span class="special-icon">🎯</span>
-        <div class="special-item-title">우리 아이 기질에<br>딱 맞는 전집만</div>
-        <div class="special-item-desc">유행이 아닌 아이 성향 기준으로 골라요</div>
-      </div>
-      <div class="special-item">
-        <span class="special-icon">🥕</span>
-        <div class="special-item-title">새책·중고·대여<br>어떻게 살지도 알려줘요</div>
-        <div class="special-item-desc">전집 추천에서 구매 전략까지</div>
-      </div>
-      <div class="special-item">
-        <span class="special-icon">📅</span>
-        <div class="special-item-title">사고 나서가<br>더 중요해요</div>
-        <div class="special-item-desc">월별 활용법과 독후 활동 가이드 제공</div>
-      </div>
-      <div class="special-item">
-        <span class="special-icon">💬</span>
-        <div class="special-item-title">맘카페 후기 데이터<br>기반 추천</div>
-        <div class="special-item-desc">실제 엄마들 반응을 분석해 골라요</div>
-      </div>
+  <!-- VALUE -->
+  <section class="value">
+    <div class="eyebrow">✦ 맘로그랩이 다른 점</div>
+    <h2>구독 NO. 키트 NO.<br>군더더기 없이 분석만.</h2>
+    <div class="vcards">
+      <div class="vcard"><div class="vno">01</div><h3>매달 빠져나가는 구독료가 없어요</h3><p>필요할 때 한 번 결제. 부담 없이 분석만 받아보세요.</p></div>
+      <div class="vcard"><div class="vno">02</div><h3>강매하는 키트가 없어요</h3><p>비싼 교구·전집을 끼워 팔지 않습니다. 순수하게 분석과 추천만.</p></div>
+      <div class="vcard"><div class="vno">03</div><h3>광고비 0원, 검증된 기준만</h3><p>노출 순위가 아니라 검증된 분석법에 근거해 책을 추천합니다.</p></div>
     </div>
-  </div>
+  </section>
 
-  <!-- 월령 선택 -->
-  <div class="age-section" id="ageSec">
-    <div class="sec-label">GET STARTED</div>
-    <div class="sec-title">아이 월령을 선택해주세요</div>
-    <div class="age-grid">
-      <div class="age-card" onclick="startSurvey('baby')">
-        <span class="age-icon">🍼</span>
-        <div class="age-track">BABY TRACK</div>
-        <div class="age-range">0~36개월</div>
-        <div class="age-desc">책에 막 눈뜨는<br>영아기 아이</div>
-        <div class="age-arrow">시작하기 →</div>
-      </div>
-      <div class="age-card" onclick="startSurvey('kid')">
-        <span class="age-icon">🌿</span>
-        <div class="age-track">KID TRACK</div>
-        <div class="age-range">37개월+</div>
-        <div class="age-desc">지식이 폭발하는<br>유아기 아이</div>
-        <div class="age-arrow">시작하기 →</div>
-      </div>
+  <!-- TESTIMONIAL -->
+  <section class="testi">
+    <div class="eyebrow gold">💬 먼저 경험한 부모님</div>
+    <h2>베타 테스터의 목소리</h2>
+    <div class="testi-card"><div class="stars">★★★★★</div><p>"베타 후기가 이 자리에 들어갑니다."</p><div class="who">— 베타 테스터 후기 (수집 중)</div></div>
+    <div class="beta-note">⏳ 지금은 베타 기간이에요. 먼저 경험하고 솔직한 후기를 들려주세요!</div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing">
+    <div class="eyebrow">💳 가격</div>
+    <h2>딱 한 번, <span class="grad-text">합리적</span>으로</h2>
+    <div class="price-hook">수십만 원 쓰기 전에,<br><em>아이 기질과 발달 단계부터 정확히 짚어드려요.</em></div>
+    <div class="ptable">
+      <div class="prow"><div><div class="ptier">1차 (얼리버드)</div><div class="pseat">선착순 한정</div></div><div class="pamt">4,900원</div></div>
+      <div class="prow"><div><div class="ptier">2차</div><div class="pseat">좌석 마감 후 전환</div></div><div class="pamt">7,900원</div></div>
+      <div class="prow"><div><div class="ptier">3차</div><div class="pseat">좌석 마감 후 전환</div></div><div class="pamt">9,900원</div></div>
+      <div class="prow"><div><div class="ptier">정가</div><div class="pseat">최종</div></div><div class="pamt">12,900원</div></div>
     </div>
-  </div>
+    <p class="pnote">좌석이 채워질수록 가격이 단계적으로 오릅니다. 가장 저렴할 때가 지금입니다.</p>
+  </section>
 
-  <!-- 가격 -->
-  <div class="price-section">
-    <div class="sec-label">PRICING</div>
-    <div class="sec-title">리포트 플랜</div>
-    <div class="plan-card">
-      <div class="plan-top">
-        <div class="plan-name">라이트 분석</div>
-        <div class="plan-badge">무료</div>
-      </div>
-      <div class="plan-price-wrap">
-        <div class="plan-price">0<span>원</span></div>
-      </div>
-      <div class="plan-desc">5가지 성향 분석 + 전집 TOP3 추천 (지금 바로 화면에서 확인)</div>
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="eyebrow gold">❓ 자주 묻는 질문</div>
+    <h2>궁금한 점</h2>
+    <div style="margin-top:16px">
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">정말 무료로 시작할 수 있나요?<span class="pm">+</span></div><div class="faq-a">네, 가능합니다. 6개 문항에 답하시면 우리 아이 기질 카드와 성향에 맞는 전집 Top 3 추천을 결제 정보 없이 무료로 받아보실 수 있어요. 회원가입도 필요 없습니다.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">어떤 기준으로 분석하나요?<span class="pm">+</span></div><div class="faq-a">아이의 행동과 반응 패턴을 5가지 기질 유형(분석·이야기·탐구·표현·안정형)으로 나누어 대표 성향을 찾습니다. 광고비나 노출 순위가 아니라, 검증된 분석 기준에 따라 책을 추천해요.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">구독이나 추가 결제가 있나요?<span class="pm">+</span></div><div class="faq-a">없습니다. 무료 분석은 말 그대로 무료이고, 프리미엄 리포트도 한 번 결제로 끝이에요. 매달 빠져나가는 구독료나, 비싼 교구·전집을 끼워 파는 일은 없습니다.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">우리 아이도 할 수 있나요?<span class="pm">+</span></div><div class="faq-a">0~36개월 영아기와 37개월 이상(4~7세) 유아기로 나누어 설문을 제공하고 있어요. 시작하실 때 아이 나이를 선택하시면 그에 맞는 문항으로 진행됩니다.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">분석 결과는 언제 받나요?<span class="pm">+</span></div><div class="faq-a">무료 기질 카드는 설문을 마치면 바로 화면에서 확인하실 수 있어요. 프리미엄 리포트는 결제 후 입력하신 이메일로 발송됩니다.</div></div>
     </div>
-    <div class="plan-card featured">
-      <div class="plan-top">
-        <div class="plan-name">프리미엄 리포트</div>
-        <div class="plan-badge">추천</div>
-      </div>
-      <div class="plan-price-wrap">
-        <div class="plan-price">19,900<span>원</span></div>
-      </div>
-      <div class="plan-features">
-        <div class="plan-feat"><div class="plan-feat-dot"></div>6각형 레이더 차트 기질 정밀 분석</div>
-        <div class="plan-feat"><div class="plan-feat-dot"></div>전집 TOP3 밀착 분석 + 타사 비교표</div>
-        <div class="plan-feat"><div class="plan-feat-dot"></div>6개월 월별 성장 로드맵</div>
-        <div class="plan-feat"><div class="plan-feat-dot"></div>당근마켓 꿀팁 + 시너지 아이템 가이드</div>
-        <div class="plan-feat"><div class="plan-feat-dot"></div>독후 활동 주차별 스케줄</div>
-      </div>
-    </div>
-  </div>
+  </section>
 
-  <!-- 개인정보 고지 -->
-  <div class="privacy-section">
-    <div class="privacy-title">🔒 맘로그랩은 사용자의 개인정보를 소중히 여깁니다.</div>
-    <div class="privacy-list">
-      <div class="privacy-item">
-        <span class="privacy-dot">·</span>
-        본 서비스는 회원가입 없이 이용 가능합니다.
-      </div>
-      <div class="privacy-item">
-        <span class="privacy-dot">·</span>
-        입력하신 정보는 구글 보안 서버를 통해 안전하게 관리되며, 리포트 전송 후에는 마케팅 용도로 임의 활용되지 않습니다.
-      </div>
-      <div class="privacy-item">
-        <span class="privacy-dot">·</span>
-        개인정보 수집 및 이용에 대한 동의는 설문 마지막 단계에서 진행됩니다.
-      </div>
-    </div>
-  </div>
+  <!-- FINAL CTA -->
+  <section class="final">
+    <div class="eyebrow">🌱 지금 시작하기</div>
+    <div class="fclose">좋은 전집보다 중요한 건,<br><em>우리 아이를 이해하는 것</em>이니까요.</div>
+    <div style="margin-top:22px"><button class="btn" style="justify-content:center;gap:8px" onclick="scrollToAge()"><span>무료로 기질 카드 받기</span><span class="arr">→</span></button></div>
+    <p style="font-size:12px;color:var(--sky-deeper);margin-top:11px;font-weight:600">6문항 · 약 2분 · 회원가입 불필요</p>
+  </section>
 
-  <!-- 이미 결제 링크 -->
-  <div class="confirm-link-wrap">
-    <span class="confirm-link" onclick="showConfirmPage()">이미 결제하셨나요? 주문번호로 리포트 받기 →</span>
-  </div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="flogo">맘로그<span>랩</span></div>
+    육아의 모든 순간을 데이터로. 검증된 분석법으로 우리 아이를 읽습니다.
+    <div class="flinks"><a href="privacy.html" style="color:rgba(255,255,255,.85);text-decoration:none">개인정보처리방침</a><a href="mailto:report@momloglab.com" style="color:rgba(255,255,255,.85);text-decoration:none">문의: report@momloglab.com</a></div>
+    <div class="fcopy">© 2026 MomLogLab. All rights reserved.</div>
+  </footer>
+</div>
 
-  <!-- 푸터 CTA -->
-  <div class="footer-cta">
-    <button class="btn-footer" onclick="scrollToAge()">지금 무료로 시작하기 →</button>
-    <div class="footer-sub">설문 1분 · 이메일 발송 · 개인정보 보호</div>
-    <div class="footer-trust">
-      <div class="trust-item"><div class="trust-dot"></div>전문가 검수</div>
-      <div class="trust-item"><div class="trust-dot"></div>광고 없음</div>
-      <div class="trust-item"><div class="trust-dot"></div>만족 보장</div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-logo">Momlog LAB</div>
-      <div class="footer-copy">© MOMLOG LAB. All rights reserved.</div>
-      <div class="footer-links">
-        <a class="footer-link">이용약관</a>
-        <a class="footer-link">개인정보처리방침</a>
-        <a class="footer-link">고객센터</a>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /introScreen -->
-
-<!-- 플로팅 CTA (인트로에서만) -->
+<!-- 플로팅 CTA -->
 <div class="floating-cta" id="floatingCta">
-  <button class="btn-floating" onclick="scrollToAge()">무료 분석 시작하기 →</button>
-  <div class="floating-sub">1분 완성 · 회원가입 불필요</div>
+  <button class="btn" style="justify-content:center;gap:8px" onclick="scrollToAge()"><span>무료로 기질 카드 받기</span><span class="arr">→</span></button>
+</div>
+<!-- ══════════ 설문 화면 ══════════ -->
+<div class="screen" id="surveyScreen">
+  <div class="sv-top">
+    <div class="sv-top-row">
+      <button class="sv-back" onclick="goBackToIntro()">← 처음으로</button>
+      <div class="sv-progress-current" id="progressCurrent">1 / 7</div>
+    </div>
+    <div class="sv-progress-label" id="progressLabel" style="margin-bottom:10px"></div>
+    <div class="sv-bar-track"><div class="sv-bar-fill" id="progressBar"></div></div>
+  </div>
+  <div class="sv-body" id="surveyBody"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     📋 설문 화면
-     ══════════════════════════════════════════ -->
-<div id="surveyScreen">
-  <div class="survey-header">
-    <div class="survey-header-top">
-      <button class="btn-back" onclick="goBackToIntro()">← 처음으로</button>
-      <div class="progress-info" id="progressCurrent">1 / 7</div>
-    </div>
-    <div class="progress-label" id="progressLabel"></div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressBar"></div>
-    </div>
+<!-- ══════════ 확인 페이지 ══════════ -->
+<div class="confirm-page" id="confirmPage">
+  <div class="sv-top-row" style="margin-bottom:24px">
+    <div class="brand"><div class="mark" style="width:24px;height:24px;font-size:12px">맘</div><div class="bname" style="font-size:15px">맘로그랩</div></div>
+    <button class="sv-back" onclick="hideConfirmPage()">✕ 닫기</button>
   </div>
-  <div class="survey-body" id="surveyBody"></div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     📬 확인 페이지
-     ══════════════════════════════════════════ -->
-<div id="confirmPage">
-  <div class="confirm-header">
-    <div class="confirm-logo">Momlog <span>LAB</span></div>
-    <button class="btn-close" onclick="hideConfirmPage()">×</button>
+  <h2 style="margin-bottom:8px">리포트 수령 확인</h2>
+  <p class="lead" style="margin-bottom:20px">결제 완료 후 리포트를 받지 못하셨나요? 스마트스토어 주문번호와 연락처를 입력하시면 빠르게 처리해드려요.</p>
+  <div class="info-form">
+    <div class="info-field">
+      <label class="info-label">스마트스토어 주문번호<span class="req">*</span></label>
+      <input type="text" class="info-input" id="cf_orderNo" placeholder="예) 2024012312345" oninput="validateConfirm()">
+    </div>
+    <div class="info-field">
+      <label class="info-label">이메일 또는 전화번호<span class="req">*</span></label>
+      <input type="text" class="info-input" id="cf_contact" placeholder="설문 시 입력하신 정보" oninput="validateConfirm()">
+    </div>
+    <button class="btn" style="justify-content:center" id="confirmBtn" disabled onclick="submitConfirm()">결제 확인 요청 →</button>
   </div>
-  <div class="confirm-body">
-    <div class="confirm-title">리포트 수령 확인</div>
-    <div class="confirm-desc">
-      결제 완료 후 리포트를 받지 못하셨나요?<br>
-      스마트스토어 주문번호와 연락처를 입력하시면 빠르게 처리해드려요.
-    </div>
-    <div class="confirm-form">
-      <div class="info-field">
-        <label class="info-label">스마트스토어 주문번호<span class="req">*</span></label>
-        <input type="text" class="info-input" id="cf_orderNo" placeholder="예) 2024012312345" oninput="validateConfirm()">
-      </div>
-      <div class="info-field">
-        <label class="info-label">이메일 또는 전화번호<span class="req">*</span></label>
-        <input type="text" class="info-input" id="cf_contact" placeholder="설문 시 입력하신 정보" oninput="validateConfirm()">
-      </div>
-      <button class="btn-confirm" id="confirmBtn" disabled onclick="submitConfirm()">결제 확인 요청 →</button>
-    </div>
-    <div class="confirm-success" id="confirmSuccess">
-      <div class="confirm-success-icon">📬</div>
-      <div class="confirm-success-txt">확인 요청이 접수됐어요</div>
-      <div class="confirm-success-sub">입력하신 이메일로 리포트가 발송됩니다.<br>보통 10분 이내에 도착해요.</div>
-    </div>
+  <div class="confirm-success" id="confirmSuccess" style="text-align:center;margin-top:24px">
+    <div style="font-size:38px;margin-bottom:10px">📬</div>
+    <div style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px">확인 요청이 접수됐어요</div>
+    <div style="font-size:13px;color:var(--soft);line-height:1.6">입력하신 이메일로 리포트가 발송됩니다.<br>보통 10분 이내에 도착해요.</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     🎉 라이트 결과 화면
-     ══════════════════════════════════════════ -->
-<div id="resultScreen">
+<!-- ══════════ 라이트 결과 화면 ══════════ -->
+<div class="screen" id="resultScreen">
   <div class="result-hero">
-    <div class="result-hero-logo">Momlog <span>LAB</span></div>
-    <div class="result-eyebrow" id="resultEyebrow">우리 아이 성향 분석 결과</div>
-    <div class="result-archetype-badge" id="resultBadge">분석형</div>
-    <div class="result-title" id="resultTitle"></div>
-    <div class="result-desc" id="resultDesc"></div>
+    <div id="resultEyebrow">우리 아이 성향 분석 결과</div>
+    <div id="resultBadge">분석형</div>
+    <div id="resultTitle"></div>
+    <div id="resultDesc"></div>
   </div>
-  <div class="result-body" id="resultBody"></div>
+  <div id="resultBody"></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     💎 프리미엄 추가 설문 화면 (P1~P6)
-     ══════════════════════════════════════════ -->
-<div id="premiumScreen">
-  <div class="survey-header">
-    <div class="survey-header-top">
-      <button class="btn-back" onclick="cancelPremium()">← 결과로</button>
-      <div class="progress-info" id="pmProgressCurrent">1 / 6</div>
+<!-- ══════════ 프리미엄 추가 설문 (P1~P6) ══════════ -->
+<div class="screen" id="premiumScreen">
+  <div class="sv-top">
+    <div class="sv-top-row">
+      <button class="sv-back" onclick="cancelPremium()">← 결과로</button>
+      <div class="sv-progress-current" id="pmProgressCurrent">1 / 6</div>
     </div>
-    <div class="progress-label" id="pmProgressLabel"></div>
-    <div class="progress-track">
-      <div class="progress-fill" id="pmProgressBar"></div>
-    </div>
+    <div class="sv-progress-label" id="pmProgressLabel" style="margin-bottom:10px"></div>
+    <div class="sv-bar-track"><div class="sv-bar-fill" id="pmProgressBar"></div></div>
   </div>
-  <div class="survey-body" id="premiumBody"></div>
+  <div class="sv-body" id="premiumBody"></div>
 </div>
 
-<!-- 로딩 -->
-<div id="loadingOverlay">
+<!-- ══════════ 로딩 ══════════ -->
+<div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
   <div class="loading-text">우리 아이 성향을 분석하고 있어요</div>
-  <div class="loading-sub">잠시만 기다려주세요...</div>
 </div>
 
-</div><!-- /app -->
-
+</div><!-- /phone -->
 <script>
 /* ══════════════════════════════════════════
    ⚙️ 설정
@@ -1391,17 +729,6 @@ const CONFIG = {
   }
 };
 
-/* ─── 실시간 카운터 애니메이션 ─── */
-(function() {
-  const base = 12;
-  const el = document.getElementById('liveCount');
-  if (!el) return;
-  setInterval(() => {
-    const v = base + Math.floor(Math.random() * 6);
-    el.textContent = v + '명';
-  }, 4000);
-})();
-
 /* ─── 플로팅 CTA 스크롤 제어 ─── */
 (function() {
   const cta = document.getElementById('floatingCta');
@@ -1417,6 +744,11 @@ const CONFIG = {
 
 function scrollToAge() {
   document.getElementById('ageSec').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* FAQ 아코디언 토글 */
+function tf(el) {
+  el.parentElement.classList.toggle('open');
 }
 
 /* ══════════════════════════════════════════
@@ -1615,9 +947,9 @@ function renderStep() {
             </div>`).join('')}
         </div>
         <div class="nav-btns">
-          ${step > 0 ? '<button class="btn btn-prev" onclick="prevStep()">← 이전</button>' : '<div></div>'}
           <button class="btn btn-next" id="nextBtn"
             ${!state.answers[q.id] ? 'disabled' : ''} onclick="nextStep()">다음 →</button>
+          ${step > 0 ? '<button class="btn btn-prev" onclick="prevStep()">← 이전</button>' : ''}
         </div>
       </div>`;
 
@@ -1657,13 +989,13 @@ function renderStep() {
           <div class="info-privacy">
             <label>
               <input type="checkbox" id="f_consent" ${state.info.consent?'checked':''} onchange="updateInfo()">
-              <span>개인정보 수집·이용에 동의합니다. 수집된 정보(성함·연락처·아이 정보)는 <strong>분석 결과 제공 및 서비스 안내 목적</strong>으로 사용되며, 관련 법령에 따라 안전하게 관리됩니다.</span>
+              <span>개인정보 수집·이용에 동의합니다. 수집된 정보(성함·연락처·아이 정보)는 <strong>분석 결과 제공 및 서비스 안내 목적</strong>으로 사용되며, 관련 법령에 따라 안전하게 관리됩니다. <a href="privacy.html" target="_blank" style="color:var(--sky-deeper);font-weight:700">자세히 보기</a></span>
             </label>
           </div>
         </div>
         <div class="nav-btns">
-          <button class="btn btn-prev" onclick="prevStep()">← 이전</button>
           <button class="btn btn-next" id="nextBtn" disabled onclick="showResult()">결과 보기 →</button>
+          <button class="btn btn-prev" onclick="prevStep()">← 이전</button>
         </div>
       </div>`;
     validateInfo();
@@ -2051,10 +1383,10 @@ function renderPremiumStep() {
           </div>`).join('')}
       </div>
       <div class="nav-btns">
-        ${step > 0 ? '<button class="btn btn-prev" onclick="prevPremiumStep()">← 이전</button>' : '<div></div>'}
         <button class="btn btn-next" id="pmNextBtn" ${!state.premiumAnswers[q.id] ? 'disabled' : ''} onclick="nextPremiumStep()">
           ${step === total - 1 ? '결제하고 리포트 받기 →' : '다음 →'}
         </button>
+        ${step > 0 ? '<button class="btn btn-prev" onclick="prevPremiumStep()">← 이전</button>' : ''}
       </div>
     </div>`;
   window.scrollTo({ top: 0, behavior: 'smooth' });
