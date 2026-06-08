@@ -337,6 +337,7 @@
   #resultBadge{display:inline-block;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--sky-deep),var(--sky-deeper));
     padding:8px 20px;border-radius:999px;margin-bottom:14px;position:relative;box-shadow:0 8px 20px -8px rgba(46,114,166,.6)}
   #resultTitle{font-size:25px;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:10px;position:relative}
+  #resultTitle em{font-style:normal;color:var(--sky-deeper)}
   #resultDesc{font-size:14px;color:var(--soft);line-height:1.7;position:relative;font-weight:500}
 
   .score-section{padding:30px 24px;background:var(--cream)}
@@ -374,6 +375,9 @@
   .paywall{background:linear-gradient(165deg,var(--sky-deep),var(--sky-deeper));color:#fff;padding:34px 24px;
     border-radius:24px;margin:24px;text-align:center;box-shadow:0 20px 50px -24px rgba(46,114,166,.7)}
   .paywall-title{font-size:21px;font-weight:800;line-height:1.4;margin-bottom:8px}
+  .paywall-title em{font-style:normal;color:#FFE6C2}
+  .paywall-intro{font-size:13px;color:rgba(255,255,255,.85);line-height:1.7;margin-bottom:18px;font-weight:500}
+  .paywall-intro strong{color:#FFE6C2;font-weight:700}
   .paywall-price{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:20px}
   .paywall-price strong{color:#FFE6C2;font-weight:800;font-size:16px}
   .paywall-list{text-align:left;display:flex;flex-direction:column;gap:11px;margin-bottom:22px}
@@ -384,6 +388,12 @@
   .paywall-btn{width:100%;background:#fff;color:var(--sky-deeper);border:none;border-radius:16px;padding:17px;
     font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;transition:transform .15s}
   .paywall-btn:active{transform:scale(.98)}
+  .premium-soon{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:20px 18px;text-align:center}
+  .premium-soon-badge{display:inline-block;background:rgba(255,255,255,.9);color:var(--sky-deeper);font-size:12px;font-weight:800;padding:6px 14px;border-radius:999px;margin-bottom:13px}
+  .premium-soon-txt{font-size:14px;color:#fff;line-height:1.7;font-weight:600;margin-bottom:12px}
+  .premium-soon-txt strong{color:#FFE6C2;font-weight:800}
+  .premium-soon-sub{font-size:12.5px;color:rgba(255,255,255,.85);line-height:1.6;padding-top:12px;border-top:1px solid rgba(255,255,255,.2)}
+  .premium-soon-sub strong{color:#FFE6C2;font-weight:800}
 
   .result-disclaimer{font-size:11px;color:var(--soft);line-height:1.6;padding:0 24px 20px;text-align:center}
   .result-restart{padding:0 24px 50px;text-align:center}
@@ -749,6 +759,16 @@ function scrollToAge() {
 /* FAQ 아코디언 토글 */
 function tf(el) {
   el.parentElement.classList.toggle('open');
+}
+
+/* 한글 받침에 맞춰 조사 자동 선택. josa('나나','은','는')→'는', josa('용늉늉','은','는')→'은' */
+function josa(word, withBatchim, withoutBatchim) {
+  if (!word) return withoutBatchim;
+  const last = word.charCodeAt(word.length - 1);
+  // 한글 음절 영역(가~힣) 밖이면 기본값(받침 없음 취급)
+  if (last < 0xAC00 || last > 0xD7A3) return withoutBatchim;
+  const hasBatchim = (last - 0xAC00) % 28 !== 0;
+  return hasBatchim ? withBatchim : withoutBatchim;
 }
 
 /* ══════════════════════════════════════════
@@ -1222,9 +1242,9 @@ function renderResult(rec) {
   document.getElementById('resultScreen').classList.add('active');
 
   // 히어로
-  document.getElementById('resultEyebrow').textContent = `${childName}(이)의 성향 분석 결과`;
+  document.getElementById('resultEyebrow').textContent = `${childName}${josa(childName,'이','')}의 성향 분석 결과`;
   document.getElementById('resultBadge').textContent = ARCH_KO[rec.primary];
-  document.getElementById('resultTitle').innerHTML = `${childName}은(는)<br>${ARCH_DESC[rec.primary].title}`;
+  document.getElementById('resultTitle').innerHTML = `${childName}${josa(childName,'은','는')}<br>${ARCH_DESC[rec.primary].title}`;
   document.getElementById('resultDesc').textContent = ARCH_DESC[rec.primary].desc;
 
   // 점수 바 (최댓값 기준 정규화 → 35~100% 구간으로 매핑해 0점도 막대가 보이도록)
@@ -1281,14 +1301,19 @@ function renderResult(rec) {
     <div class="paywall">
       <div class="paywall-label">PREMIUM REPORT</div>
       <div class="paywall-title">${childName}만을 위한<br><em>완전 분석 리포트</em>가 준비됐어요</div>
+      <div class="paywall-intro">발달 단계와 양육 환경을 묻는 <strong>심화 설문 6문항</strong>을 더한 프리미엄 리포트를 준비 중이에요. 지금보다 훨씬 정교하고 우리 아이에게 꼭 맞는 결과를 받아보실 수 있어요.</div>
       <div class="paywall-list">
+        <div class="paywall-item"><span class="paywall-check">✓</span><span><strong>심화 설문 6문항</strong>으로 더 정밀해진 맞춤 분석</span></div>
         <div class="paywall-item"><span class="paywall-check">✓</span><span>TOP3가 <strong>왜 우리 아이에게 맞는지</strong> 밀착 분석</span></div>
         <div class="paywall-item"><span class="paywall-check">✓</span><span>전집별 <strong>월별·주차별 활용 스케줄</strong></span></div>
         <div class="paywall-item"><span class="paywall-check">✓</span><span>6개월 <strong>성장 로드맵</strong> + 시너지 아이템</span></div>
         <div class="paywall-item"><span class="paywall-check">✓</span><span>새책·중고·대여 <strong>구매 전략 가이드</strong></span></div>
       </div>
-      <button class="paywall-btn" onclick="startPremium()">프리미엄 리포트 받기 →</button>
-      <div class="paywall-price">베타 기간 한정 <strong>특가</strong> 제공 예정</div>
+      <div class="premium-soon">
+        <div class="premium-soon-badge">🔔 곧 오픈 예정</div>
+        <div class="premium-soon-txt">프리미엄 리포트는 지금 준비 중이에요.<br>오픈하면 <strong>설문해주신 연락처로 가장 먼저</strong> 안내드릴게요.</div>
+        <div class="premium-soon-sub">무료 베타 참여자 중 추첨으로 <strong>50% 특가</strong>를 드립니다 🎁</div>
+      </div>
     </div>
     <div class="result-restart">
       <button class="result-restart-btn" onclick="restartSurvey()">처음부터 다시하기</button>
