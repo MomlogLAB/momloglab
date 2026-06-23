@@ -84,10 +84,10 @@
     padding:6px 13px;border-radius:999px;margin-bottom:16px}
   .hl{font-weight:800;color:var(--ink);font-size:28px;line-height:1.44;letter-spacing:-.02em}
   .hsub{color:var(--soft);font-size:14px;margin-top:13px;line-height:1.6;font-weight:500}
-  .hquote{font-size:13.5px;color:var(--sky-deeper);margin-top:16px;line-height:1.85;font-weight:600;
-    background:rgba(255,255,255,.5);backdrop-filter:blur(6px);border-left:3px solid var(--sky-deep);
+  .hquote{font-size:13.5px;color:var(--ink);margin-top:16px;line-height:1.85;font-weight:700;
+    background:rgba(255,255,255,.78);backdrop-filter:blur(6px);border-left:3px solid var(--gold);
     border-radius:4px 14px 14px 4px;padding:13px 16px}
-  .hquote em{font-style:normal;font-weight:800;color:var(--sky-deeper)}
+  .hquote em{font-style:normal;font-weight:800;color:var(--gold-deep)}
   .hero-cta{position:relative;z-index:3;padding:0 22px 24px}
   .hero-cta .micro{text-align:center;font-size:12px;color:var(--sky-deeper);margin-top:10px;font-weight:600;opacity:.85}
   .live{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sky-deeper);font-weight:600;
@@ -387,6 +387,15 @@
   .rec-match-fill{height:100%;background:linear-gradient(90deg,var(--sky-2),var(--sky-deep));border-radius:5px}
   .rec-match-txt{font-size:11px;font-weight:700;color:var(--sky-deeper);flex:0 0 auto}
   .rec-meta{font-size:11px;color:var(--soft);margin-top:4px}
+  .sec-sub{font-size:13px;font-weight:700;color:var(--soft)}
+  .rec-decide{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+  .rec-chip{background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px 13px}
+  .rec-chip .rc-k{font-size:11px;font-weight:700;color:var(--soft)}
+  .rec-chip .rc-v{font-size:14.5px;font-weight:800;color:var(--ink);margin-top:3px}
+  .rec-chip.buy{background:rgba(199,163,94,.13);border-color:rgba(199,163,94,.42)}
+  .rec-chip.buy .rc-v{color:var(--gold-deep)}
+  .rec-card.rank1 .rec-rank-badge{background:linear-gradient(140deg,var(--gold),var(--gold-deep))}
+  .score-basis{font-size:11px;color:var(--soft);text-align:center;margin-top:16px;padding-top:13px;border-top:1px solid var(--line)}
   .rec-locked{display:flex;align-items:center;gap:10px;background:rgba(62,140,194,.06);border:1px dashed rgba(62,140,194,.3);
     border-radius:12px;padding:13px 15px;margin-bottom:12px}
   .rec-locked-icon{font-size:16px}
@@ -492,8 +501,8 @@
 
     <div class="hero-body">
       <div class="live"><span class="ldot"></span>🌱 베타 오픈 — 지금 가장 먼저, 가장 저렴하게</div>
-      <div class="hl">나이가 아니라 <span class="grad-text">기질</span>로,<br>우리 아이에게 <span class="grad-text">딱 맞는 책</span>을<br>찾아드립니다.</div>
-      <div class="hsub">검증된 기질·발달 이론으로, 우리 아이만의 책을 골라드려요.</div>
+      <div class="hl">전집 정보 찾느라<br>지치셨죠?<br><span class="grad-text">그건 저희가 할게요.</span></div>
+      <div class="hsub">우리 아이에게 맞는 전집 3개, 2분이면 정리돼요. 검증된 기질·발달 기준으로요.</div>
       <div class="hquote">“책육아의 본질은 <em>우리 아이와의 소통</em>이에요.<br>읽어주고 끝이 아니라, 다양한 방식으로 함께하는 것.”</div>
     </div>
     <div class="hero-cta">
@@ -506,17 +515,19 @@
   <section class="problem">
     <div class="eyebrow">😟 혹시 이런 적 없으셨나요</div>
     <h2>"베스트셀러라길래 샀는데<br>우리 앤 거들떠도 안 봐요"</h2>
-    <div class="prob-card"><div class="x">!</div><p><b>나이 기준 추천의 한계</b> — 같은 24개월이어도 활동적인 아이와 신중한 아이는 좋아하는 책이 완전히 다릅니다.</p></div>
-    <div class="prob-card"><div class="x">!</div><p><b>광고비로 밀어주는 전집</b> — 우리 아이 성향과 무관하게 노출 순위로 추천되는 경우가 많습니다.</p></div>
-    <div class="prob-card"><div class="x">!</div><p><b>한 번 사면 수십만 원</b> — 안 맞으면 그대로 책장 장식. 사기 전에 맞는지 알아야 합니다.</p></div>
+    <div class="prob-card"><div class="x">✓</div><p><b>정보는 넘치는데, 찾을 시간이 없어요</b> — 육아만으로도 하루가 벅찬데, 전집 정보까지 언제 다 찾나요. 검색하는 것 자체가 일이고 스트레스예요.</p></div>
+    <div class="prob-card"><div class="x">✓</div><p><b>다 찾아봐도, 결국 뭐가 맞는지 모르겠어요</b> — 맘카페·블로그·후기 다 봐도 정보가 제각각. '그래서 우리 아이한텐 뭐가 맞다는 거지?' 하고 더 헷갈려요.</p></div>
+    <div class="prob-card"><div class="x">✓</div><p><b>나이 기준 추천의 한계</b> — 같은 24개월이어도 활동적인 아이와 신중한 아이는 좋아하는 책이 완전히 다릅니다.</p></div>
+    <div class="prob-card"><div class="x">✓</div><p><b>광고비로 밀어주는 전집</b> — 우리 아이 성향과 무관하게 노출 순위로 추천되는 경우가 많습니다.</p></div>
+    <div class="prob-card"><div class="x">✓</div><p><b>한 번 사면 수십만 원</b> — 안 맞으면 그대로 책장 장식. 사기 전에 맞는지 알아야 합니다.</p></div>
   </section>
 
   <!-- STEPS -->
   <section>
     <div class="eyebrow">○ 이렇게 진행돼요</div>
-    <h2>3단계면 <span class="grad-text">충분</span>합니다</h2>
+    <h2>검색하지 마세요,<br><span class="grad-text">3단계면 끝나요</span></h2>
     <div class="steps">
-      <div class="step"><div class="num">1</div><div><h3>6문항 기질 설문</h3><p>검증된 문항으로 아이의 행동·반응 패턴을 체크해요. 약 2분.</p></div></div>
+      <div class="step"><div class="num">1</div><div><h3>6문항 기질 설문</h3><p>맘카페 뒤질 필요 없이, 2분만 체크하세요.</p></div></div>
       <div class="step"><div class="num">2</div><div><h3>기질·발달 분석</h3><p>아이의 성향을 5가지 기질축으로 분석해 대표 유형을 찾아요.</p></div></div>
       <div class="step"><div class="num">3</div><div><h3>맞춤 결과 + 책 추천</h3><p>우리 아이 기질 카드와, 성향에 꼭 맞는 전집 Top 3를 바로 확인하세요.</p></div></div>
     </div>
@@ -572,7 +583,7 @@
 
   <!-- 검증된 분석법 (A안 1순위) -->
   <section class="fw">
-    <div class="eyebrow">🔬 검증된 분석법</div>
+    <div class="eyebrow">🔬 이 추천을 믿어도 되는 이유</div>
     <h2>감이 아니라,<br>수십 년 연구로 분석해요</h2>
     <p class="lead">학계에서 검증된 4가지 이론으로, 우리 아이를 두 방향에서 봐요.</p>
     <div class="fw-axis">
@@ -685,7 +696,7 @@
     <h2>궁금한 점</h2>
     <div style="margin-top:16px">
       <div class="faq-item"><div class="faq-q" onclick="tf(this)">정말 무료로 시작할 수 있나요?<span class="pm">+</span></div><div class="faq-a">네, 가능합니다. 6개 문항에 답하시면 우리 아이 기질 카드와 성향에 맞는 전집 Top 3 추천을 결제 정보 없이 무료로 받아보실 수 있어요. 회원가입도 필요 없습니다.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="tf(this)">어떤 기준으로 분석하나요?<span class="pm">+</span></div><div class="faq-a">아이의 행동과 반응 패턴을 5가지 기질 유형(분석·이야기·탐구·표현·안정형)으로 나누어 대표 성향을 찾습니다. 광고비나 노출 순위가 아니라, 검증된 분석 기준에 따라 책을 추천해요.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="tf(this)">어떤 기준으로 분석하나요?<span class="pm">+</span></div><div class="faq-a">아이의 행동과 반응 패턴을 5가지 기질 유형(분석·이야기·탐구·표현·안정형)으로 나누어 대표 성향을 찾고, 여기에 발달 단계(월령)까지 함께 봐요. '어떤 아이인지(기질)'와 '지금 뭐가 필요한지(발달)'를 같이 보는 거죠. 광고비나 노출 순위가 아니라, 검증된 기준으로 추천해요.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="tf(this)">구독이나 추가 결제가 있나요?<span class="pm">+</span></div><div class="faq-a">없습니다. 무료 분석은 말 그대로 무료이고, 프리미엄 리포트도 한 번 결제로 끝이에요. 매달 빠져나가는 구독료나, 비싼 교구·전집을 끼워 파는 일은 없습니다.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="tf(this)">우리 아이도 할 수 있나요?<span class="pm">+</span></div><div class="faq-a">0~36개월 영아기와 37개월 이상(4~7세) 유아기로 나누어 설문을 제공하고 있어요. 시작하실 때 아이 나이를 선택하시면 그에 맞는 문항으로 진행됩니다.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="tf(this)">분석 결과는 언제 받나요?<span class="pm">+</span></div><div class="faq-a">무료 기질 카드는 설문을 마치면 바로 화면에서 확인하실 수 있어요. 프리미엄 리포트는 결제 후 입력하신 이메일로 발송됩니다.</div></div>
@@ -1339,12 +1350,16 @@ function renderResult(rec) {
         <div class="rec-rank-badge">${rank}</div>
         <div class="rec-info">
           <div class="rec-name">${b.name}</div>
-          <div class="rec-meta">${b.publisher} · ${priceTxt} · ${purchaseKo}</div>
+          <div class="rec-meta">${b.publisher}</div>
           <div class="rec-match">
             <div class="rec-match-bar"><div class="rec-match-fill" style="width:${b.match}%"></div></div>
             <div class="rec-match-txt">성향 일치율 ${b.match}%</div>
           </div>
         </div>
+      </div>
+      <div class="rec-decide">
+        <div class="rec-chip"><div class="rc-k">가격대</div><div class="rc-v">${priceTxt}</div></div>
+        <div class="rec-chip buy"><div class="rc-k">이렇게 사세요</div><div class="rc-v">${purchaseKo}</div></div>
       </div>
       <div class="rec-locked">
         <span class="rec-locked-icon">🔒</span>
@@ -1357,15 +1372,15 @@ function renderResult(rec) {
   }).join('');
 
   document.getElementById('resultBody').innerHTML = `
-    <div class="score-section">
-      <div class="sec-label">TEMPERAMENT</div>
-      <div class="sec-title">${childName}의 5가지 성향 점수</div>
-      <div class="score-card">${scoreRows}</div>
-    </div>
     <div class="rec-section">
-      <div class="sec-label">RECOMMENDATION</div>
-      <div class="sec-title">${childName}에게 맞는 전집 TOP 3</div>
+      <div class="sec-label">DECISION</div>
+      <div class="sec-title">${childName}에게 맞는 전집 TOP 3<span class="sec-sub"> · 살 때 보는 정보</span></div>
       ${recCards}
+    </div>
+    <div class="score-section">
+      <div class="sec-label">WHY · 이 추천의 근거</div>
+      <div class="sec-title">${childName}의 5가지 성향 점수</div>
+      <div class="score-card">${scoreRows}<div class="score-basis">EAS · Rothbart · Thomas &amp; Chess · Piaget 기반</div></div>
     </div>
     <div class="paywall">
       <div class="paywall-label">PREMIUM REPORT</div>
