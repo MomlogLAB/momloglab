@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>빨대 꽂는 전업주부 릴스</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;900&display=swap">
+<style>
+:root{
+  --beige:#F1E6D0; --gold:#C7A35E; --gold-deep:#A07B3E;
+  --sky:#BBDDF0; --sky-deep:#3E8CC2; --sky-deeper:#2E72A6;
+  --ink:#2B2A28; --soft:#6E665A; --cream:#FBF6EC; --cream-2:#F4EAD6; --line:#E7DDC9;
+  --red:#D9534F;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#111;height:100%}
+body{display:flex;align-items:center;justify-content:center;font-family:'Pretendard','Noto Sans KR',sans-serif;color:var(--ink)}
+#wrap{position:relative;width:min(100vw,calc(100vh*9/16));aspect-ratio:9/16;overflow:hidden}
+/* 1080x1920 기준 스테이지, 화면 크기에 맞춰 축소 */
+#stage{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:0 0;background:var(--cream);overflow:hidden}
+.scene{position:absolute;inset:0;opacity:0}
+.el{position:absolute;left:0;right:0;text-align:center;will-change:transform,opacity}
+.dark{background:#1E1D1B}
+
+/* S1 댓글 훅 */
+.comment{left:90px;right:90px;top:520px;background:#2C2B29;border-radius:36px;padding:44px 48px;text-align:left;display:flex;gap:30px}
+.comment .av{flex:0 0 96px;height:96px;border-radius:50%;background:#55524C;display:flex;align-items:center;justify-content:center;font-size:52px}
+.comment .id{color:#A9A39A;font-size:34px;font-weight:700}
+.comment .tx{color:#F4F1EA;font-size:50px;font-weight:700;line-height:1.38;margin-top:10px}
+.comment .meta{color:#7E786F;font-size:30px;margin-top:18px}
+.hook{top:1060px;color:#fff;font-size:118px;font-weight:900;line-height:1.15;letter-spacing:-3px}
+.hook em{font-style:normal;color:var(--gold)}
+.straw{top:1360px;font-size:200px}
+
+/* S2 반전 */
+.big{font-weight:900;letter-spacing:-3px;line-height:1.2}
+.s2a{top:640px;font-size:104px}
+.s2b{top:980px;font-size:76px;color:var(--soft);font-weight:700}
+.s2b b{color:var(--sky-deeper)}
+
+/* S3 체력 컵 + 타임라인 */
+.s3title{top:150px;font-size:70px;font-weight:900;letter-spacing:-2px}
+.s3title em{font-style:normal;color:var(--sky-deeper)}
+.cupbox{left:90px;right:auto;top:420px;width:330px;height:620px}
+.cup{position:absolute;left:30px;top:120px;width:270px;height:480px;border:10px solid var(--ink);border-top:none;border-radius:0 0 50px 50px;overflow:hidden;background:#fff}
+.lid{position:absolute;left:10px;top:96px;width:310px;height:36px;background:var(--ink);border-radius:18px}
+.strawbar{position:absolute;left:190px;top:-10px;width:30px;height:200px;background:var(--red);border-radius:12px;transform:rotate(14deg);transform-origin:bottom center}
+.fill{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,var(--sky) 0%,var(--sky-deep) 100%)}
+.cuplabel{position:absolute;left:0;right:0;top:300px;text-align:center;font-size:40px;font-weight:900;color:var(--ink)}
+.pct{position:absolute;left:0;right:0;top:350px;text-align:center;font-size:84px;font-weight:900;color:var(--ink)}
+.cupcap{position:absolute;left:0;right:0;top:640px;text-align:center;font-size:34px;font-weight:700;color:var(--soft)}
+.tl{left:470px;right:60px;text-align:left;font-size:42px;font-weight:700;padding:22px 28px;background:#fff;border:3px solid var(--line);border-radius:26px}
+.tl b{display:block;font-size:32px;color:var(--gold-deep);font-weight:900;margin-bottom:4px}
+.tl.last{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tl.last b{color:var(--gold)}
+.s3foot{top:1560px;font-size:64px;font-weight:900;letter-spacing:-2px;line-height:1.3}
+.s3foot em{font-style:normal;color:var(--red)}
+
+/* S4 통계 */
+.s4a{top:330px;font-size:60px;font-weight:700;color:var(--soft);line-height:1.4}
+.s4num{top:560px;font-size:210px;font-weight:900;letter-spacing:-6px;color:var(--gold-deep)}
+.s4num small{font-size:96px;letter-spacing:-2px}
+.s4b{top:860px;font-size:58px;font-weight:900;line-height:1.4}
+.s4b em{font-style:normal;color:var(--sky-deeper)}
+.bars{left:140px;right:140px;top:1080px;text-align:left}
+.bar{display:flex;align-items:center;gap:24px;margin-bottom:34px;font-size:40px;font-weight:700}
+.bar span.l{flex:0 0 90px}
+.bar .track{flex:1;height:64px;background:var(--cream-2);border-radius:32px;overflow:hidden}
+.bar .b{height:100%;border-radius:32px}
+.bar span.v{flex:0 0 200px;text-align:right}
+.src{top:1430px;left:100px;right:100px;font-size:30px;color:var(--soft);line-height:1.5}
+.s4c{top:1590px;font-size:62px;font-weight:900;letter-spacing:-2px;line-height:1.3}
+
+/* S5 문제 → 해결 */
+.s5a{top:360px;font-size:150px}
+.s5b{top:620px;font-size:84px;font-weight:900;letter-spacing:-2px;line-height:1.3}
+.s5b em{font-style:normal;color:var(--red)}
+.s5c{top:900px;font-size:58px;font-weight:700;color:var(--soft);line-height:1.45}
+.chips{top:1180px;display:flex;justify-content:center;gap:24px}
+.chip{background:#fff;border:4px solid var(--sky-deep);color:var(--sky-deeper);border-radius:60px;padding:26px 40px;font-size:50px;font-weight:900}
+.s5d{top:1420px;font-size:66px;font-weight:900;letter-spacing:-2px;line-height:1.35}
+.s5d em{font-style:normal;color:var(--sky-deeper)}
+
+/* S6 CTA */
+.s6bg{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky-deeper) 0%,var(--sky-deep) 100%)}
+.logo{top:420px;display:flex;justify-content:center;align-items:center;gap:28px}
+.logo .m{width:150px;height:150px;border-radius:40px;background:var(--cream);color:var(--sky-deeper);font-size:84px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.logo .n{color:#fff;font-size:96px;font-weight:900;letter-spacing:-3px}
+.s6a{top:700px;color:#fff;font-size:76px;font-weight:900;line-height:1.35;letter-spacing:-2px}
+.s6a em{font-style:normal;color:var(--beige)}
+.cta{left:110px;right:110px;top:1100px;background:var(--cream);color:var(--sky-deeper);border-radius:80px;padding:50px 0;font-size:64px;font-weight:900;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.s6b{top:1330px;color:#E3F1FA;font-size:44px;font-weight:700;line-height:1.5}
+.s6c{top:1520px;color:#fff;font-size:52px;font-weight:900}
+
+/* 진행바 */
+#prog{position:absolute;left:0;top:0;height:10px;background:var(--gold);z-index:5}
+#ctrl{position:fixed;right:16px;bottom:16px;z-index:9;display:flex;gap:8px}
+#ctrl button{font:700 14px 'Noto Sans KR',sans-serif;padding:10px 14px;border-radius:10px;border:0;background:#fff;color:#2B2A28;cursor:pointer}
+body.render #ctrl{display:none}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="stage">
+  <div id="prog"></div>
+
+  <!-- S1 0.0~3.6s : 댓글 훅 -->
+  <section class="scene dark" data-s="0" data-e="3.6">
+    <div class="el comment" data-in="0.1" data-a="up">
+      <div class="av">👤</div>
+      <div>
+        <div class="id">익명의 댓글러</div>
+        <div class="tx">전업주부는 남편 월급에<br>빨대 꽂는 거 아님? ㅋㅋ</div>
+        <div class="meta">좋아요 1.2천 · 답글 달기</div>
+      </div>
+    </div>
+    <div class="el hook big" data-in="1.1" data-a="pop"><em>빨대 꽂는</em><br>전업주부?</div>
+    <div class="el straw" data-in="1.8" data-a="pop">🥤</div>
+  </section>
+
+  <!-- S2 3.6~6.6s : 반전 -->
+  <section class="scene" data-s="3.6" data-e="6.6">
+    <div class="el s2a big" data-in="3.8" data-a="pop">네, 맞아요.<br>빨대 꽂혀 있어요.</div>
+    <div class="el s2b" data-in="4.9" data-a="up">근데 <b>누구한테</b> 꽂혀 있는지<br>보실래요?</div>
+  </section>
+
+  <!-- S3 6.6~14.2s : 엄마 체력 컵 -->
+  <section class="scene" data-s="6.6" data-e="14.2">
+    <div class="el s3title" data-in="6.7" data-a="up">빨대는 <em>엄마 체력</em>에 꽂혀 있었어요</div>
+    <div class="el cupbox" data-in="6.9" data-a="fade">
+      <div class="strawbar"></div>
+      <div class="lid"></div>
+      <div class="cup"><div class="fill" id="fill"></div></div>
+      <div class="cuplabel">엄마 체력</div>
+      <div class="pct" id="pct">100%</div>
+    </div>
+    <div class="el tl" style="top:430px" data-in="7.3" data-a="left"><b>06:30</b>이유식 · 아침 준비</div>
+    <div class="el tl" style="top:590px" data-in="8.2" data-a="left"><b>08:40</b>등원 전쟁</div>
+    <div class="el tl" style="top:750px" data-in="9.1" data-a="left"><b>13:00</b>낮잠 재우기 2시간</div>
+    <div class="el tl" style="top:910px" data-in="10.0" data-a="left"><b>16:00</b>놀이터 · 간식 · 빨래</div>
+    <div class="el tl" style="top:1070px" data-in="10.9" data-a="left"><b>20:30</b>목욕 · 책 읽어주기</div>
+    <div class="el tl last" style="top:1230px" data-in="11.8" data-a="left"><b>23:40</b>맘카페에서 전집 검색 중…</div>
+    <div class="el s3foot" data-in="12.6" data-a="pop">퇴근도, 월급도 없이<br><em>남은 체력 3%</em></div>
+  </section>
+
+  <!-- S4 14.2~19.6s : 통계 -->
+  <section class="scene" data-s="14.2" data-e="19.6">
+    <div class="el s4a" data-in="14.3" data-a="up">여성 1인이 하는 무급 가사노동,<br>돈으로 환산하면 1년에</div>
+    <div class="el s4num" data-in="14.8" data-a="pop"><span id="num">0</span><small>만원</small></div>
+    <div class="el s4b" data-in="15.8" data-a="up">남성(521만원)의 <em>2.6배</em></div>
+    <div class="el bars" data-in="16.2" data-a="fade">
+      <div class="bar"><span class="l">여성</span><div class="track"><div class="b" id="barW" style="background:var(--gold)"></div></div><span class="v">1,380만원</span></div>
+      <div class="bar"><span class="l">남성</span><div class="track"><div class="b" id="barM" style="background:var(--sky-deep)"></div></div><span class="v">521만원</span></div>
+    </div>
+    <div class="el src" data-in="16.4" data-a="fade">출처: 통계청 「2019년 가계생산 위성계정<br>(무급 가사노동가치 평가)」, 2021.6.21 발표<br>전체 490.9조원 · 명목 GDP 대비 25.5%</div>
+    <div class="el s4c" data-in="17.6" data-a="pop">빨대 꽂은 게 아니라,<br>연봉 없이 일하는 중이에요.</div>
+  </section>
+
+  <!-- S5 19.6~24.4s : 해결 -->
+  <section class="scene" data-s="19.6" data-e="24.4">
+    <div class="el s5a" data-in="19.7" data-a="pop">🌙</div>
+    <div class="el s5b" data-in="19.9" data-a="up">그러니까 <em>밤 11시 40분</em><br>전집 검색은 그만해요</div>
+    <div class="el s5c" data-in="20.9" data-a="up">우리 아이 기질에 맞는<br>전집 Top 3, 저희가 골라드릴게요</div>
+    <div class="el chips" data-in="21.8" data-a="pop">
+      <div class="chip">6문항</div><div class="chip">약 2분</div><div class="chip">무료</div>
+    </div>
+    <div class="el s5d" data-in="22.6" data-a="up">엄마 체력은<br><em>아이랑 노는 데</em> 쓰세요 💛</div>
+  </section>
+
+  <!-- S6 24.4~28.0s : CTA -->
+  <section class="scene" data-s="24.4" data-e="28.01">
+    <div class="s6bg"></div>
+    <div class="el logo" data-in="24.5" data-a="pop"><div class="m">맘</div><div class="n">맘로그랩</div></div>
+    <div class="el s6a" data-in="25.0" data-a="up">좋은 전집보다 중요한 건,<br><em>우리 아이를 이해하는 것</em></div>
+    <div class="el cta" data-in="25.7" data-a="pop">무료 기질 카드 받기 →</div>
+    <div class="el s6b" data-in="26.2" data-a="up">회원가입 · 결제 정보 없이 시작</div>
+    <div class="el s6c" data-in="26.6" data-a="up">👆 프로필 링크에서 바로</div>
+  </section>
+</div></div>
+
+<div id="ctrl"><button id="play">⏯ 재생/정지</button><button id="restart">↺ 처음부터</button></div>
+
+<script>
+const DURATION = 28;
+const stage = document.getElementById('stage');
+const wrap = document.getElementById('wrap');
+const scenes = [...document.querySelectorAll('.scene')];
+const clamp = (v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const easeOut = p => 1 - Math.pow(1-p,3);
+const easeBack = p => { const c1=1.70158,c3=c1+1; return 1 + c3*Math.pow(p-1,3) + c1*Math.pow(p-1,2); };
+
+function fit(){ stage.style.transform = `scale(${wrap.clientWidth/1080})`; }
+addEventListener('resize', fit); fit();
+
+// 엄마 체력 : 시간대 카드가 나올 때마다 감소
+const drain = [[7.3,100],[8.2,82],[9.1,64],[10.0,47],[10.9,30],[11.8,14],[12.6,3]];
+function energyAt(t){
+  if (t < drain[0][0]) return 100;
+  for (let i=0;i<drain.length-1;i++){
+    const [t0,v0]=drain[i],[t1,v1]=drain[i+1];
+    if (t < t1) return v0 + (v1-v0)*easeOut(clamp((t-t0)/(t1-t0)));
+  }
+  return 3;
+}
+
+function render(t){
+  document.getElementById('prog').style.width = (t/DURATION*100)+'%';
+  for (const sc of scenes){
+    const s=+sc.dataset.s, e=+sc.dataset.e;
+    const inP = clamp((t-s)/0.25), outP = clamp((e-t)/0.25);
+    sc.style.opacity = (t>=s && t<e) ? Math.min(inP,outP) : 0;
+    sc.style.visibility = (t>=s && t<e) ? 'visible' : 'hidden';
+  }
+  for (const el of document.querySelectorAll('.el')){
+    const p = clamp((t - +el.dataset.in)/0.5);
+    const a = el.dataset.a;
+    let tf = '';
+    if (a==='up')   tf = `translateY(${(1-easeOut(p))*60}px)`;
+    if (a==='left') tf = `translateX(${(1-easeOut(p))*120}px)`;
+    if (a==='pop')  tf = `scale(${0.6 + 0.4*easeBack(p)})`;
+    el.style.opacity = p;
+    el.style.transform = tf;
+  }
+  const en = energyAt(t);
+  document.getElementById('fill').style.height = en+'%';
+  document.getElementById('fill').style.background = en < 20
+    ? 'linear-gradient(180deg,#F2B8B5 0%,#D9534F 100%)'
+    : 'linear-gradient(180deg,var(--sky) 0%,var(--sky-deep) 100%)';
+  document.getElementById('pct').textContent = Math.round(en)+'%';
+  document.getElementById('pct').style.color = en < 20 ? 'var(--red)' : 'var(--ink)';
+
+  const np = easeOut(clamp((t-14.8)/1.2));
+  document.getElementById('num').textContent = Math.round(1380*np).toLocaleString('ko-KR');
+  const bp = easeOut(clamp((t-16.2)/0.9));
+  document.getElementById('barW').style.width = (100*bp)+'%';
+  document.getElementById('barM').style.width = (100*521/1380*bp)+'%';
+}
+window.render = render;
+window.DURATION = DURATION;
+
+// 브라우저 재생 (렌더 모드에선 외부에서 render(t) 호출)
+if (!location.search.includes('render')){
+  let start = performance.now(), paused = false, pausedAt = 0;
+  const loop = now => {
+    if (!paused){ render(((now-start)/1000) % DURATION); }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  document.getElementById('play').onclick = () => {
+    if (paused){ start = performance.now() - pausedAt*1000; paused=false; }
+    else { pausedAt = ((performance.now()-start)/1000) % DURATION; paused=true; }
+  };
+  document.getElementById('restart').onclick = () => { start = performance.now(); paused=false; };
+} else {
+  document.body.classList.add('render');
+  render(0);
+}
+</script>
+</body>
+</html>
